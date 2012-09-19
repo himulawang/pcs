@@ -1,0 +1,20 @@
+div.createTableOption
+    div.createTableTitleColumn.left
+        input.createTableColumn(type='text',
+            onblur='table.createTableColumnBlur();'
+        )
+    div.createTableTitleIsPK.left
+        input.createTableIsPK(type='checkbox')
+    div.createTableTitleAllowEmpty.left
+        input.createTableAllowEmpty(type='checkbox')
+    div.createTableTitleType.left
+        select.createTableType
+            option(value='number') number
+            option(value='string') string
+            option(value='json') json
+    div.createTableTitleClient.left
+        input.createTableClient(type='checkbox')
+    div.createTableTitleServer.left
+        input.createTableServer(type='checkbox')
+    div.createTableTitleDescription.left
+        input.createTableDescription(type='text')

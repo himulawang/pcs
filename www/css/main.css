@@ -1,0 +1,46 @@
+body {
+    font-size: 80%;
+    /*
+    color: #EEEEEE;
+    background-color: #111111;*/
+}
+
+.border { 
+    border: 1px solid #DDDDDD;
+}
+.left {
+    float: left;
+}
+.clear {
+    clear: both;
+}
+.title {
+    font-weight: bold;
+}
+#indexLeftBlock { 
+    width: 250px; height: 750px;
+}
+#indexRightBlock {
+    width: 900px; height: 750px;
+}
+#logo { 
+    height: 50px; 
+}
+
+#menuTabs {
+    height: 740px;
+}
+
+.createTableTitleColumn,
+.createTableTitleDescription {
+    width: 200px;
+}
+
+.createTableTitleIsPK,
+.createTableTitleAllowEmpty,
+.createTableTitleType,
+.createTableTitleClient,
+.createTableTitleServer 
+{
+    width: 80px;
+}

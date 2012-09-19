@@ -1,0 +1,36 @@
+exports.orms = [
+{
+    name: 'Table',
+    abb: 't',
+    column: [
+        'id',
+        'name',
+        'sort',
+        'structure',
+    ],
+    updateFilter: [0],
+    clientFilter: [],
+    pk: 'id',
+    pkAutoIncrement: true,
+    list: 'TableList',
+},
+{
+    name: 'Structure',
+    abb: 's',
+    column: [
+        'id',
+        'name',
+        'isPK',
+        'allowEmpty',
+        'type',
+        'client',
+        'server',
+        'description',
+    ],
+    updateFilter: [0],
+    clientFilter: [],
+    pk: 'id',
+    pkAutoIncrement: true,
+    list: 'StructureList',
+},
+];
