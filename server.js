@@ -1,16 +1,3 @@
-var dm = require('domain');
-
-
-var domain = dm.create();
-domain.on('error', function(err) {
-    console.log(err);
-    if (err instanceof I.Exception) {
-        console.log('Expected I.Exception.', err.message);
-        return;
-    } 
-    console.log('Unexpected error.');
-});
-
 require('i').init();
 var express = require('express');
 var app = express();
@@ -22,11 +9,20 @@ var ctrl = require('./config/ctrl.js').ctrl;
 
 app.post('/*', function(req, res) {
     var start = process.hrtime();
-    I.Controller.process(ctrl, req.body, function(resData) {
-        var r = {
-            r: 0,
-            d: resData,
-        };
+    I.Controller.process(ctrl, req.body, function(err, resData) {
+        var r = {};
+        if (err) {
+            if (err instanceof I.Exception) {
+                r.r = err.message;
+                r.m = I.ExceptionCodes[r.r];
+            } else {
+                r.r = -1;
+                r.m = 'Unexpected Error.';
+            }
+        } else {
+            r.r = 0;
+            r.d = resData;
+        }
         res.send(JSON.stringify(r));
 
         var end = process.hrtime(start);

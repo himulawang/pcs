@@ -6,7 +6,7 @@ exports.orms = [
         'id',
         'name',
         'sort',
-        'structure',
+        'description',
     ],
     updateFilter: [0],
     clientFilter: [],
