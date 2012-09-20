@@ -10,9 +10,16 @@ TableLogic.prototype.createTable = function createTable(syn, params, cb) {
         });
     });
 
+    /*
+    // verify table not exists
+    syn.add(function() {
+        tableList.get(1);
+    });
+    */
+
     syn.on('final', function() {
-        throw new I.Exception(10001);
         cb(tableList.toClient());
+        throw new I.Exception(10001);
     });
 };
 
