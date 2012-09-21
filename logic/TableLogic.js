@@ -70,5 +70,53 @@ TableLogic.prototype.createTable = function createTable(syn, params, cb) {
         });
     });
 };
+TableLogic.prototype.getTableList = function getTableList(syn, params, cb) {
+    // retrieve tableList
+    var tableList;
+    syn.add(function() {
+        TableListModel.retrieve(0 /* Unique */, function(err, data) {
+            if (err) return cb(err);
+            tableList = data;
+            syn.emit('next');
+        });
+    });
+
+    syn.on('final', function() {
+        cb(null, {
+            tl: tableList.toClient(),
+        });
+    });
+};
+TableLogic.prototype.getStructure = function getStructure(syn, params, cb) {
+    // retrieve tableList
+    var id = params.id;
+    var tableList, table;
+    syn.add(function() {
+        TableListModel.retrieve(0 /* Unique */, function(err, data) {
+            if (err) return cb(err);
+            tableList = data;
+            table = tableList.get(id);
+            if (table === null) return cb(new I.Exception(50004));
+            syn.emit('next');
+        });
+    });
+
+    // retrieve structureList
+    var structureList;
+    syn.add(function() {
+        StructureListModel.retrieve(params.id, function(err, data) {
+            if (err) return cb(err);
+            structureList = data;
+            syn.emit('next');
+        });
+    });
+
+    syn.on('final', function() {
+        cb(null, {
+            sl: structureList.toClient(),
+            t: table.toClient(),
+        });
+    });
+};
 
 exports.TableLogic = new TableLogic();

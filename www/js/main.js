@@ -10,6 +10,7 @@ $(function() {
         view.get('tabTableTop', function(html) {
             $('#tabTable').html(html);
             $('#buttonCreateTable').button();
+            tab.clickTabTable();
         });
     });
 });

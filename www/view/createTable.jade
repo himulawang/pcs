@@ -1,9 +1,16 @@
 div#createTable
-    div TableName
-        input#createTableName(type='text')
-        input(type='button',
-            value='Create',
-            onclick='table.createTable();')
+    div
+        div.left 
+            span TableName:
+            input#createTableName(type='text')
+        div.left
+            span Description:
+            input#createTableDescription(type='text')
+        div.left
+            input(type='button',
+                value='Create',
+                onclick='table.createTable();')
+        div.clear
     div#Columns
         div
             div.createTableTitleColumn.left Column

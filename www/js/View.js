@@ -13,6 +13,7 @@ View.prototype.get = function(name, cb, data) {
         });
         return;
     }
+    console.log(data);
     var html = self.list[name](data);
     cb(html);
 };

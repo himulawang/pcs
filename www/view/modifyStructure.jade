@@ -1,0 +1,65 @@
+div#modifyStructure
+    div
+        div.left 
+            span TableName:
+            input#modifyStructureName(
+                type='text'
+                value='#{t.n}')
+        div.left
+            span Description:
+            input#modifyStructureDescription(
+                type='text'
+                value='#{t.d}')
+        div.left
+            input(type='button',
+                value='Update',
+                onclick='table.modifyStructure(#{t.i});')
+        div.clear
+    div#Columns
+        div
+            div.modifyStructureTitleColumn.left Column
+            div.modifyStructureTitleIsPK.left isPK
+            div.modifyStructureTitleAllowEmpty.left allowEmpty
+            div.modifyStructureTitleType.left Type
+            div.modifyStructureTitleClient.left Client
+            div.modifyStructureTitleServer.left Server
+            div.modifyStructureTitleDescription.left Description
+            div.clear
+        div#modifyStructureOption
+            for structure in sl
+                div.modifyStructureOption
+                    div.modifyStructureTitleColumn.left
+                        input.modifyStructureColumn(
+                            type='text'
+                            onblur='table.modifyStructureColumnBlur();'
+                            value='#{structure.n}'
+                        )
+                    div.modifyStructureTitleIsPK.left
+                        input.modifyStructureIsPK(
+                            type='checkbox'
+                            if structure.ipk
+                                checked='checked')
+                    div.modifyStructureTitleAllowEmpty.left
+                        input.modifyStructureAllowEmpty(
+                            type='checkbox'
+                            if structure.ae
+                                checked='checked')
+                    div.modifyStructureTitleType.left
+                        select.modifyStructureType
+                            option(value='number') number
+                            option(value='string') string
+                            option(value='json') json
+                    div.modifyStructureTitleClient.left
+                        input.modifyStructureClient(
+                            type='checkbox'
+                            if structure.c
+                                checked='checked')
+                    div.modifyStructureTitleServer.left
+                        input.modifyStructureServer(
+                            type='checkbox'
+                            if structure.s
+                                checked='checked')
+                    div.modifyStructureTitleDescription.left
+                        input.modifyStructureDescription(
+                            type='text'
+                            value='#{structure.d}')

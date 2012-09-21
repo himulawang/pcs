@@ -6,4 +6,15 @@ exports.ctrl = {
             'options': 'nh',
         },
     },
+    'getTableList': {
+        'action': 'TableAction',
+        'param': {
+        },
+    },
+    'getStructure': {
+        'action': 'TableAction',
+        'param': {
+            'id': 'ni'
+        },
+    },
 };
