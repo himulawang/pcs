@@ -17,6 +17,10 @@ div#modifyStructure
             input(type='button',
                 value='Modify',
                 onclick='table.modifyStructure(#{t.i});')
+        div.left
+            input(type='button',
+                value='Delete',
+                onclick='table.deleteTableConfirm(#{t.i});')
         div.clear
     div#columns
         div
@@ -42,33 +46,22 @@ div#modifyStructure
                             value='#{structure.n}'
                         )
                     div.modifyStructureTitleIsPK.left
-                        if structure.ipk == 1
-                            input.modifyStructureIsPK(type='checkbox', checked='checked')
-                        else
-                            input.modifyStructureIsPK(type='checkbox')
+                        input.modifyStructureIsPK(type='checkbox'
+                            checked=structure.ipk == 1)
                     div.modifyStructureTitleAllowEmpty.left
-                        if structure.ae == 1
-                            input.modifyStructureAllowEmpty(type='checkbox', checked='checked')
-                        else
-                            input.modifyStructureAllowEmpty(type='checkbox')
+                        input.modifyStructureAllowEmpty(type='checkbox'
+                            checked=structure.ae == 1)
                     div.modifyStructureTitleType.left
                         select.modifyStructureType
-                            if structure.t == 'number'
-                                option(value='number', selected='selected') number
-                            if structure.t == 'string'
-                                option(value='string', selected='selected') string
-                            if structure.t == 'json'
-                                option(value='json', selected='selected') json
+                            option(value='number', selected=structure.t == 'number') number
+                            option(value='string', selected=structure.t == 'string') string
+                            option(value='json', selected=structure.t == 'json') json
                     div.modifyStructureTitleClient.left
-                        if structure.c == 1
-                            input.modifyStructureClient(type='checkbox', checked='checked')
-                        else
-                            input.modifyStructureClient(type='checkbox')
+                        input.modifyStructureClient(type='checkbox'
+                            checked=structure.c == 1)
                     div.modifyStructureTitleServer.left
-                        if structure.s == 1
-                            input.modifyStructureServer(type='checkbox', checked='checked')
-                        else 
-                            input.modifyStructureServer(type='checkbox')
+                        input.modifyStructureServer(type='checkbox'
+                            checked=structure.s == 1)
                     div.modifyStructureTitleDescription.left
                         input.modifyStructureDescription(
                             type='text'

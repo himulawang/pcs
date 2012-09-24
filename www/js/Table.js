@@ -98,9 +98,10 @@ Table.prototype.modifyStructure = function modifyStructure() {
 
     var description = $('#modifyStructureDescription').val();
 
+    var id = $('#modifyStructureTableId').val();
     var param = { 
         req: 'modifyStructure',
-        id: $('#modifyStructureTableId').val(),
+        id: id,
         tableName: $('#modifyStructureName').val(),
         description: description,
         addOptions: {},
@@ -131,13 +132,13 @@ Table.prototype.modifyStructure = function modifyStructure() {
             columnNameList[columnName] = 1;
         } else if (el.hasClass('modifyStructureDeletedColumn')) {
             var delValue = el.find('.modifyStructureId').val();
-            var delIndex = 'd' . delValue;
+            var delIndex = 'd' + delValue;
             param.delOptions[delIndex] = delValue;
         } else {
             if (columnNameList[columnName]) {
                 throw new Exception(50006);
             }
-            var updateIndex = 'u' . el.find('.modifyStructureId').val();
+            var updateIndex = 'u' + el.find('.modifyStructureId').val();
             param.updateOptions[updateIndex] = {
                 name: columnName,
                 isPK: el.find('.modifyStructureIsPK')[0].checked ? 1 : 0,
@@ -151,6 +152,51 @@ Table.prototype.modifyStructure = function modifyStructure() {
         }
     });
 
+    var self = this;
     $.post('./modifyStructure', param, function(json) {
+        var obj = Util.parse(json);
+        tab.clickTabTable();
+        self.clickStructure(id);
     });
+};
+Table.prototype.deleteTableConfirm = function deleteTableConfirm(id) {
+    $('#dialog').dialog({
+        title: 'Confirm',
+        modal: true,
+        buttons: {
+            OK: function() {
+                table.deleteTable(id);
+                $(this).dialog('close');
+            },
+            Cancel: function() {
+                $(this).dialog('close');
+            },
+        }
+    }).html('Sure to delete this table?');
+};
+Table.prototype.deleteTable = function deleteTable(id) {
+    $.post('./deleteTable', { req: 'deleteTable', id: id }, function(json) {
+        var obj = Util.parse(json);
+        tab.clickTabTable();
+        tab.clearRightBlock();
+    });
+};
+Table.prototype.clickImportData = function clickImportData() {
+    var html = '<input type="file" multiple="multiple" id="inputDataFiles">';
+    $('#dialog').dialog({
+        title: 'Import',
+        modal: true,
+        buttons: {
+            OK: function() {
+                table.importMutipleData();
+                $(this).dialog('close');
+            },
+            Cancel: function() {
+                $(this).dialog('close');
+            },
+        }
+    }).html(html);
+};
+Table.prototype.importMutipleData = function importMutipleData() {
+    console.dir($('#inputDataFiles')[0]);
 };

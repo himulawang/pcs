@@ -9,7 +9,7 @@ $(function() {
         $('#menuTabs').tabs();
         view.get('tabTableTop', function(html) {
             $('#tabTable').html(html);
-            $('#buttonCreateTable').button();
+            $('#buttonCreateTable, #buttonImportData').button();
             tab.clickTabTable();
         });
     });

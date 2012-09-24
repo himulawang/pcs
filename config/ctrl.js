@@ -29,4 +29,10 @@ exports.ctrl = {
             'updateOptions': 'mh',
         },
     },
+    'deleteTable': {
+        'action': 'TableAction',
+        'param': {
+            'id': 'ni'
+        },
+    },
 };

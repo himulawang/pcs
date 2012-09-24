@@ -145,20 +145,21 @@ TableLogic.prototype.modifyStructure = function modifyStructure(syn, params, cb)
     // del structure
     var structure;
     syn.add(function() {
-        if (!params.delOptions) syn.emit('next');
+        if (!params.delOptions) return syn.emit('next');
         var id;
         for (var i in params.delOptions) {
-            delStructureId = params.delOptions[i];
+            id = params.delOptions[i];
             structure = structureList.get(id);
             if (structure === null) continue;
 
             structureList.del(id);
         }
+        syn.emit('next');
     });
 
     // add structure
     syn.add(function() {
-        if (!params.addOptions) syn.emit('next');
+        if (!params.addOptions) return syn.emit('next');
         var option;
         for (var i in params.addOptions) {
             option = params.addOptions[i];
@@ -174,11 +175,12 @@ TableLogic.prototype.modifyStructure = function modifyStructure(syn, params, cb)
             ]);
             structureList.add(structure);
         };
+        syn.emit('next');
     });
 
     // upadte structure
     syn.add(function() {
-        if (!params.updateOptions) syn.emit('next');
+        if (!params.updateOptions) return syn.emit('next');
         var option, id;
         for (var updateIndex in params.updateOptions) {
             option = params.updateOptions[updateIndex];
@@ -196,28 +198,89 @@ TableLogic.prototype.modifyStructure = function modifyStructure(syn, params, cb)
             if (option.description != structure.description) structure.description = option.description;
             structureList.update(structure);
         };
-        StructureListModel.update(structure, function(err, data) {
+        syn.emit('next');
+    });
+
+    // update tableName and description
+    syn.add(function() {
+        // verify table not exists
+        var list = tableList.getList();
+        for (var i in list) {
+            if (list[i].name == params.tableName) {
+                if (i == params.id) continue;
+                return cb(new I.Exception(20002));
+            }
+        }
+
+        if (params.tableName != table.name) table.name = params.tableName;
+        if (params.description != table.description) table.description = params.description;
+
+        tableList.update(table);
+        TableListModel.update(tableList, function(err, data) {
+            if (err) return cb(err);
+            tableList = data;
+            syn.emit('next');
+        });
+    });
+
+    // update structureList
+    syn.add(function() {
+        StructureListModel.update(structureList, function(err, data) {
+            if (err) return cb(err);
+            structureList = data;
+            syn.emit('next');
+        });
+    });
+    
+    syn.on('final', function() {
+        cb(null, {});
+    });
+};
+TableLogic.prototype.deleteTable = function deleteTable(syn, params, cb) {
+    // retrieve tableList
+    var id = params.id;
+    var tableList, table;
+    syn.add(function() {
+        TableListModel.retrieve(0 /* Unique */, function(err, data) {
+            if (err) return cb(err);
+            tableList = data;
+            table = tableList.get(id);
+            if (table === null) return cb(new I.Exception(50010));
+            syn.emit('next');
+        });
+    });
+
+    // del table
+    syn.add(function() {
+        tableList.del(table);
+        TableListModel.update(tableList, function(err, data) {
+            if (err) return cb(err);
+            tableList = data;
+            syn.emit('next');
+        });
+    });
+
+    // get structureList
+    var structureList;
+    syn.add(function() {
+        StructureListModel.retrieve(id, function(err, data) {
             if (err) return cb(err);
             structureList = data;
             syn.emit('next');
         });
     });
 
-    // update tableList
+    // del structureList
     syn.add(function() {
-        // verify table not exists
-        var list = tableList.getList();
-        for (var i in list) {
-            if (list[i].name == params.tableName) {
-                return cb(new I.Exception(20002));
-            }
-        }
-        syn.emit('next');
+        StructureListModel.del(structureList, function(err, data) {
+            if (err) return cb(err);
+            syn.emit('next');
+        });
     });
-    
 
+    // return
     syn.on('final', function() {
-        cb(null, params);
+        cb(null, {});
     });
 };
 

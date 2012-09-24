@@ -12,5 +12,8 @@ TableAction.prototype.getStructure = function getStructure(syn, params, cb) {
 TableAction.prototype.modifyStructure = function modifyStructure(syn, params, cb) {
     return TableLogic.modifyStructure(syn, params, cb);
 };
+TableAction.prototype.deleteTable = function deleteTable(syn, params, cb) {
+    return TableLogic.deleteTable(syn, params, cb);
+};
 
 exports.TableAction = new TableAction();

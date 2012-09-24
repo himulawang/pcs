@@ -8,4 +8,5 @@ var ExceptionCodes = {
     '50007': 'Invalid id when modifying table structure.',
     '50008': 'Cannot del pk column.',
     '50009': 'ColumnName cannot be empty when modifying table structure.',
+    '50010': 'Invalid id when deleting table.',
 };
