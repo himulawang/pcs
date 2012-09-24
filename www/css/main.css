@@ -21,10 +21,12 @@ body {
     font-weight: bold;
 }
 #indexLeftBlock { 
-    width: 250px; height: 750px;
+    width: 250px;
+    height: 750px;
 }
 #indexRightBlock {
-    width: 900px; height: 750px;
+    width: 1000px;
+    height: 750px;
 }
 #logo { 
     height: 50px; 
@@ -39,7 +41,7 @@ body {
 .modifyStructureTitleColumn,
 .modifyStructureTitleDescription
 {
-    width: 200px;
+    width: 180px;
 }
 
 .createTableTitleIsPK,
@@ -51,7 +53,9 @@ body {
 .modifyStructureTitleAllowEmpty,
 .modifyStructureTitleType,
 .modifyStructureTitleClient,
-.modifyStructureTitleServer
+.modifyStructureTitleServer,
+.modifyStructureTitleAddColumn,
+.modifyStructureTitleDelColumn
 {
     width: 80px;
 }
@@ -59,4 +63,14 @@ body {
 .tableListButtons {
     position: absolute;
     left: 150px;
+}
+
+.modifyStructureNewColumn {
+    background-color: #EEEEEE;
+}
+
+.modifyStructureId,
+.modifyStructureTitleId,
+.modifyStructureDeletedColumn {
+    display: none;
 }

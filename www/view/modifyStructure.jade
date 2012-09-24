@@ -5,6 +5,9 @@ div#modifyStructure
             input#modifyStructureName(
                 type='text'
                 value='#{t.n}')
+            input#modifyStructureTableId(
+                type='hidden'
+                value='#{t.i}')
         div.left
             span Description:
             input#modifyStructureDescription(
@@ -12,11 +15,12 @@ div#modifyStructure
                 value='#{t.d}')
         div.left
             input(type='button',
-                value='Update',
+                value='Modify',
                 onclick='table.modifyStructure(#{t.i});')
         div.clear
-    div#Columns
+    div#columns
         div
+            div.modifyStructureTitleId.left Id
             div.modifyStructureTitleColumn.left Column
             div.modifyStructureTitleIsPK.left isPK
             div.modifyStructureTitleAllowEmpty.left allowEmpty
@@ -24,42 +28,59 @@ div#modifyStructure
             div.modifyStructureTitleClient.left Client
             div.modifyStructureTitleServer.left Server
             div.modifyStructureTitleDescription.left Description
+            div.modifyStructureTitleAddColumn.left Add
+            div.modifyStructureTitleDelColumn.left Del
             div.clear
         div#modifyStructureOption
             for structure in sl
                 div.modifyStructureOption
+                    div.modifyStructureTitleId.left
+                        input.modifyStructureId(type='text', value='#{structure.i}')
                     div.modifyStructureTitleColumn.left
                         input.modifyStructureColumn(
                             type='text'
-                            onblur='table.modifyStructureColumnBlur();'
                             value='#{structure.n}'
                         )
                     div.modifyStructureTitleIsPK.left
-                        input.modifyStructureIsPK(
-                            type='checkbox'
-                            if structure.ipk
-                                checked='checked')
+                        if structure.ipk == 1
+                            input.modifyStructureIsPK(type='checkbox', checked='checked')
+                        else
+                            input.modifyStructureIsPK(type='checkbox')
                     div.modifyStructureTitleAllowEmpty.left
-                        input.modifyStructureAllowEmpty(
-                            type='checkbox'
-                            if structure.ae
-                                checked='checked')
+                        if structure.ae == 1
+                            input.modifyStructureAllowEmpty(type='checkbox', checked='checked')
+                        else
+                            input.modifyStructureAllowEmpty(type='checkbox')
                     div.modifyStructureTitleType.left
                         select.modifyStructureType
-                            option(value='number') number
-                            option(value='string') string
-                            option(value='json') json
+                            if structure.t == 'number'
+                                option(value='number', selected='selected') number
+                            if structure.t == 'string'
+                                option(value='string', selected='selected') string
+                            if structure.t == 'json'
+                                option(value='json', selected='selected') json
                     div.modifyStructureTitleClient.left
-                        input.modifyStructureClient(
-                            type='checkbox'
-                            if structure.c
-                                checked='checked')
+                        if structure.c == 1
+                            input.modifyStructureClient(type='checkbox', checked='checked')
+                        else
+                            input.modifyStructureClient(type='checkbox')
                     div.modifyStructureTitleServer.left
-                        input.modifyStructureServer(
-                            type='checkbox'
-                            if structure.s
-                                checked='checked')
+                        if structure.s == 1
+                            input.modifyStructureServer(type='checkbox', checked='checked')
+                        else 
+                            input.modifyStructureServer(type='checkbox')
                     div.modifyStructureTitleDescription.left
                         input.modifyStructureDescription(
                             type='text'
                             value='#{structure.d}')
+                    div.modifyStructureTitleAddColumn.left
+                        input.modifyStructureAddColumn(
+                            type='button'
+                            onclick='table.addColumn();'
+                            value='Add')
+                    div.modifyStructureTitleDelColumn.left
+                        input.modifyStructureDelColumn(
+                            type='button'
+                            onclick='table.delColumn(this);'
+                            value='Del')
+                    div.clear

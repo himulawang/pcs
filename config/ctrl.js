@@ -3,6 +3,7 @@ exports.ctrl = {
         'action': 'TableAction',
         'param': {
             'tableName': 'ns',
+            'description': 'es',
             'options': 'nh',
         },
     },
@@ -15,6 +16,17 @@ exports.ctrl = {
         'action': 'TableAction',
         'param': {
             'id': 'ni'
+        },
+    },
+    'modifyStructure': {
+        'action': 'TableAction',
+        'param': {
+            'id': 'ni',
+            'tableName': 'ns',
+            'description': 'es',
+            'addOptions': 'mh',
+            'delOptions': 'mh',
+            'updateOptions': 'mh',
         },
     },
 };
