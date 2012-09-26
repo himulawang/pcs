@@ -15,7 +15,7 @@ TableLogic.prototype.createTable = function createTable(syn, params, cb) {
         // verify table not exists
         var list = tableList.getList();
         for (var i in list) {
-            if (list[i].name == params.tableName) {
+            if (list[i].name.toLowerCase() == params.tableName.toLowerCase()) {
                 return cb(new I.Exception(20001));
             }
         }
@@ -206,7 +206,7 @@ TableLogic.prototype.modifyStructure = function modifyStructure(syn, params, cb)
         // verify table not exists
         var list = tableList.getList();
         for (var i in list) {
-            if (list[i].name == params.tableName) {
+            if (list[i].name.toLowerCase() == params.tableName.toLowerCase()) {
                 if (i == params.id) continue;
                 return cb(new I.Exception(20002));
             }
@@ -281,6 +281,92 @@ TableLogic.prototype.deleteTable = function deleteTable(syn, params, cb) {
     // return
     syn.on('final', function() {
         cb(null, {});
+    });
+};
+TableLogic.prototype.uploadData = function uploadData(syn, params, cb) {
+    // retrieve tableList
+    var name = params.tableName;
+    var tableList, table;
+    syn.add(function() {
+        TableListModel.retrieve(0 /* Unique */, function(err, data) {
+            if (err) return cb(err);
+            tableList = data;
+            table = tableList.getTableByTableName(name);
+            if (table === null) return cb(new I.Exception(50104));
+            syn.emit('next');
+        });
+    });
+
+    // retrieve structureList
+    var structureList;
+    syn.add(function() {
+        StructureListModel.retrieve(table.id, function(err, data) {
+            if (err) return cb(err);
+            structureList = data;
+            syn.emit('next');
+        });
+    });
+
+    // validate data
+    var inputData;
+    syn.add(function() {
+        inputData = params.data;
+        // TODO PK / TYPE / ALLOW EMPTY
+        syn.emit('next');
+    });
+
+    // make dynamic class
+    var dynamicMaker = new DynamicMaker();
+    var dataTableName = dynamicMaker.makeDataTableName(params.tableName);
+    syn.add(function() {
+        dynamicMaker.make(table, structureList);
+        syn.emit('next');
+    });
+
+    // retrieve data list
+    var DataListModel;
+    var dataList;
+    syn.add(function() {
+        DataListModel = global[dataTableName + 'ListModel'];
+        DataListModel.retrieve(0, function(err, data) {
+            if (err) return cb(err);
+            dataList = data;
+            syn.emit('next');
+        });
+    });
+
+    // clear data list
+    syn.add(function() {
+        DataListModel.del(dataList, function(err, data) {
+            if (err) return cb(err);
+            dataList = data;
+            syn.emit('next');
+        });
+    });
+
+    // insert data
+    syn.add(function() {
+        inputData.forEach(function(n, i) {
+            // skip title
+            if (i === 0) return;
+            var initData = [null];
+            for (var i in n) {
+                initData.push(n[i]);
+            }
+            var data = new global[dataTableName](initData);
+            dataList.add(data);
+        });
+        DataListModel.update(dataList, function(err, data) {
+            if (err) return cb(err);
+            dataList = data;
+            syn.emit('next');
+        });
+    });
+
+    // return
+    syn.on('final', function() {
+        cb(null, { dl: dataList.toClient() });
+        dynamicMaker.clear();
     });
 };
 

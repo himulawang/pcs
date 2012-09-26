@@ -1,8 +1,9 @@
-var view, tab, table;
+var view, tab, table, importer;
 $(function() {
     view = new View();
     tab = new Tab();
     table = new Table();
+    importer = new Importer();
 
     view.get('indexLeftBlock', function(html) {
         $('body').append(html);

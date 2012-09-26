@@ -11,4 +11,7 @@ var Util = {
 
         return obj.d;
     },
+    getFileBasename: function(filename) {
+        return filename.split('.')[0];
+    },
 };

@@ -15,5 +15,8 @@ TableAction.prototype.modifyStructure = function modifyStructure(syn, params, cb
 TableAction.prototype.deleteTable = function deleteTable(syn, params, cb) {
     return TableLogic.deleteTable(syn, params, cb);
 };
+TableAction.prototype.uploadData = function uploadData(syn, params, cb) {
+    return TableLogic.uploadData(syn, params, cb);
+};
 
 exports.TableAction = new TableAction();

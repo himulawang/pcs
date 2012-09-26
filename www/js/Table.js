@@ -188,7 +188,7 @@ Table.prototype.clickImportData = function clickImportData() {
         modal: true,
         buttons: {
             OK: function() {
-                table.importMutipleData();
+                importer.importFiles();
                 $(this).dialog('close');
             },
             Cancel: function() {
@@ -196,7 +196,4 @@ Table.prototype.clickImportData = function clickImportData() {
             },
         }
     }).html(html);
-};
-Table.prototype.importMutipleData = function importMutipleData() {
-    console.dir($('#inputDataFiles')[0]);
 };

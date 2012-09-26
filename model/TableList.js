@@ -5,4 +5,14 @@ var TableList = function TableList(pk, list) {
 
 TableList.prototype = new TableListBase();
 TableList.prototype.constructor = TableList;
+
+TableList.prototype.getTableByTableName = function getTableByTableName(tableName) {
+    var table;
+    for (var i in this.list) {
+        table = this.get(i);
+        if (table.name === tableName) return table;
+    }
+    return null;
+};
+
 exports.TableList = TableList;

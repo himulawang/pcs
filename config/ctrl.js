@@ -35,4 +35,11 @@ exports.ctrl = {
             'id': 'ni'
         },
     },
+    'uploadData': {
+        'action': 'TableAction',
+        'param': {
+            'tableName': 'ns',
+            'data': 'nh',
+        },
+    },
 };
