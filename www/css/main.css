@@ -29,7 +29,8 @@ body {
     height: 750px;
 }
 #logo { 
-    height: 50px; 
+    height: 87px; 
+    background: url('./logo.png') no-repeat;
 }
 
 #menuTabs {
@@ -73,4 +74,12 @@ body {
 .modifyStructureTitleId,
 .modifyStructureDeletedColumn {
     display: none;
+}
+
+.dataTitle {
+    width: 100px;
+}
+
+.data {
+    width: 100px;
 }

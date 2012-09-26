@@ -250,22 +250,61 @@ TableLogic.prototype.deleteTable = function deleteTable(syn, params, cb) {
         });
     });
 
-    // del table
-    syn.add(function() {
-        tableList.del(table);
-        TableListModel.update(tableList, function(err, data) {
-            if (err) return cb(err);
-            tableList = data;
-            syn.emit('next');
-        });
-    });
-
     // get structureList
     var structureList;
     syn.add(function() {
         StructureListModel.retrieve(id, function(err, data) {
             if (err) return cb(err);
             structureList = data;
+            syn.emit('next');
+        });
+    });
+
+    // make dynamic class
+    var dynamicMaker, dataTableName, Data, DataModel, DataListModel;
+    syn.add(function() {
+        dynamicMaker = new DynamicMaker();
+        dynamicMaker.make(table, structureList);
+        dataTableName = dynamicMaker.makeDataTableName(table.name);
+        Data = global[dataTableName];
+        DataModel = global[dataTableName + 'Model'];
+        DataListModel = global[dataTableName + 'ListModel'];
+        syn.emit('next');
+    });
+
+    // retrieve data list
+    var dataList;
+    syn.add(function() {
+        DataListModel.retrieve(0, function(err, data) {
+            if (err) return cb(err);
+            dataList = data;
+            syn.emit('next');
+        });
+    });
+
+    // del global key
+    syn.add(function() {
+        db.del(I.Const.GLOBAL_KEY_PREFIX + DataModel.abb, function(err, data) {
+            if (err) return cb(err);
+            syn.emit('next');
+        });
+    });
+
+    // clear data list
+    syn.add(function() {
+        DataListModel.del(dataList, function(err, data) {
+            if (err) return cb(err);
+            dataList = data;
+            syn.emit('next');
+        });
+    });
+
+    // del table
+    syn.add(function() {
+        tableList.del(table);
+        TableListModel.update(tableList, function(err, data) {
+            if (err) return cb(err);
+            tableList = data;
             syn.emit('next');
         });
     });
@@ -281,6 +320,7 @@ TableLogic.prototype.deleteTable = function deleteTable(syn, params, cb) {
     // return
     syn.on('final', function() {
         cb(null, {});
+        dynamicMaker.clear();
     });
 };
 TableLogic.prototype.uploadData = function uploadData(syn, params, cb) {
@@ -316,18 +356,20 @@ TableLogic.prototype.uploadData = function uploadData(syn, params, cb) {
     });
 
     // make dynamic class
-    var dynamicMaker = new DynamicMaker();
-    var dataTableName = dynamicMaker.makeDataTableName(params.tableName);
+    var dynamicMaker, dataTableName, Data, DataModel, DataListModel;
     syn.add(function() {
+        dynamicMaker = new DynamicMaker();
         dynamicMaker.make(table, structureList);
+        dataTableName = dynamicMaker.makeDataTableName(table.name);
+        Data = global[dataTableName];
+        DataModel = global[dataTableName + 'Model'];
+        DataListModel = global[dataTableName + 'ListModel'];
         syn.emit('next');
     });
 
     // retrieve data list
-    var DataListModel;
     var dataList;
     syn.add(function() {
-        DataListModel = global[dataTableName + 'ListModel'];
         DataListModel.retrieve(0, function(err, data) {
             if (err) return cb(err);
             dataList = data;
@@ -340,6 +382,14 @@ TableLogic.prototype.uploadData = function uploadData(syn, params, cb) {
         DataListModel.del(dataList, function(err, data) {
             if (err) return cb(err);
             dataList = data;
+            syn.emit('next');
+        });
+    });
+
+    // set global key 0
+    syn.add(function() {
+        db.set(I.Const.GLOBAL_KEY_PREFIX + DataModel.abb, 0, function(err, data) {
+            if (err) return cb(err);
             syn.emit('next');
         });
     });
@@ -366,6 +416,61 @@ TableLogic.prototype.uploadData = function uploadData(syn, params, cb) {
     // return
     syn.on('final', function() {
         cb(null, { dl: dataList.toClient() });
+        dynamicMaker.clear();
+    });
+};
+TableLogic.prototype.getData = function getData(syn, params, cb) {
+    // retrieve tableList
+    var id = params.id;
+    var tableList, table;
+    syn.add(function() {
+        TableListModel.retrieve(0 /* Unique */, function(err, data) {
+            if (err) return cb(err);
+            tableList = data;
+            table = tableList.get(id);
+            if (table === null) return cb(new I.Exception(50011));
+            syn.emit('next');
+        });
+    });
+
+    // retrieve structureList
+    var structureList;
+    syn.add(function() {
+        StructureListModel.retrieve(table.id, function(err, data) {
+            if (err) return cb(err);
+            structureList = data;
+            syn.emit('next');
+        });
+    });
+
+    // make dynamic class
+    var dynamicMaker, dataTableName, Data, DataModel, DataListModel;
+    syn.add(function() {
+        dynamicMaker = new DynamicMaker();
+        dynamicMaker.make(table, structureList);
+        dataTableName = dynamicMaker.makeDataTableName(table.name);
+        Data = global[dataTableName];
+        DataModel = global[dataTableName + 'Model'];
+        DataListModel = global[dataTableName + 'ListModel'];
+        syn.emit('next');
+    });
+
+    // retrieve data list
+    var dataList;
+    syn.add(function() {
+        DataListModel.retrieve(0, function(err, data) {
+            if (err) return cb(err);
+            dataList = data;
+            syn.emit('next');
+        });
+    });
+
+    // return
+    syn.on('final', function() {
+        cb(null, {
+            dl: dataList.toClient(),
+            cl: new Data().abb,
+        });
         dynamicMaker.clear();
     });
 };

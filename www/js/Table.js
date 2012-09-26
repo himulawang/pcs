@@ -197,3 +197,11 @@ Table.prototype.clickImportData = function clickImportData() {
         }
     }).html(html);
 };
+Table.prototype.clickTableName = function clickTableName(id) {
+    $.post('./getData', { req: 'getData', id: id }, function(json) {
+        var obj = Util.parse(json);
+        view.get('data', function(html) {
+            $('#indexRightBlock').html(html);
+        }, obj);
+    });
+};

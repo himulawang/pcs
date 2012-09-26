@@ -18,5 +18,8 @@ TableAction.prototype.deleteTable = function deleteTable(syn, params, cb) {
 TableAction.prototype.uploadData = function uploadData(syn, params, cb) {
     return TableLogic.uploadData(syn, params, cb);
 };
+TableAction.prototype.getData = function getData(syn, params, cb) {
+    return TableLogic.getData(syn, params, cb);
+};
 
 exports.TableAction = new TableAction();

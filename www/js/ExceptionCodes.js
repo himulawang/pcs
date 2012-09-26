@@ -10,6 +10,7 @@ var ExceptionCodes = {
     '50008': 'Cannot del pk column.',
     '50009': 'ColumnName cannot be empty when modifying table structure.',
     '50010': 'Invalid id when deleting table.',
+    '50011': 'Invalid id when get data.',
 
     // importer
     '50101': 'Invalid import file.',

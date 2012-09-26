@@ -42,4 +42,10 @@ exports.ctrl = {
             'data': 'nh',
         },
     },
+    'getData': {
+        'action': 'TableAction',
+        'param': {
+            'id': 'ni',
+        },
+    },
 };
