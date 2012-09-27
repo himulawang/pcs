@@ -1,0 +1,24 @@
+for export in el
+    div.exportList(
+        onmouseover='exporter.mouseoverExportList(this);'
+        onmouseout='exporter.mouseoutExportList(this);')
+        div.left.exportListTableName
+            input.buttonExportListTableName(
+            type='button'
+            value='#{export.n}'
+            onclick='exporter.clickTableName(#{export.i});')
+        div.left.exportListButtons.hide
+            input.buttonExportListStructure(
+                type='button'
+                value='Modify'
+                onclick='exporter.clickModify(#{export.i});')
+            input.buttonExportListImport(
+                type='button'
+                value='Export'
+                onclick='exporter.clickExport(#{export.i});')
+            input.buttonExportListDownload(
+                type='button'
+                value='Download'
+                onclick='exporter.clickDownload(#{export.i});')
+        div.clear
+

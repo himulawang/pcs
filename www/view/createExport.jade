@@ -1,0 +1,26 @@
+div#createExport
+    div
+        div.left 
+            span FileName:
+            input#createFileName(type='text')
+        div.left
+            span Description:
+            input#createExportDescription(type='text')
+        div.left
+            input(type='button',
+                value='Create',
+                onclick='exporter.createExport();')
+        div.clear
+    hr
+    div
+        div#exportSetting
+            div#exportSettingTabs
+                ul
+                    li
+                        a(href='#exportTabClient') Client
+                    li
+                        a(href='#exportTabServer') Server
+                div#exportTabClient
+                    p
+                div#exportTabServer
+                    p

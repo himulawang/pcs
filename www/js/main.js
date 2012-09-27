@@ -4,6 +4,7 @@ $(function() {
     tab = new Tab();
     table = new Table();
     importer = new Importer();
+    exporter = new Exporter();
 
     view.get('indexLeftBlock', function(html) {
         $('body').append(html);
@@ -12,6 +13,10 @@ $(function() {
             $('#tabTable').html(html);
             $('#buttonCreateTable, #buttonImportData').button();
             tab.clickTabTable();
+        });
+        view.get('tabExportTop', function(html) {
+            $('#tabExport').html(html);
+            $('#buttonCreateExport, #buttonExportData, #buttonDownloadAll').button();
         });
     });
 });

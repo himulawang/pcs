@@ -1,4 +1,5 @@
 exports.ctrl = {
+    // table
     'createTable': {
         'action': 'TableAction',
         'param': {
@@ -46,6 +47,12 @@ exports.ctrl = {
         'action': 'TableAction',
         'param': {
             'id': 'ni',
+        },
+    },
+    // export
+    'getExportList': {
+        'action': 'ExportAction',
+        'param': {
         },
     },
 };
