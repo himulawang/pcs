@@ -1,4 +1,4 @@
-var Tab = function() {};
+var Tab = function Tab() {};
 
 Tab.prototype.clickTabTable = function clickTabTable() {
     $.post('./getTableList', { req: 'getTableList' }, function(json) {

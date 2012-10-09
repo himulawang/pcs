@@ -1,0 +1,16 @@
+div.graphTableStructure
+    div #{t.n}
+    div
+        for structure in sl
+            div.left.graphTableStructureColumnName
+                div #{structure.n}
+            div.left.graphTableStructureDrag
+                input(type='button', value='Connect')
+            div.left.graphTableStructurePK
+                - if (structure.ipk == 1)
+                    span PK
+                - else
+                    span
+            div.left.graphTableStructureRename
+                input(type='text', value='#{structure.n}')
+        div.clear

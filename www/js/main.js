@@ -1,10 +1,11 @@
-var view, tab, table, importer;
+var view, tab, table, importer, graph;
 $(function() {
     view = new View();
     tab = new Tab();
     table = new Table();
     importer = new Importer();
     exporter = new Exporter();
+    graph = new Graph();
 
     view.get('indexLeftBlock', function(html) {
         $('body').append(html);

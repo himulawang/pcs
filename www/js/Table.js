@@ -1,4 +1,4 @@
-var Table = function() {};
+var Table = function Table() {};
 
 Table.prototype.clickCreateTable = function clickCreateTable() {
     var self = this;

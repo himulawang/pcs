@@ -17,10 +17,18 @@ div#createExport
             div#exportSettingTabs
                 ul
                     li
-                        a(href='#exportTabClient') Client
+                        a(href='#exportTabClient', onclick='graph.switchTab("client");') Client
                     li
-                        a(href='#exportTabServer') Server
+                        a(href='#exportTabServer', onclick='graph.switchTab("server");') Server
                 div#exportTabClient
-                    p
+                    div
+                        input.exportGraph(type='button',
+                            value='Add Level',
+                            onclick='exporter.addLevel(this);')
+                    div.graph
                 div#exportTabServer
-                    p
+                    div
+                        input.exportGraph(type='button',
+                            value='Add Level',
+                            onclick='exporter.addLevel(this);')
+                    div.graph
