@@ -5,6 +5,9 @@ body {
     background-color: #111111;*/
 }
 
+.pointer {
+    cursor: pointer;
+}
 .border { 
     border: 1px solid #DDDDDD;
     border-radius: 10px;
@@ -91,10 +94,29 @@ body {
 }
 
 .levelGraph {
-    width: 250px;
+    width: 450px;
     height: 600px;
 }
 
 .dragOverGraph {
     background-color: #DDDDDD;
+}
+
+.graphTableStructureTitle {
+    margin-left: 50px;
+}
+
+.graphTableStructureColumnName,
+.graphTableStructureRename
+{
+    width: 100px;
+}
+
+.graphTableStructurePK,
+.graphTableStructureSelected {
+    width: 80px;
+}
+
+.graphTableStructureRenameInput {
+    width: 70px;
 }

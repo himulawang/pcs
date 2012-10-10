@@ -1,16 +1,22 @@
-div.graphTableStructure
-    div #{t.n}
+div.graphTableStructure.border
+    div.graphTableStructureTitle #{t.n}
+    div.graphTableStructureHidden.hide
+        input.tableId(type='hidden', value='#{t.i}')
+        input.graphTableId(type='hidden', value='')
     div
         for structure in sl
-            div.left.graphTableStructureColumnName
-                div #{structure.n}
-            div.left.graphTableStructureDrag
-                input(type='button', value='Connect')
-            div.left.graphTableStructurePK
-                - if (structure.ipk == 1)
-                    span PK
-                - else
-                    span
-            div.left.graphTableStructureRename
-                input(type='text', value='#{structure.n}')
-        div.clear
+            div.graphTableStructureColumn
+                div.left.graphTableStructureColumnName.pointer(draggable='true')
+                    div #{structure.n}
+                div.left.graphTableStructureSelected
+                    input.graphTableStructureSelectedInput(type='checkbox')
+                div.left.graphTableStructureRename
+                    input.graphTableStructureRenameInput(type='text', value='#{structure.n}')
+                div.left.graphTableStructurePK
+                    - if (structure.ipk == 1)
+                        span PK
+                    - else
+                        span
+                div.left.hide
+                    input.columnId(type='hidden', value='#{structure.i}')
+                div.clear
