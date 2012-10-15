@@ -22,8 +22,18 @@ Graph.prototype.getInitColumnDetailData = function getInitColumnDetailData() {
     return {
         pk: 0,
         selected: {},
-        flat: {},
-        level: {},
+        flat: {
+            fromGraphTableId: null,
+            fromColumnId: null,
+            toGraphTableId: null,
+            toColumnId: null,
+        },
+        level: {
+            fromGraphTableId: null,
+            fromColumnId: null,
+            toGraphTableId: null,
+            toColumnId: null,
+        },
         columnRename: {},
     };
 };
@@ -34,7 +44,6 @@ Graph.prototype.switchTab = function switchTab(tab) {
 
 Graph.prototype.addNewTable = function addNewTable(level, tableId) {
     var graphTableId = this.makeGraphTableId();
-    console.log(level, graphTableId);
     // add graphTableIds & graphStructure & columnDetail
     this[this.tab].graphTableIds[graphTableId] = tableId;
     this[this.tab].graphStructure[level].push(graphTableId);
@@ -51,11 +60,39 @@ Graph.prototype.cancelColumn = function cancelColumn(graphTableId, columnId) {
 }
 
 Graph.prototype.linkFlatColumn = function linkFlatColumn(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId) {
+    this[this.tab].columnDetail[fromGraphTableId].flat.fromGraphTableId = fromGraphTableId;
+    this[this.tab].columnDetail[fromGraphTableId].flat.fromColumnId = fromColumnId;
+    this[this.tab].columnDetail[fromGraphTableId].flat.toGraphTableId = toGraphTableId;
+    this[this.tab].columnDetail[fromGraphTableId].flat.toColumnId = toColumnId;
+};
 
+Graph.prototype.linkLevelColumn = function linkLevelColumn(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId) {
+    this[this.tab].columnDetail[fromGraphTableId].level.fromGraphTableId = fromGraphTableId;
+    this[this.tab].columnDetail[fromGraphTableId].level.fromColumnId = fromColumnId;
+    this[this.tab].columnDetail[fromGraphTableId].level.toGraphTableId = toGraphTableId;
+    this[this.tab].columnDetail[fromGraphTableId].level.toColumnId = toColumnId;
 };
 
 Graph.prototype.makeGraphTableId = function makeGraphTableId() {
     var index = Util.lastIndex(this[this.tab].graphTableIds);
     if (index === false) return 1;
     return parseInt(index) + 1;
+};
+
+Graph.prototype.tableOnSameLevel = function tableOnSameLevel(fromGraphTableId, toGraphTableId) {
+    var fromLevel = 0, toLevel = 0;
+    for (var level in this[this.tab].graphStructure) {
+        if (this[this.tab].graphStructure[level].indexOf(parseInt(fromGraphTableId)) != -1) {
+            fromLevel = level;
+        }
+        if (this[this.tab].graphStructure[level].indexOf(parseInt(toGraphTableId)) != -1) {
+            toLevel = level;
+        }
+        if (fromLevel != 0 && toLevel != 0) return fromLevel === toLevel;
+    }
+    throw new Exception(50201);
+};
+
+Graph.prototype.getColor = function getColor() {
+    return this[this.tab].availableColor.shift();
 };

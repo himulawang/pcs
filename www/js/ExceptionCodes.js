@@ -17,4 +17,7 @@ var ExceptionCodes = {
     '50102': 'Must choose an import file.',
     '50103': 'Data column not match with title column when parsing import file.',
     '50104': 'Invalid tableName when uploading data.',
+
+    // graph
+    '50201': 'Test table on same level error.',
 };

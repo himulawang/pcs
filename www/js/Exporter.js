@@ -11,8 +11,13 @@ Exporter.prototype.clickCreateExport = function clickCreateExport() {
         view.get('createExportTableList', function(html) {
             var list = $('#tabExportList').html(html).find('input').button();
             self.bindTableDrag(list);
+            self.render();
         }, obj);
     });
+};
+
+Exporter.prototype.createExport = function createExport() {
+
 };
 
 /* Table Drag & Drop */
@@ -61,7 +66,7 @@ Exporter.prototype.dropToGraph = function dropToGraph(e) {
             var obj = Util.parse(json);
             view.get('graphTableStructure', function(html) {
                 $(self).append(html)
-                    .find('.graphTableId').val(graphTableId);
+                    .find('.graphTableId').last().val(graphTableId);
                 exporter.bindGraphTable(self);
             }, obj);
         });
@@ -132,7 +137,6 @@ Exporter.prototype.changeSelectedInput = function changeSelectedInput(e) {
 Exporter.prototype.dragStartColumnName = function dragStartColumnName(e) {
     var graphTableId = $(this).parent().parent().parent().find('.graphTableId').val();
     var columnId = $(this).parent().find('.columnId').val();
-    //var level = $(this).parent().parent().
     e.dataTransfer.effectAllowed = 'copy';
     e.dataTransfer.setData('graphTableId', graphTableId);
     e.dataTransfer.setData('columnId', columnId);
@@ -147,13 +151,78 @@ Exporter.prototype.dropToColumn = function dropToColumn(e) {
         var fromGraphTableId = e.dataTransfer.getData('graphTableId');
         var fromColumnId = e.dataTransfer.getData('columnId');
         var toGraphTableId = $(this).parent().parent().find('.graphTableId').val();
-        var toColumnId = $(this).find('columnId').val();
+        var toColumnId = $(this).find('.columnId').val();
 
-        console.log(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId);
         // drag to same table
-        if (fromGraphTableId == toGraphTableId) return;
+        if (fromGraphTableId == toGraphTableId) return false;
 
-        graph.linkFlatColumn(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId);
+        // update graph
+        if (graph.tableOnSameLevel(fromGraphTableId, toGraphTableId)) {
+            graph.linkFlatColumn(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId);
+        } else {
+            graph.linkLevelColumn(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId);
+        }
     }
     return false;
+};
+
+/* Get Element */
+Exporter.prototype.getColumnElByColumnId = function getColumnElByColumnId(graphTableId, columnId) {
+    var tableEl;
+    $('.graphTableId').each(function(i, n) {
+        if ($(n).val() == graphTableId) tableEl = n;
+    });
+    var columnEl;
+    $(tableEl).parent().parent().find('.columnId').each(function(i, n) {
+        var el = $(n);
+        if (el.val() == columnId) columnEl = el.parent().parent();
+    });
+    return columnEl;
+};
+
+/* Canvas Stuff */
+Exporter.prototype.render = function render() {
+    var canvas = $('#canvas');
+    var canvasHeight = canvas.css('height'), canvasWidth = canvas.css('width');
+    canvasHeight = canvasHeight.substring(0, canvasHeight.length - 2);
+    canvasWidth = canvasWidth.substring(0, canvasWidth.length - 2);
+    var ctx = canvas[0].getContext('2d');
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgb(250, 250, 0)';
+    ctx.fillStyle = 'rgb(250, 250, 0)';
+    ctx.lineTo(200, 200);
+    ctx.lineTo(200, 100);
+    ctx.lineTo(200, 50);
+    ctx.lineTo(200, 200);
+    ctx.stroke();
+};
+
+Exporter.prototype.canvasMouseMove = function canvasMouseMove(e) {
+    // pass mousemove event to level layer
+    var evt = document.createEvent('MouseEvents');
+    evt.initMouseEvent('mousemove',
+        false,      // canBubble
+        true,       // cancelable
+        window,     // view
+        0,          // detail mouse click count
+        e.screenX,  // screenX
+        e.screenY,  // screenY
+        e.clientX,  // clientX
+        e.clientY,  // clientY
+        false,      // ctrl
+        false,      // alt
+        false,      // shift
+        false,      // metaKey
+        0,          // button
+        null
+    );
+    $('#exportSettingTabs')[0].dispatchEvent(evt);
+};
+
+Exporter.prototype.bindCanvasEvent = function bindCanvasEvent() {
+    var canvas = $('#canvas')[0];
+
+    //document.addEventListener(clientCanvas, this.canvasMouseMove, false);
 };
