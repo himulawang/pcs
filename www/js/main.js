@@ -1,4 +1,9 @@
+// init on ready
 var view, tab, table, importer, graph;
+
+// init on useing
+var canvas;
+
 $(function() {
     view = new View();
     tab = new Tab();

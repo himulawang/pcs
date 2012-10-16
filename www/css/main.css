@@ -26,9 +26,8 @@ body {
 }
 
 #canvas {
-    width: 100%;
-    height: 100%;
     position: absolute;
+    pointer-events:none;
 }
 #indexLeftBlock { 
     width: 250px;
@@ -95,6 +94,12 @@ body {
 }
 
 /* Exporter */
+#exportSetting {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
 #exportSettingTabs {
     height: 800px;
 }

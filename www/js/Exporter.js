@@ -11,7 +11,8 @@ Exporter.prototype.clickCreateExport = function clickCreateExport() {
         view.get('createExportTableList', function(html) {
             var list = $('#tabExportList').html(html).find('input').button();
             self.bindTableDrag(list);
-            self.render();
+            canvas = new Canvas();
+            self.bindExportSetting();
         }, obj);
     });
 };
@@ -28,7 +29,6 @@ Exporter.prototype.bindTableDrag = function bindTableDrag(list) {
         n.addEventListener('dragend', self.dragEndGraph, false);
     });
 };
-
 Exporter.prototype.dragStartTable = function dragStartTable(e) {
     var id = $(this).siblings('.tableId').val();
     e.dataTransfer.effectAllowed = 'copy';
@@ -36,20 +36,16 @@ Exporter.prototype.dragStartTable = function dragStartTable(e) {
     e.dataTransfer.setData('dragType', 'tableToLevel');
     return false;
 };
-
 Exporter.prototype.dragEnterGraph = function dragEnterGraph(e) {
     this.classList.add('dragOverGraph');
 };
-
 Exporter.prototype.dragOverGraph = function dragOverGraph(e) {
     e.preventDefault();
     return false;
 };
-
 Exporter.prototype.dragLeaveGraph = function dragLeaveGraph(e) {
     this.classList.remove('dragOverGraph');
 };
-
 Exporter.prototype.dropToGraph = function dropToGraph(e) {
     e.stopPropagation();
 
@@ -73,11 +69,9 @@ Exporter.prototype.dropToGraph = function dropToGraph(e) {
     }
     return false;
 };
-
 Exporter.prototype.dragEndGraph = function dragEndGraph(e) {
     $('.levelGraph').removeClass('dragOverGraph');
 };
-
 Exporter.prototype.bindGraphDrop = function bindGraphDrop(el) {
     var self = this;
     el.addEventListener('dragenter', self.dragEnterGraph, false);
@@ -86,7 +80,6 @@ Exporter.prototype.bindGraphDrop = function bindGraphDrop(el) {
     el.addEventListener('drop', self.dropToGraph, false);
     el.addEventListener('dragend', self.dragEndGraph, false);
 };
-
 Exporter.prototype.addLevel = function addLevel(el) {
     var btn = $(el);
     var zone = btn.parent().parent();
@@ -127,13 +120,11 @@ Exporter.prototype.bindGraphTable = function bindGraphTable(tableEl) {
         n.addEventListener('drop', self.dropToColumn, false);
     });
 };
-
 Exporter.prototype.changeSelectedInput = function changeSelectedInput(e) {
     var graphTableId = $(this).parent().parent().parent().parent().find('.graphTableId').val();
     var columnId = $(this).parent().parent().find('.columnId').val();
     this.checked ? graph.selectColumn(graphTableId, columnId) : graph.cancelColumn(graphTableId, columnId);
 };
-
 Exporter.prototype.dragStartColumnName = function dragStartColumnName(e) {
     var graphTableId = $(this).parent().parent().parent().find('.graphTableId').val();
     var columnId = $(this).parent().find('.columnId').val();
@@ -143,7 +134,6 @@ Exporter.prototype.dragStartColumnName = function dragStartColumnName(e) {
     e.dataTransfer.setData('dragType', 'linkColumn');
     return false;
 };
-
 Exporter.prototype.dropToColumn = function dropToColumn(e) {
     e.stopPropagation();
 
@@ -157,13 +147,33 @@ Exporter.prototype.dropToColumn = function dropToColumn(e) {
         if (fromGraphTableId == toGraphTableId) return false;
 
         // update graph
+        var type;
         if (graph.tableOnSameLevel(fromGraphTableId, toGraphTableId)) {
             graph.linkFlatColumn(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId);
+            type = 'flat';
         } else {
             graph.linkLevelColumn(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId);
+            type = 'level';
         }
+
+        // add to canvasData
+        fromColumnEl = exporter.getColumnElByColumnId(fromGraphTableId, fromColumnId)[0];
+        toColumnEl = exporter.getColumnElByColumnId(toGraphTableId, toColumnId)[0];
+        var fromPos = canvas.calColumnPositionOnCanvas(fromColumnEl.getBoundingClientRect());
+        var toPos = canvas.calColumnPositionOnCanvas(toColumnEl.getBoundingClientRect());
+        canvas[graph.tab].add(fromGraphTableId, fromPos, toPos, type);
+
+        canvas.render();
     }
     return false;
+};
+
+/* exportSetting Event Bind */
+Exporter.prototype.bindExportSetting = function bindExportSetting() {
+    $('#exportSetting').bind('mousemove', this.clickExportSetting);
+};
+Exporter.prototype.clickExportSetting = function clickExportSetting(e) {
+    canvas.collision(e);
 };
 
 /* Get Element */
@@ -180,49 +190,4 @@ Exporter.prototype.getColumnElByColumnId = function getColumnElByColumnId(graphT
     return columnEl;
 };
 
-/* Canvas Stuff */
-Exporter.prototype.render = function render() {
-    var canvas = $('#canvas');
-    var canvasHeight = canvas.css('height'), canvasWidth = canvas.css('width');
-    canvasHeight = canvasHeight.substring(0, canvasHeight.length - 2);
-    canvasWidth = canvasWidth.substring(0, canvasWidth.length - 2);
-    var ctx = canvas[0].getContext('2d');
 
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgb(250, 250, 0)';
-    ctx.fillStyle = 'rgb(250, 250, 0)';
-    ctx.lineTo(200, 200);
-    ctx.lineTo(200, 100);
-    ctx.lineTo(200, 50);
-    ctx.lineTo(200, 200);
-    ctx.stroke();
-};
-
-Exporter.prototype.canvasMouseMove = function canvasMouseMove(e) {
-    // pass mousemove event to level layer
-    var evt = document.createEvent('MouseEvents');
-    evt.initMouseEvent('mousemove',
-        false,      // canBubble
-        true,       // cancelable
-        window,     // view
-        0,          // detail mouse click count
-        e.screenX,  // screenX
-        e.screenY,  // screenY
-        e.clientX,  // clientX
-        e.clientY,  // clientY
-        false,      // ctrl
-        false,      // alt
-        false,      // shift
-        false,      // metaKey
-        0,          // button
-        null
-    );
-    $('#exportSettingTabs')[0].dispatchEvent(evt);
-};
-
-Exporter.prototype.bindCanvasEvent = function bindCanvasEvent() {
-    var canvas = $('#canvas')[0];
-
-    //document.addEventListener(clientCanvas, this.canvasMouseMove, false);
-};
