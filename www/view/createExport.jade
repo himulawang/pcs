@@ -1,8 +1,8 @@
 div#createExport
     div
         div.left 
-            span FileName:
-            input#createFileName(type='text')
+            span ExportName:
+            input#createExportName(type='text')
         div.left
             span Description:
             input#createExportDescription(type='text')
@@ -17,17 +17,32 @@ div#createExport
             div#exportSettingTabs
                 ul
                     li
-                        a(href='#exportTabClient', onclick='graph.switchTab("client");') Client
+                        a(href='#exportTabClient', onclick='exporter.switchTab("client");') Client
                     li
-                        a(href='#exportTabServer', onclick='graph.switchTab("server");') Server
+                        a(href='#exportTabServer', onclick='exporter.switchTab("server");') Server
                 div#exportTabClient
+                    div
+                        span Filename
+                        input#clientFileName(type='text')
+                        span Path
+                        input#clientPath(type='text')
+                        input.delLink(type='button',
+                            value='Del Link',
+                            onclick='exporter.delLink();')
                     div
                         input.exportGraph(type='button',
                             value='Add Level',
                             onclick='exporter.addLevel(this);')
                     div.graph
                 div#exportTabServer
-                    canvas#serverCanvas.canvas
+                    div
+                        span Filename
+                        input#serverFileName(type='text')
+                        span Path
+                        input#serverPath(type='text')
+                        input.delLink(type='button',
+                            value='Del Link',
+                            onclick='exporter.delLink();')
                     div
                         input.exportGraph(type='button',
                             value='Add Level',

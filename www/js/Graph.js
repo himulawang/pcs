@@ -96,3 +96,10 @@ Graph.prototype.tableOnSameLevel = function tableOnSameLevel(fromGraphTableId, t
 Graph.prototype.getColor = function getColor() {
     return this[this.tab].availableColor.shift();
 };
+
+Graph.prototype.delLink = function delLink(fromGraphTableId) {
+    this[this.tab].columnDetail[fromGraphTableId].level.fromGraphTableId = null;
+    this[this.tab].columnDetail[fromGraphTableId].level.fromColumnId = null;
+    this[this.tab].columnDetail[fromGraphTableId].level.toGraphTableId = null;
+    this[this.tab].columnDetail[fromGraphTableId].level.toColumnId = null;
+};

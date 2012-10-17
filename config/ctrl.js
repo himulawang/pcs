@@ -55,4 +55,19 @@ exports.ctrl = {
         'param': {
         },
     },
+    'createExport': {
+        'action': 'ExportAction',
+        'param': {
+            'exportName': 'ns',
+            'description': 'es',
+            'client': 'nh',
+            'server': 'nh',
+        },
+    },
+    'getExportConfig': {
+        'action': 'ExportAction',
+        'param': {
+            'id': 'ni',
+        },
+    },
 };

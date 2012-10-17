@@ -10,7 +10,6 @@ $(function() {
     table = new Table();
     importer = new Importer();
     exporter = new Exporter();
-    graph = new Graph();
 
     view.get('indexLeftBlock', function(html) {
         $('body').append(html);

@@ -1,5 +1,9 @@
 var Exporter = function Exporter() {};
 
+Exporter.prototype.switchTab = function(tab) {
+    graph.switchTab(tab);
+    canvas.render();
+};
 Exporter.prototype.clickCreateExport = function clickCreateExport() {
     var self = this;
     view.get('createExport', function(html) {
@@ -12,13 +16,61 @@ Exporter.prototype.clickCreateExport = function clickCreateExport() {
             var list = $('#tabExportList').html(html).find('input').button();
             self.bindTableDrag(list);
             canvas = new Canvas();
+            graph = new Graph();
             self.bindExportSetting();
         }, obj);
     });
 };
 
 Exporter.prototype.createExport = function createExport() {
+    var exportName = $('#createExportName').val();
+    if (exportName === '') throw new Exception(50301);
 
+    var description = $('#createExportDescription').val();
+
+    var clientFileName = $('#clientFileName').val();
+    var clientPath = $('#clientPath').val();
+
+    var serverFileName = $('#serverFileName').val();
+    var serverPath = $('#serverPath').val();
+
+    graph.client.filename = clientFileName;
+    graph.client.path = clientPath;
+
+    graph.server.filename = serverFileName;
+    graph.server.path = serverPath;
+
+    param = {
+        req: 'createExport',
+        exportName: exportName,
+        description: description,
+        client: graph.client,
+        server: graph.server,
+    };
+    $.post('./createExport', param, function(json) {
+        var obj = Util.parse(json);
+    });
+
+};
+Exporter.prototype.delLink = function delLink() {
+    // del canvasData
+    var selected = canvas[graph.tab].getSelected();
+    if (!selected) return;
+    
+    canvas[graph.tab].del(selected);
+    graph.delLink(selected);
+    canvas.render();
+};
+
+Exporter.prototype.clickExportName = function clickExportName(id) {
+    var param = {
+        req: 'getExportConfig',
+        id: id,
+    };
+    $.post('./getExportConfig', param, function(json) {
+        var obj = Util.parse(json);
+        console.log(obj);
+    });
 };
 
 /* Table Drag & Drop */
@@ -170,16 +222,29 @@ Exporter.prototype.dropToColumn = function dropToColumn(e) {
 
 /* exportSetting Event Bind */
 Exporter.prototype.bindExportSetting = function bindExportSetting() {
-    $('#exportSetting').bind('mousemove', this.clickExportSetting);
+    $('#exportSetting').bind('mousemove', this.moveExportSetting);
+    $('#exportSetting').bind('click', this.clickExportSetting);
+};
+Exporter.prototype.moveExportSetting = function moveExportSetting(e) {
+    var canvasPos = canvas.calClientPosToCanvas(e);
+    var except = canvas.collision(e, canvasPos);
+    canvas.render(except);
 };
 Exporter.prototype.clickExportSetting = function clickExportSetting(e) {
-    canvas.collision(e);
+    var canvasPos = canvas.calClientPosToCanvas(e);
+    var selected = canvas.collision(e, canvasPos);
+    canvas.unselectAllLine();
+    if (!selected) return;
+
+    canvas.selectLine(selected);
+    canvas.render();
 };
 
 /* Get Element */
 Exporter.prototype.getColumnElByColumnId = function getColumnElByColumnId(graphTableId, columnId) {
     var tableEl;
-    $('.graphTableId').each(function(i, n) {
+    var tableId = '#exportTab' + Util.upperCaseFirst(graph.tab);
+    $(tableId).find('.graphTableId').each(function(i, n) {
         if ($(n).val() == graphTableId) tableEl = n;
     });
     var columnEl;
@@ -189,5 +254,4 @@ Exporter.prototype.getColumnElByColumnId = function getColumnElByColumnId(graphT
     });
     return columnEl;
 };
-
 

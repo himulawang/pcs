@@ -20,4 +20,8 @@ var ExceptionCodes = {
 
     // graph
     '50201': 'Test table on same level error.',
+
+    // exporter
+    '50301': 'ExporterName cannot be empty when creating exporter.',
+
 };

@@ -60,4 +60,7 @@ var Util = {
             throw new Exception(10202);
         }
     },
+    upperCaseFirst: function(string) {
+        return string[0].toUpperCase() + string.substr(1);
+    },
 };
