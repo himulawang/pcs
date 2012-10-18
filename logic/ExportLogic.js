@@ -66,6 +66,7 @@ ExportLogic.prototype.createExport = function createExport(syn, params, cb) {
         exportConfigClient.graphTableIds = params.client.graphTableIds;
         exportConfigClient.graphStructure = params.client.graphStructure;
         exportConfigClient.columnDetail = params.client.columnDetail;
+        exportConfigClient.canvas = params.client.canvas;
 
         // server
         var exportConfigServer = new ExportConfig();
@@ -75,6 +76,7 @@ ExportLogic.prototype.createExport = function createExport(syn, params, cb) {
         exportConfigServer.graphTableIds = params.server.graphTableIds;
         exportConfigServer.graphStructure = params.server.graphStructure;
         exportConfigServer.columnDetail = params.server.columnDetail;
+        exportConfigServer.canvas = params.server.canvas;
 
         ExportConfigModel.add(exportConfigClient, function(err, data) {
             if (err) return cb(err);

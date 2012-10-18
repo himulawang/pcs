@@ -185,3 +185,8 @@ Canvas.prototype.calClientPosToCanvas = function calClientPosToCanvas(e) {
         y: e.clientY - rect.top,
     };
 };
+
+Canvas.prototype.set = function (client, server) {
+    this.client.set(client);
+    this.server.set(server);
+};

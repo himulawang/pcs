@@ -103,3 +103,24 @@ Graph.prototype.delLink = function delLink(fromGraphTableId) {
     this[this.tab].columnDetail[fromGraphTableId].level.toGraphTableId = null;
     this[this.tab].columnDetail[fromGraphTableId].level.toColumnId = null;
 };
+
+Graph.prototype.toUpload = function toUpload(tab) {
+    var data = this[tab];
+    return {
+        filename: data.filename,
+        path: data.path,
+        columnDetail: JSON.stringify(data.columnDetail),
+        graphStructure: JSON.stringify(data.graphStructure),
+        graphTableIds: JSON.stringify(data.graphTableIds),
+    };
+};
+
+Graph.prototype.convertNetData = function convertNetData(data) {
+    return {
+        filename: data.fn,
+        path: data.p,
+        columnDetail: JSON.parse(data.cd),
+        graphStructure: JSON.parse(data.gs),
+        graphTableIds: JSON.parse(data.gti),
+    };
+};

@@ -11,6 +11,10 @@ CanvasData.prototype.add = function add(graphTableId, fromPos, toPos, type) {
     };
 };
 
+CanvasData.prototype.set = function set(data) {
+    this.data = data;
+};
+
 CanvasData.prototype.del = function del(graphTableId) {
     delete this.data[graphTableId];
 };
@@ -24,4 +28,8 @@ CanvasData.prototype.getSelected = function getSelected() {
         }
     }
     return selected;
+};
+
+CanvasData.prototype.toUpload = function toUpload() {
+    return JSON.stringify(this.data);
 };

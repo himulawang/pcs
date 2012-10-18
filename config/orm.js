@@ -58,6 +58,7 @@ exports.orms = [
         'graphTableIds',
         'graphStructure',
         'columnDetail',
+        'canvas',
     ],
     updateFilter: [0],
     clientFilter: [],

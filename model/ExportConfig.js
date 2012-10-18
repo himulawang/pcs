@@ -6,18 +6,4 @@ var ExportConfig = function ExportConfig(args) {
 ExportConfig.prototype = new ExportConfigBase();
 ExportConfig.prototype.constructor = ExportConfig;
 
-/*
-var columns = ['columnDetail', 'graphStructure', 'graphTableIds'];
-columns.forEach(function(column) {
-    Object.defineProperty(
-        ExportConfig.prototype,
-        column,
-        {
-            get: function() { console.log(this.__proto__[column]); return JSON.parse(this.__proto__[column]); },
-            set: function(v) { this.__proto__[column] = JSON.stringify(v); },
-        }
-    );
-});
-*/
-
 exports.ExportConfig = ExportConfig;

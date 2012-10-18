@@ -7,7 +7,7 @@ Exporter.prototype.switchTab = function(tab) {
 Exporter.prototype.clickCreateExport = function clickCreateExport() {
     var self = this;
     view.get('createExport', function(html) {
-        $('#indexRightBlock').html(html);
+        $('#indexRightBlock').empty().html(html);
         $('#exportSettingTabs').tabs();
     });
     $.post('./getTableList', { req: 'getTableList' }, function(json) {
@@ -44,11 +44,17 @@ Exporter.prototype.createExport = function createExport() {
         req: 'createExport',
         exportName: exportName,
         description: description,
-        client: graph.client,
-        server: graph.server,
+        client: graph.toUpload('client'),
+        server: graph.toUpload('server'),
     };
+
+    // add canvas
+    param.client['canvas'] = canvas.client.toUpload();
+    param.server['canvas'] = canvas.server.toUpload();
+
     $.post('./createExport', param, function(json) {
         var obj = Util.parse(json);
+        tab.clickTabExport();
     });
 
 };
@@ -63,13 +69,61 @@ Exporter.prototype.delLink = function delLink() {
 };
 
 Exporter.prototype.clickExportName = function clickExportName(id) {
+    var self = this;
     var param = {
         req: 'getExportConfig',
         id: id,
     };
     $.post('./getExportConfig', param, function(json) {
         var obj = Util.parse(json);
+
         console.log(obj);
+
+        view.get('modifyExport', function(html) {
+            $('#indexRightBlock').empty().html(html);
+            $('#exportSettingTabs').tabs();
+
+            canvas = new Canvas();
+            graph = new Graph();
+            self.restoreExport('client', graph.convertNetData(obj.ecc));
+            self.restoreExport('server', graph.convertNetData(obj.ecs));
+
+            canvas.set(obj.ecc, obj.ecs);
+        }, obj);
+    });
+};
+
+Exporter.prototype.restoreExport = function restoreExport(tab, data) {
+    console.log(data);
+    var el = $('#exportTab' + Util.upperCaseFirst(tab)).find('.addLevel');
+    // add level
+    for (var level in data.graphStructure) {
+        this.addLevel(el);
+    }
+
+    // add table
+    var graphTableId;
+    for (var level in data.graphStructure) {
+        for (var index in data.graphStructure[level]) {
+            graphTableId = data.graphStructure[level][index];
+            this.addNewTable(tab, level, data.graphTableIds[graphTableId]);
+        }
+    }
+};
+
+Exporter.prototype.addNewTable = function addNewTable(tab, level, tableId) {
+    // add to graph
+    var graphTableId = graph.addNewTable(level, tableId);
+
+    // add dom
+    var el = $('#exportTab' + Util.upperCaseFirst(tab)).find('.level' + level);
+    $.post('/getStructure', { req: 'getStructure', id: tableId }, function(json) {
+        var obj = Util.parse(json);
+        view.get('graphTableStructure', function(html) {
+            el.append(html)
+                .find('.graphTableId').last().val(graphTableId);
+            exporter.bindGraphTable(el);
+        }, obj);
     });
 };
 
@@ -105,19 +159,7 @@ Exporter.prototype.dropToGraph = function dropToGraph(e) {
         var level = $(this).find('.levelValue').val();
         var tableId = e.dataTransfer.getData('tableId');
 
-        // add to graph
-        var graphTableId = graph.addNewTable(level, tableId);
-
-        // add dom
-        var self = this;
-        $.post('/getStructure', { req: 'getStructure', id: tableId }, function(json) {
-            var obj = Util.parse(json);
-            view.get('graphTableStructure', function(html) {
-                $(self).append(html)
-                    .find('.graphTableId').last().val(graphTableId);
-                exporter.bindGraphTable(self);
-            }, obj);
-        });
+        exporter.addNewTable(graph.tab, level, tableId);
     }
     return false;
 };
@@ -162,7 +204,6 @@ Exporter.prototype.addLevel = function addLevel(el) {
 
 /* GraphTable Event Bind */
 Exporter.prototype.bindGraphTable = function bindGraphTable(tableEl) {
-    tableEl = $(tableEl);
     var self = this;
     tableEl.find('.graphTableStructureSelectedInput').bind('change', this.changeSelectedInput);
     tableEl.find('.graphTableStructureColumnName').each(function(i, n) {
@@ -255,3 +296,10 @@ Exporter.prototype.getColumnElByColumnId = function getColumnElByColumnId(graphT
     return columnEl;
 };
 
+/* Mouse Over & Out*/
+Exporter.prototype.mouseoverExportList = function mouseoverExportList(el) {
+    $(el).find('.exportListButtons').removeClass('hide');
+};
+Exporter.prototype.mouseoutExportList = function mouseoutExportList(el) {
+    $(el).find('.exportListButtons').addClass('hide');
+};

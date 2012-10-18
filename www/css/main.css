@@ -70,7 +70,7 @@ body {
     width: 80px;
 }
 
-.tableListButtons {
+.tableListButtons, .exportListButtons {
     position: absolute;
     left: 150px;
 }

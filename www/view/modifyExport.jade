@@ -1,15 +1,19 @@
-div#createExport
+div#modifyExport
     div
         div.left 
             span ExportName:
-            input#createExportName(type='text')
+            input#modifyExportName(type='text', value='#{e.n}')
         div.left
             span Description:
-            input#createExportDescription(type='text')
+            input#modifyExportDescription(type='text', value='#{e.d}')
         div.left
             input(type='button',
-                value='Create',
-                onclick='exporter.createExport();')
+                value='Modify',
+                onclick='exporter.modifyExport();')
+        div.left
+            input(type='button',
+                value='Delete',
+                onclick='exporter.deleteExport();')
         div.clear
     hr
     div
@@ -23,9 +27,9 @@ div#createExport
                 div#exportTabClient
                     div
                         span Filename
-                        input#clientFileName(type='text')
+                        input#clientFileName(type='text', value='#{ecc.fn}')
                         span Path
-                        input#clientPath(type='text')
+                        input#clientPath(type='text', value='#{ecc.p}')
                         input.delLink(type='button',
                             value='Del Link',
                             onclick='exporter.delLink();')
@@ -37,9 +41,9 @@ div#createExport
                 div#exportTabServer
                     div
                         span Filename
-                        input#serverFileName(type='text')
+                        input#serverFileName(type='text', value='#{ecs.fn}')
                         span Path
-                        input#serverPath(type='text')
+                        input#serverPath(type='text', value='#{ecs.p}')
                         input.delLink(type='button',
                             value='Del Link',
                             onclick='exporter.delLink();')
@@ -49,3 +53,4 @@ div#createExport
                             onclick='exporter.addLevel(this);')
                     div.graph
         canvas#canvas(width='1000', height='1000')
+
