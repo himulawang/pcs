@@ -12,7 +12,7 @@ CanvasData.prototype.add = function add(graphTableId, fromPos, toPos, type) {
 };
 
 CanvasData.prototype.set = function set(data) {
-    this.data = data;
+    this.data = JSON.parse(data);
 };
 
 CanvasData.prototype.del = function del(graphTableId) {

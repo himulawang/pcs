@@ -1,5 +1,5 @@
 // init on ready
-var view, tab, table, importer, graph;
+var view, tab, table, importer, graph, exporter, eventExporter, uiExporter;
 
 // init on useing
 var canvas;
@@ -9,7 +9,10 @@ $(function() {
     tab = new Tab();
     table = new Table();
     importer = new Importer();
+
     exporter = new Exporter();
+    eventExporter = new EventExporter();
+    uiExporter = new UIExporter();
 
     view.get('indexLeftBlock', function(html) {
         $('body').append(html);

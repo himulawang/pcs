@@ -21,9 +21,9 @@ div#modifyExport
             div#exportSettingTabs
                 ul
                     li
-                        a(href='#exportTabClient', onclick='exporter.switchTab("client");') Client
+                        a#exportTabButtonClient(href='#exportTabClient') Client
                     li
-                        a(href='#exportTabServer', onclick='exporter.switchTab("server");') Server
+                        a#exportTabButtonServer(href='#exportTabServer') Server
                 div#exportTabClient
                     div
                         span Filename
@@ -34,9 +34,8 @@ div#modifyExport
                             value='Del Link',
                             onclick='exporter.delLink();')
                     div
-                        input.addLevel(type='button',
-                            value='Add Level',
-                            onclick='exporter.addLevel(this);')
+                        input.buttonAddLevel(type='button',
+                            value='Add Level')
                     div.graph
                 div#exportTabServer
                     div
@@ -48,9 +47,7 @@ div#modifyExport
                             value='Del Link',
                             onclick='exporter.delLink();')
                     div
-                        input.addLevel(type='button',
-                            value='Add Level',
-                            onclick='exporter.addLevel(this);')
+                        input.buttonAddLevel(type='button',
+                            value='Add Level')
                     div.graph
         canvas#canvas(width='1000', height='1000')
-

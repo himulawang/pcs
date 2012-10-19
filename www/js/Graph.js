@@ -3,7 +3,6 @@ var Graph = function Graph() {
 };
 
 Graph.prototype.reset = function reset() {
-    this.tab = 'client';
     this.client = this.getInitData();
     this.server = this.getInitData();
 };
@@ -38,54 +37,50 @@ Graph.prototype.getInitColumnDetailData = function getInitColumnDetailData() {
     };
 };
 
-Graph.prototype.switchTab = function switchTab(tab) {
-    this.tab = tab;
-};
-
-Graph.prototype.addNewTable = function addNewTable(level, tableId) {
-    var graphTableId = this.makeGraphTableId();
+Graph.prototype.addNewTable = function addNewTable(tab, level, tableId) {
+    var graphTableId = this.makeGraphTableId(tab);
     // add graphTableIds & graphStructure & columnDetail
-    this[this.tab].graphTableIds[graphTableId] = tableId;
-    this[this.tab].graphStructure[level].push(graphTableId);
-    this[this.tab].columnDetail[graphTableId] = this.getInitColumnDetailData();
+    this[tab].graphTableIds[graphTableId] = tableId;
+    this[tab].graphStructure[level].push(graphTableId);
+    this[tab].columnDetail[graphTableId] = this.getInitColumnDetailData();
     return graphTableId;
 };
 
 Graph.prototype.selectColumn = function selectColumn(graphTableId, columnId) {
-    this[this.tab].columnDetail[graphTableId].selected[columnId] = true;
+    this[exporter.tab].columnDetail[graphTableId].selected[columnId] = true;
 };
 
 Graph.prototype.cancelColumn = function cancelColumn(graphTableId, columnId) {
-    delete this[this.tab].columnDetail[graphTableId].selected[columnId];
+    delete this[exporter.tab].columnDetail[graphTableId].selected[columnId];
 }
 
 Graph.prototype.linkFlatColumn = function linkFlatColumn(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId) {
-    this[this.tab].columnDetail[fromGraphTableId].flat.fromGraphTableId = fromGraphTableId;
-    this[this.tab].columnDetail[fromGraphTableId].flat.fromColumnId = fromColumnId;
-    this[this.tab].columnDetail[fromGraphTableId].flat.toGraphTableId = toGraphTableId;
-    this[this.tab].columnDetail[fromGraphTableId].flat.toColumnId = toColumnId;
+    this[exporter.tab].columnDetail[fromGraphTableId].flat.fromGraphTableId = fromGraphTableId;
+    this[exporter.tab].columnDetail[fromGraphTableId].flat.fromColumnId = fromColumnId;
+    this[exporter.tab].columnDetail[fromGraphTableId].flat.toGraphTableId = toGraphTableId;
+    this[exporter.tab].columnDetail[fromGraphTableId].flat.toColumnId = toColumnId;
 };
 
 Graph.prototype.linkLevelColumn = function linkLevelColumn(fromGraphTableId, fromColumnId, toGraphTableId, toColumnId) {
-    this[this.tab].columnDetail[fromGraphTableId].level.fromGraphTableId = fromGraphTableId;
-    this[this.tab].columnDetail[fromGraphTableId].level.fromColumnId = fromColumnId;
-    this[this.tab].columnDetail[fromGraphTableId].level.toGraphTableId = toGraphTableId;
-    this[this.tab].columnDetail[fromGraphTableId].level.toColumnId = toColumnId;
+    this[exporter.tab].columnDetail[fromGraphTableId].level.fromGraphTableId = fromGraphTableId;
+    this[exporter.tab].columnDetail[fromGraphTableId].level.fromColumnId = fromColumnId;
+    this[exporter.tab].columnDetail[fromGraphTableId].level.toGraphTableId = toGraphTableId;
+    this[exporter.tab].columnDetail[fromGraphTableId].level.toColumnId = toColumnId;
 };
 
-Graph.prototype.makeGraphTableId = function makeGraphTableId() {
-    var index = Util.lastIndex(this[this.tab].graphTableIds);
+Graph.prototype.makeGraphTableId = function makeGraphTableId(tab) {
+    var index = Util.lastIndex(this[tab].graphTableIds);
     if (index === false) return 1;
     return parseInt(index) + 1;
 };
 
 Graph.prototype.tableOnSameLevel = function tableOnSameLevel(fromGraphTableId, toGraphTableId) {
     var fromLevel = 0, toLevel = 0;
-    for (var level in this[this.tab].graphStructure) {
-        if (this[this.tab].graphStructure[level].indexOf(parseInt(fromGraphTableId)) != -1) {
+    for (var level in this[exporter.tab].graphStructure) {
+        if (this[exporter.tab].graphStructure[level].indexOf(parseInt(fromGraphTableId)) != -1) {
             fromLevel = level;
         }
-        if (this[this.tab].graphStructure[level].indexOf(parseInt(toGraphTableId)) != -1) {
+        if (this[exporter.tab].graphStructure[level].indexOf(parseInt(toGraphTableId)) != -1) {
             toLevel = level;
         }
         if (fromLevel != 0 && toLevel != 0) return fromLevel === toLevel;
@@ -94,14 +89,14 @@ Graph.prototype.tableOnSameLevel = function tableOnSameLevel(fromGraphTableId, t
 };
 
 Graph.prototype.getColor = function getColor() {
-    return this[this.tab].availableColor.shift();
+    return this[exporter.tab].availableColor.shift();
 };
 
 Graph.prototype.delLink = function delLink(fromGraphTableId) {
-    this[this.tab].columnDetail[fromGraphTableId].level.fromGraphTableId = null;
-    this[this.tab].columnDetail[fromGraphTableId].level.fromColumnId = null;
-    this[this.tab].columnDetail[fromGraphTableId].level.toGraphTableId = null;
-    this[this.tab].columnDetail[fromGraphTableId].level.toColumnId = null;
+    this[exporter.tab].columnDetail[fromGraphTableId].level.fromGraphTableId = null;
+    this[exporter.tab].columnDetail[fromGraphTableId].level.fromColumnId = null;
+    this[exporter.tab].columnDetail[fromGraphTableId].level.toGraphTableId = null;
+    this[exporter.tab].columnDetail[fromGraphTableId].level.toColumnId = null;
 };
 
 Graph.prototype.toUpload = function toUpload(tab) {
@@ -124,3 +119,10 @@ Graph.prototype.convertNetData = function convertNetData(data) {
         graphTableIds: JSON.parse(data.gti),
     };
 };
+
+Graph.prototype.addLevel = function addLevel(tab) {
+    var level = Util.getLength(this[tab].graphStructure) + 1;
+    this[tab].graphStructure[level] = [];
+    return level;
+};
+

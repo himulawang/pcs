@@ -39,7 +39,7 @@ Canvas.prototype.render = function render(except) {
     // draw collision line
     if (except) {
         this.changeHoverColor();
-        var line = this[graph.tab].data[except];
+        var line = this[exporter.tab].data[except];
         if (line.type === 'flat') {
             this.drawLeftArrow(line.from, line.to);
         } else {
@@ -49,9 +49,9 @@ Canvas.prototype.render = function render(except) {
     }
 
     // draw other line
-    for (var i in this[graph.tab].data) {
+    for (var i in this[exporter.tab].data) {
         if (i === except) continue;
-        var line = this[graph.tab].data[i];
+        var line = this[exporter.tab].data[i];
         line.selected ? this.changeSelectedColor() : this.changeDefaultColor();
         if (line.type === 'flat') {
             this.drawLeftArrow(line.from, line.to);
@@ -146,8 +146,8 @@ Canvas.prototype.collision = function collision(e, canvasPos) {
     // collison
     var collision = false;
     var except = null;
-    for (i in this[graph.tab].data) {
-        var line = this[graph.tab].data[i];
+    for (i in this[exporter.tab].data) {
+        var line = this[exporter.tab].data[i];
         if (line.type === 'flat') {
             this.collisionLeftArrow(line.from, line.to);
         } else {
@@ -162,12 +162,12 @@ Canvas.prototype.collision = function collision(e, canvasPos) {
     return except;
 };
 Canvas.prototype.unselectAllLine = function unselectAllLine() {
-    for (var i in this[graph.tab].data) {
-        this[graph.tab].data[i].selected = false;
+    for (var i in this[exporter.tab].data) {
+        this[exporter.tab].data[i].selected = false;
     }
 };
 Canvas.prototype.selectLine = function selectLine(selected) {
-    this[graph.tab].data[selected].selected = true;
+    this[exporter.tab].data[selected].selected = true;
 };
 
 /* Calculate */
@@ -187,6 +187,6 @@ Canvas.prototype.calClientPosToCanvas = function calClientPosToCanvas(e) {
 };
 
 Canvas.prototype.set = function (client, server) {
-    this.client.set(client);
-    this.server.set(server);
+    this.client.set(client.c);
+    this.server.set(server.c);
 };
