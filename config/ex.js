@@ -6,4 +6,7 @@ exports.ex = {
     // export
     20101: 'Export name exists when creating export.',
     20102: 'Invalid id when getting export config.',
+    20103: 'Export name exists when modifying export.',
+    20104: 'Invalid export id when modifying export config.',
+    20105: 'Invalid export id when deleting export config.',
 };

@@ -1,20 +1,20 @@
 for ept in el
     div.exportList(
-        onmouseover='eventExporter.mouseoverExportList(this);'
-        onmouseout='eventExporter.mouseoutExportList(this);')
+        onmouseover='eventExporter.eventMouseoverExportList(this);'
+        onmouseout='eventExporter.eventMouseoutExportList(this);')
         div.left.exportListTableName
             input.buttonExportListTableName(
             type='button'
             value='#{ept.n}'
-            onclick='exporter.clickExportName(#{ept.i});')
+            onclick='eventExporter.eventClickExportName(#{ept.i});')
         div.left.exportListButtons.hide
             input.buttonExportListImport(
                 type='button'
                 value='Export'
-                onclick='exporter.clickExport(#{ept.i});')
+                onclick='eventExporter.eventClickExport(#{ept.i});')
             input.buttonExportListDownload(
                 type='button'
                 value='Download'
-                onclick='exporter.clickDownload(#{ept.i});')
+                onclick='eventExporter.eventClickDownload(#{ept.i});')
         div.clear
 

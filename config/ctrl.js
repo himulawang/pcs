@@ -55,6 +55,12 @@ exports.ctrl = {
         'param': {
         },
     },
+    'getExportConfig': {
+        'action': 'ExportAction',
+        'param': {
+            'id': 'ni',
+        },
+    },
     'createExport': {
         'action': 'ExportAction',
         'param': {
@@ -64,7 +70,17 @@ exports.ctrl = {
             'server': 'nh',
         },
     },
-    'getExportConfig': {
+    'modifyExport': {
+        'action': 'ExportAction',
+        'param': {
+            'id': 'ni',
+            'exportName': 'ns',
+            'description': 'es',
+            'client': 'nh',
+            'server': 'nh',
+        },
+    },
+    'deleteExport': {
         'action': 'ExportAction',
         'param': {
             'id': 'ni',

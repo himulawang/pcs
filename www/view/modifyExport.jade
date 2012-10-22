@@ -9,11 +9,11 @@ div#modifyExport
         div.left
             input(type='button',
                 value='Modify',
-                onclick='exporter.modifyExport();')
+                onclick='exporter.modifyExport(#{e.i});')
         div.left
             input(type='button',
                 value='Delete',
-                onclick='exporter.deleteExport();')
+                onclick='exporter.deleteExport(#{e.i});')
         div.clear
     hr
     div

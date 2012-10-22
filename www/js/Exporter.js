@@ -46,44 +46,55 @@ Exporter.prototype.delLink = function delLink() {
     graph.delLink(selected);
     canvas.render();
 };
-Exporter.prototype.clickExportName = function clickExportName(id) {
-    var self = this;
-    var param = {
-        req: 'getExportConfig',
+Exporter.prototype.modifyExport = function modifyExport(id) {
+    var exportName = $('#modifyExportName').val();
+    if (exportName === '') throw new Exception(50302);
+
+    var description = $('#modifyExportDescription').val();
+    
+    var clientFileName = $('#clientFileName').val();
+    var clientPath = $('#clientPath').val();
+
+    var serverFileName = $('#serverFileName').val();
+    var serverPath = $('#serverPath').val();
+
+    graph.client.filename = clientFileName;
+    graph.client.path = clientPath;
+
+    graph.server.filename = serverFileName;
+    graph.server.path = serverPath;
+
+    param = {
+        req: 'modifyExport',
         id: id,
+        exportName: exportName,
+        description: description,
+        client: graph.toUpload('client'),
+        server: graph.toUpload('server'),
     };
-    $.post('./getExportConfig', param, function(json) {
+
+    // add canvas
+    param.client['canvas'] = canvas.client.toUpload();
+    param.server['canvas'] = canvas.server.toUpload();
+
+    $.post('./modifyExport', param, function(json) {
         var obj = Util.parse(json);
-
-        view.get('modifyExport', function(html) {
-            $('#indexRightBlock').empty().html(html);
-            $('#exportSettingTabs').tabs();
-
-            $.post('./getTableList', { req: 'getTableList' }, function(json) {
-                var obj = Util.parse(json);
-                view.get('createExportTableList', function(html) {
-                    uiExporter.getTabExportList().html(html);
-                    var list = uiExporter.getTables();
-
-                    eventExporter.bindTableDrag(list);
-                }, obj);
-            });
-
-            canvas = new Canvas();
-            graph = new Graph();
-            
-            eventExporter.bindTabButton();
-            eventExporter.bindExportSetting();
-            eventExporter.bindAddLevel();
-
-            self.restoreExport('client', graph.convertNetData(obj.ecc));
-            self.restoreExport('server', graph.convertNetData(obj.ecs));
-
-            canvas.set(obj.ecc, obj.ecs);
-            canvas.render();
-        }, obj);
+        tab.clickTabExport();
     });
 };
+Exporter.prototype.deleteExport = function deleteExport(id) {
+    param = {
+        req: 'deleteExport',
+        id: id,
+    };
+
+    $.post('./deleteExport', param, function(json) {
+        var obj = Util.parse(json);
+        tab.clickTabExport();
+    });
+};
+
+/* Internal Function */
 Exporter.prototype.restoreExport = function restoreExport(tab, data) {
     // add level
     for (var level in data.graphStructure) {
@@ -99,7 +110,6 @@ Exporter.prototype.restoreExport = function restoreExport(tab, data) {
         }
     }
 };
-
 Exporter.prototype.addLevel = function addLevel(tab) {
     // get element
     var zone = uiExporter['getTab' + Util.upperCaseFirst(tab)]();
@@ -111,7 +121,6 @@ Exporter.prototype.addLevel = function addLevel(tab) {
     // dom
     uiExporter.domAddLevel(btn, zone, level);
 };
-
 Exporter.prototype.addNewTable = function addNewTable(tab, level, tableId) {
     // add graph
     var graphTableId = graph.addNewTable(tab, level, tableId);

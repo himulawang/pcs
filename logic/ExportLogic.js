@@ -137,4 +137,140 @@ ExportLogic.prototype.getExportConfig = function getExportConfig(syn, params, cb
     });
 };
 
+ExportLogic.prototype.modifyExport = function modifyExport(syn, params, cb) {
+    // retrieve exportList
+    var exportList;
+    syn.add(function() {
+        ExportListModel.retrieve(0, function(err, data) {
+            if (err) return cb(err);
+            exportList = data;
+            syn.emit('next');
+        });
+    });
+
+    // verify exists exportName
+    syn.add(function() {
+        var list = exportList.getList();
+        for (var i in list) {
+            if (list[i].name.toLowerCase() === params.exportName.toLowerCase()) {
+                if (i == params.id) continue; // skip self
+                return cb(new I.Exception(20103));
+            }
+        }
+        syn.emit('next');
+    });
+
+    // modify export
+    syn.add(function() {
+        var ept = exportList.get(params.id);
+        if (ept === null) return cb(new I.Exception(20104));
+
+        ept.name = params.exportName;
+        ept.description = params.description;
+        ept.sort = 0;
+
+        exportList.update(ept);
+        ExportListModel.update(exportList, function(err, data) {
+            if (err) return cb(err);
+            exportList = data;
+            syn.emit('next');
+        });
+    });
+
+    // retrieve export config
+    var exportConfigClient, exportConfigServer;
+    syn.add(function() {
+        ExportConfigModel.retrieve(params.id + ICSConst.EXPORT_CONFIG_CLIENT_SUFFIX, function(err, data) {
+            if (err) return cb(err);
+            exportConfigClient = data;
+            syn.emit('next');
+        });
+    });
+    syn.add(function() {
+        ExportConfigModel.retrieve(params.id + ICSConst.EXPORT_CONFIG_SERVER_SUFFIX, function(err, data) {
+            if (err) return cb(err);
+            exportConfigServer = data;
+            syn.emit('next');
+        });
+    });
+
+    // modify export config
+    syn.add(function() {
+        // client
+        console.log(exportConfigClient);
+        exportConfigClient.path = params.client.path;
+        exportConfigClient.fileName = params.client.filename;
+        exportConfigClient.graphTableIds = params.client.graphTableIds;
+        exportConfigClient.graphStructure = params.client.graphStructure;
+        exportConfigClient.columnDetail = params.client.columnDetail;
+        exportConfigClient.canvas = params.client.canvas;
+
+        // server
+        exportConfigServer.path = params.server.path;
+        exportConfigServer.fileName = params.server.filename;
+        exportConfigServer.graphTableIds = params.server.graphTableIds;
+        exportConfigServer.graphStructure = params.server.graphStructure;
+        exportConfigServer.columnDetail = params.server.columnDetail;
+        exportConfigServer.canvas = params.server.canvas;
+
+        ExportConfigModel.add(exportConfigClient, function(err, data) {
+            if (err) return cb(err);
+            ExportConfigModel.add(exportConfigServer, function(err, data) {
+                if (err) return cb(err);
+                syn.emit('next');
+            });
+        });
+    });
+
+    // return
+    syn.on('final', function() {
+        cb(null, {});
+    });
+};
+
+ExportLogic.prototype.deleteExport = function deleteExport(syn, params, cb) {
+    // retrieve exportList
+    var exportList;
+    syn.add(function() {
+        ExportListModel.retrieve(0, function(err, data) {
+            if (err) return cb(err);
+            exportList = data;
+            syn.emit('next');
+        });
+    });
+
+    // modify export
+    syn.add(function() {
+        var ept = exportList.get(params.id);
+        if (ept === null) return cb(new I.Exception(20105));
+
+        exportList.del(ept);
+        ExportListModel.update(exportList, function(err, data) {
+            if (err) return cb(err);
+            exportList = data;
+            syn.emit('next');
+        });
+    });
+
+    // delete export config client
+    syn.add(function() {
+        ExportConfigModel.del(params.id + ICSConst.EXPORT_CONFIG_CLIENT_SUFFIX, function(err, data) {
+            if (err) return cb(err);
+            syn.emit('next');
+        });
+    });
+
+    // delete export config server
+    syn.add(function() {
+        ExportConfigModel.del(params.id + ICSConst.EXPORT_CONFIG_SERVER_SUFFIX, function(err, data) {
+            if (err) return cb(err);
+            syn.emit('next');
+        });
+    });
+
+    // return
+    syn.on('final', function() {
+        cb(null, {});
+    });
+};
 exports.ExportLogic = new ExportLogic();

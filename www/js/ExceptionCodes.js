@@ -23,5 +23,6 @@ var ExceptionCodes = {
 
     // exporter
     '50301': 'ExporterName cannot be empty when creating exporter.',
+    '50302': 'ExporterName cannot be empty when modifying exporter.',
 
 };

@@ -13,6 +13,7 @@ Tab.prototype.clickTabExport = function clickTabExport() {
         var obj = Util.parse(json);
         view.get('tabExportList', function(html) {
             $('#tabExportList').html(html).find('input').button();
+            $('#indexRightBlock').empty();
         }, obj);
     });
 };

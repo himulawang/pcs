@@ -179,9 +179,48 @@ EventExporter.prototype.bindExportSetting = function bindExportSetting() {
 };
 
 /* ExportList Mouse Over & Out */
-EventExporter.prototype.mouseoverExportList = function mouseoverExportList(el) {
+EventExporter.prototype.eventMouseoverExportList = function eventMouseoverExportList(el) {
     $(el).find('.exportListButtons').removeClass('hide');
 };
-EventExporter.prototype.mouseoutExportList = function mouseoutExportList(el) {
+EventExporter.prototype.eventMouseoutExportList = function eventMouseoutExportList(el) {
     $(el).find('.exportListButtons').addClass('hide');
+};
+
+/* ExportName */
+EventExporter.prototype.eventClickExportName = function eventClickExportName(id) {
+    var param = {
+        req: 'getExportConfig',
+        id: id,
+    };
+    $.post('./getExportConfig', param, function(json) {
+        var obj = Util.parse(json);
+
+        view.get('modifyExport', function(html) {
+            $('#indexRightBlock').empty().html(html);
+            $('#exportSettingTabs').tabs();
+
+            $.post('./getTableList', { req: 'getTableList' }, function(json) {
+                var obj = Util.parse(json);
+                view.get('createExportTableList', function(html) {
+                    uiExporter.getTabExportList().html(html);
+                    var list = uiExporter.getTables();
+
+                    eventExporter.bindTableDrag(list);
+                }, obj);
+            });
+
+            canvas = new Canvas();
+            graph = new Graph();
+            
+            eventExporter.bindTabButton();
+            eventExporter.bindExportSetting();
+            eventExporter.bindAddLevel();
+
+            exporter.restoreExport('client', graph.convertNetData(obj.ecc));
+            exporter.restoreExport('server', graph.convertNetData(obj.ecs));
+
+            canvas.set(obj.ecc, obj.ecs);
+            canvas.render();
+        }, obj);
+    });
 };
