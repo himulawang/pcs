@@ -1,9 +1,10 @@
 div.graphTableStructure.border
     div.graphTableStructureTitle #{t.n}
+        input.graphTableStructureDeleteTableInput(type='button', value='Delete')
     div.graphTableStructureHidden.hide
         input.tableId(type='hidden', value='#{t.i}')
         input.graphTableId(type='hidden', value='')
-    div
+    div.graphTableStructureColumns
         for structure in sl
             div.graphTableStructureColumn
                 div.left.graphTableStructureColumnName.pointer(draggable='true')

@@ -106,9 +106,23 @@ Exporter.prototype.restoreExport = function restoreExport(tab, data) {
     for (var level in data.graphStructure) {
         for (var index in data.graphStructure[level]) {
             graphTableId = data.graphStructure[level][index];
-            this.addNewTable(tab, level, data.graphTableIds[graphTableId]);
+            this.addTable(tab, level, data.graphTableIds[graphTableId], data.columnDetail[graphTableId]);
         }
     }
+
+    /*
+    // change rename input
+    var rename;
+    for (graphTableId in data.columnDetail) {
+        for (var columnId in data.columnDetail[graphTableId].columnRename) {
+            rename = data.columnDetail[graphTableId].columnRename[columnId];
+            uiExporter.domChangeRenameInput(tab, graphTableId, columnId, rename);
+        }
+    }
+    */
+
+    // overwrite graph data
+    graph[tab] = data;
 };
 Exporter.prototype.addLevel = function addLevel(tab) {
     // get element
@@ -126,5 +140,22 @@ Exporter.prototype.addNewTable = function addNewTable(tab, level, tableId) {
     var graphTableId = graph.addNewTable(tab, level, tableId);
 
     // add dom
-    uiExporter.domAddTable(tab, level, tableId, graphTableId);
+    uiExporter.domAddNewTable(tab, level, tableId, graphTableId);
+};
+Exporter.prototype.deleteTable = function deleteTable(tab, level, graphTableId, tableEl) {
+    // del graph
+    graph.deleteTable(tab, level, graphTableId);
+
+    // del canvas
+    canvas.render();
+
+    // del dom
+    uiExporter.domDelTable(tableEl);
+};
+Exporter.prototype.addTable = function addTable(tab, level, tableId, columnDetail) {
+    // add graph
+    var graphTableId = graph.addNewTable(tab, level, tableId);
+
+    // add dom
+    uiExporter.domAddTable(tab, level, tableId, graphTableId, columnDetail);
 };

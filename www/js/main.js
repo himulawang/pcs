@@ -14,6 +14,9 @@ $(function() {
     eventExporter = new EventExporter();
     uiExporter = new UIExporter();
 
+    // init
+    view.get('addLevel', function(html) {}, { level: 1 });
+
     view.get('indexLeftBlock', function(html) {
         $('body').append(html);
         $('#menuTabs').tabs();

@@ -5,21 +5,22 @@ EventExporter.prototype.eventClickCreateExport = function eventClickCreateExport
     view.get('createExport', function(html) {
         $('#indexRightBlock').empty().html(html);
         $('#exportSettingTabs').tabs();
-    });
-    $.post('./getTableList', { req: 'getTableList' }, function(json) {
-        var obj = Util.parse(json);
-        view.get('createExportTableList', function(html) {
-            uiExporter.getTabExportList().html(html);
-            var list = uiExporter.getTables();
 
-            canvas = new Canvas();
-            graph = new Graph();
+        $.post('./getTableList', { req: 'getTableList' }, function(json) {
+            var obj = Util.parse(json);
+            view.get('createExportTableList', function(html) {
+                uiExporter.getTabExportList().html(html);
+                var list = uiExporter.getTables();
 
-            eventExporter.bindTableDrag(list);
-            eventExporter.bindExportSetting();
-            eventExporter.bindTabButton();
-            eventExporter.bindAddLevel();
-        }, obj);
+                canvas = new Canvas();
+                graph = new Graph();
+
+                eventExporter.bindTableDrag(list);
+                eventExporter.bindExportSetting();
+                eventExporter.bindTabButton();
+                eventExporter.bindAddLevel();
+            }, obj);
+        });
     });
 };
 
@@ -44,9 +45,33 @@ EventExporter.prototype.eventClickAddLevel = function eventClickAddLevel(e) {
     // dom
     uiExporter.domAddLevel(this, zone, level);
 };
+EventExporter.prototype.eventClickDeleteLevel = function eventClickDeleteLevel(e) {
+    // get element
+    var el = $(this).parent().parent();
+
+    // delete tables
+    var level = el.find('.levelValue').val();
+    var tableEls = el.find('.graphTableStructure');
+
+    tableEls.each(function(i, n) {
+        var tableEl = $(n);
+        var graphTableId = tableEl.find('.graphTableId').val();
+        exporter.deleteTable(exporter.tab, level, graphTableId, tableEl);
+        uiExporter.domDelLevel(el);
+    });
+
+    // change value
+    graph.delLevel(exporter.tab, level);
+
+    // refresh level
+    uiExporter.domRefreshLevel(tab);
+};
 EventExporter.prototype.bindAddLevel = function bindAddLevel(e) {
     uiExporter.getTabClient().find('.buttonAddLevel').bind('click', this.eventClickAddLevel);
     uiExporter.getTabServer().find('.buttonAddLevel').bind('click', this.eventClickAddLevel);
+};
+EventExporter.prototype.bindDelLevel = function bindDelLevel(el) {
+    el.bind('click', this.eventClickDeleteLevel);
 };
 
 /* Table Drag To Level */
@@ -147,14 +172,29 @@ EventExporter.prototype.eventDropToColumn = function eventDropToColumn(e) {
     }
     return false;
 };
+EventExporter.prototype.eventClickDeleteTable = function eventClickDeleteTable(e) {
+    var tableEl = $(this).parent().parent();
+    var graphTableId = tableEl.find('.graphTableId').val();
+    var level = tableEl.parent().find('.levelValue').val();
+    exporter.deleteTable(exporter.tab, level, graphTableId, tableEl);
+};
+EventExporter.prototype.eventChangeRenameInput = function eventChangeRenameInput(e) {
+    var graphTableId = $(this).parent().parent().parent().parent().find('.graphTableId').val();
+    var columnId = $(this).parent().parent().find('.columnId').val();
+    graph[exporter.tab].columnDetail[graphTableId].columnRename[columnId] = $(this).val();
+};
 EventExporter.prototype.bindGraphTable = function bindGraphTable(tableEl) {
     var self = this;
     tableEl.find('.graphTableStructureSelectedInput').bind('change', this.eventChangeSelectedInput);
+    tableEl.find('.graphTableStructureRenameInput').bind('change', this.eventChangeRenameInput);
     tableEl.find('.graphTableStructureColumnName').each(function(i, n) {
         n.addEventListener('dragstart', self.eventDragStartColumnName, false);
     });
     tableEl.find('.graphTableStructureColumn').each(function(i, n) {
         n.addEventListener('drop', self.eventDropToColumn, false);
+    });
+    tableEl.find('.graphTableStructureDeleteTableInput').each(function(i, n) {
+        n.addEventListener('click', self.eventClickDeleteTable, false);
     });
 };
 

@@ -4,7 +4,7 @@ var Canvas = function Canvas() {
     this.canvas = $('#canvas')[0];
     this.ctx = this.canvas.getContext('2d');
 
-    this.columnOffset = 8;
+    this.columnOffset = 21;
     this.arrowLength = 6;
     this.leftOffset = 383;
     this.defaultLineColor = '#DF1B26';

@@ -24,10 +24,14 @@ body {
 .title {
     font-weight: bold;
 }
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
 
 #canvas {
     position: absolute;
-    pointer-events:none;
+    pointer-events: none;
 }
 #indexLeftBlock { 
     width: 250px;
