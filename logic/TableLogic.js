@@ -1,10 +1,110 @@
+var TableLogicLib = {
+    /*
+     * @import void
+     * @export TableList        tableList
+     * */
+    'getTableList': function getTableList() {
+        var self = this;
+        TableListModel.retrieve(0 /* Unique */, function(err, data) {
+            if (err) return self.cb(err);
+            self.set('tableList', data);
+            self.next();
+        });
+    },
+
+    /*
+     * @import String           tableName
+     * @import String           description
+     * @import Number           sort
+     * @import TableList        tableList
+     * @export TableList        tableList
+     * */
+    'addTable': function addTable(tableName, description, sort, tableList) {
+        var self = this;
+        // verify table not exists
+        var list = tableList.getList();
+        for (var i in list) {
+            if (list[i].name.toLowerCase() == tableName.toLowerCase()) {
+                return self.cb(new I.Exception(20001));
+            }
+        }
+        
+        // add table
+        var table = new Table();
+        table.name = tableName;
+        table.sort = 1;
+        table.description = description;
+
+        tableList.add(table);
+        TableListModel.update(tableList, function(err, data) {
+            if (err) return self.cb(err);
+            self.set('tableList', data);
+            self.next();
+        });
+    },
+
+    /*
+     * @import Object           options
+     * @import TableList        tableList
+     * @export StructureList    structureList
+     * */
+    'addStructure': function addStructure(options, tableList) {
+        var self = this;
+        var table = tableList.last();
+        var id = table.getPK();
+
+        structureList = new StructureList(id);
+        var structure, option;
+        for (var i in options) {
+            option = options[i];
+            structure = new Structure([
+                null,
+                i,
+                option.isPK,
+                option.allowEmpty,
+                option.type,
+                option.client,
+                option.server,
+                option.description,
+            ]);
+            structureList.add(structure);
+        }
+        StructureListModel.update(structureList, function(err, data) {
+            if (err) return self.cb(err);
+            self.set('structureList', data);
+            self.next();
+        });
+    },
+
+    /*
+     * @import TableList        tableList
+     * @export void
+     * */
+    'cbGetTableList': function cbGetTableList(tableList) {
+        this.cb(null, { tl: tableList.toClient(), });
+    },
+
+    /*
+     * @import TableList        tableList
+     * @import StructureList    structureList
+     * @export void
+     * */
+    'cbCreateTable': function cbCreateTable(tableList, structureList) {
+        this.cb(null, {
+            tl: tableList.toClient(),
+            sl: structureList.toClient(),
+        });
+    },
+};
+
 var TableLogic = function TableLogic() {};
 
+/*
 TableLogic.prototype.createTable = function createTable(syn, params, cb) {
     // retrieve tableList
     var tableList;
     syn.add(function() {
-        TableListModel.retrieve(0 /* Unique */, function(err, data) {
+        TableListModel.retrieve(0 , function(err, data) {
             if (err) return cb(err);
             tableList = data;
             syn.emit('next');
@@ -74,7 +174,7 @@ TableLogic.prototype.getTableList = function getTableList(syn, params, cb) {
     // retrieve tableList
     var tableList;
     syn.add(function() {
-        TableListModel.retrieve(0 /* Unique */, function(err, data) {
+        TableListModel.retrieve(0 , function(err, data) {
             if (err) return cb(err);
             tableList = data;
             syn.emit('next');
@@ -85,6 +185,46 @@ TableLogic.prototype.getTableList = function getTableList(syn, params, cb) {
         cb(null, {
             tl: tableList.toClient(),
         });
+    });
+};
+*/
+TableLogic.prototype.getTableList = function getTableList(lc, params) {
+    lc.add({
+        fn: TableLogicLib.getTableList,
+        imports: {},
+        exports: { tableList: 'tableList' },
+    });
+    lc.add({
+        fn: TableLogicLib.cbGetTableList,
+        imports: { _tableList: null },
+        exports: {},
+    });
+};
+TableLogic.prototype.createTable = function createTable(lc, params) {
+    lc.add({
+        fn: TableLogicLib.getTableList,
+        imports: {},
+        exports: { tableList: 'tableList' },
+    });
+    lc.add({
+        fn: TableLogicLib.addTable,
+        imports: { 
+            tableName: params.tableName,
+            description: params.description, 
+            sort: 1, // TODO
+            _tableList: null,
+        },
+        exports: { tableList: 'tableList' },
+    });
+    lc.add({
+        fn: TableLogicLib.addStructure,
+        imports: { options: params.options, _tableList: null, },
+        exports: { structureList: 'structureList' },
+    });
+    lc.add({
+        fn: TableLogicLib.cbCreateTable,
+        imports: { _tableList: null, _structureList: null },
+        exports: {},
     });
 };
 TableLogic.prototype.getStructure = function getStructure(syn, params, cb) {

@@ -9,7 +9,9 @@ var ctrl = require('./config/ctrl.js').ctrl;
 
 app.post('/*', function(req, res) {
     var start = process.hrtime();
-    I.Controller.process(ctrl, req.body, function(err, resData) {
+    I.Controller.process(ctrl, req.body, function(args) {
+        var err = args[0];
+        var resData = args[1];
         var r = {};
         if (err) {
             if (err instanceof I.Exception) {
