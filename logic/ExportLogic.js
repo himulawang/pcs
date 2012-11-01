@@ -1,276 +1,416 @@
-var ExportLogic = function ExportLogic() {};
-
-ExportLogic.prototype.getExportList = function getExportList(syn, params, cb) {
-    // retrieve exportList
-    var exportList;
-    syn.add(function() {
+var ExportLogicLib = {
+    getExportList: function getExportList() {
+        /*
+         * @import void
+         * @export ExportList       exportList
+         * */
+        var self = this;
         ExportListModel.retrieve(0, function(err, data) {
-            if (err) return cb(err);
-            exportList = data;
-            syn.emit('next');
+            if (err) return self.cb(err);
+            self.set('exportList', data);
+            self.next();
         });
-    });
+    },
+    addExport: function addExport(exportName, description, exportList) {
+        /*
+         * @import String           exportName
+         * @import String           description
+         * @import ExportList       exportList
+         * @export ExportList       exportList
+         * */
+        var self = this;
 
-    // return
-    syn.on('final', function() {
-        cb(null, { el: exportList.toClient() });
-    });
-};
-
-ExportLogic.prototype.createExport = function createExport(syn, params, cb) {
-    // retrieve exportList
-    var exportList;
-    syn.add(function() {
-        ExportListModel.retrieve(0, function(err, data) {
-            if (err) return cb(err);
-            exportList = data;
-            syn.emit('next');
-        });
-    });
-
-    // verify exists exportName
-    syn.add(function() {
-        var list = exportList.getList();
-        for (var i in list) {
-            if (list[i].name.toLowerCase() === params.exportName.toLowerCase()) {
-                return cb(new I.Exception(20101));
-            }
-        }
-        syn.emit('next');
-    });
-
-    // add export
-    syn.add(function() {
         var ept = new Export();
-        ept.name = params.exportName;
-        ept.description = params.description;
-        ept.sort = 0;
+        ept.name = exportName;
+        ept.description = description;
+        ept.sort = 0; //TODO
 
         exportList.add(ept);
         ExportListModel.update(exportList, function(err, data) {
-            if (err) return cb(err);
-            exportList = data;
-            syn.emit('next');
+            if (err) return self.cb(err);
+            self.set('exportList', data);
+            self.next();
         });
-    });
+    },
+    delExport: function delExport(ept, exportList) {
+        /*
+         * @import Export           ept
+         * @import ExportList       exportList
+         * @export ExportList       exportList
+         * */
+        var self = this;
+        exportList.del(ept);
+        ExportListModel.update(exportList, function(err, data) {
+            if (err) return self.cb(err);
+            self.set('exportList', data);
+            self.next();
+        });
+    },
+    updateExport: function updateExport(ept, exportList, exportName, description) {
+        /*
+         * @import Export           ept
+         * @import ExportList       exportList
+         * @import String           exportName
+         * @import String           description
+         * @export ExportList       exportList
+         * */
+        var self = this;
+        ept.name = exportName;
+        ept.description = description;
+        ept.sort = 0;
 
-    // add export config
-    syn.add(function() {
+        exportList.update(ept);
+
+        ExportListModel.update(exportList, function(err, data) {
+            if (err) return self.cb(err);
+            self.set('exportList', data);
+            self.next();
+        });
+    },
+    addExportConfig: function addExportConfig(exportList, client, server) {
+        /*
+         * @import ExportList       exportList
+         * @import Object           client
+         * @import Object           server
+         * @export ExportList       exportList
+         * */
+        var self = this;
         var pk = exportList.last().getPK();
 
         // client
         var exportConfigClient = new ExportConfig();
         exportConfigClient.id = pk + ICSConst.EXPORT_CONFIG_CLIENT_SUFFIX;
-        exportConfigClient.path = params.client.path;
-        exportConfigClient.fileName = params.client.filename;
-        exportConfigClient.graphTableIds = params.client.graphTableIds;
-        exportConfigClient.graphStructure = params.client.graphStructure;
-        exportConfigClient.columnDetail = params.client.columnDetail;
-        exportConfigClient.canvas = params.client.canvas;
+        exportConfigClient.path = client.path;
+        exportConfigClient.fileName = client.filename;
+        exportConfigClient.graphTableIds = client.graphTableIds;
+        exportConfigClient.graphStructure = client.graphStructure;
+        exportConfigClient.columnDetail = client.columnDetail;
+        exportConfigClient.canvas = client.canvas;
 
         // server
         var exportConfigServer = new ExportConfig();
         exportConfigServer.id = pk + ICSConst.EXPORT_CONFIG_SERVER_SUFFIX;
-        exportConfigServer.path = params.server.path;
-        exportConfigServer.fileName = params.server.filename;
-        exportConfigServer.graphTableIds = params.server.graphTableIds;
-        exportConfigServer.graphStructure = params.server.graphStructure;
-        exportConfigServer.columnDetail = params.server.columnDetail;
-        exportConfigServer.canvas = params.server.canvas;
+        exportConfigServer.path = server.path;
+        exportConfigServer.fileName = server.filename;
+        exportConfigServer.graphTableIds = server.graphTableIds;
+        exportConfigServer.graphStructure = server.graphStructure;
+        exportConfigServer.columnDetail = server.columnDetail;
+        exportConfigServer.canvas = server.canvas;
 
         ExportConfigModel.add(exportConfigClient, function(err, data) {
-            if (err) return cb(err);
+            if (err) return self.cb(err);
             ExportConfigModel.add(exportConfigServer, function(err, data) {
-                if (err) return cb(err);
-                syn.emit('next');
+                if (err) return self.cb(err);
+                self.next();
             });
         });
-    });
-
-    // return
-    syn.on('final', function() {
-        cb(null, {});
-    });
-};
-
-ExportLogic.prototype.getExportConfig = function getExportConfig(syn, params, cb) {
-    var ept;
-    var exportConfigClient, exportConfigServer;
-
-    // get export
-    syn.add(function() {
-        ExportListModel.retrieve(0, function(err, data) {
-            if (err) return cb(err);
-            var exportList = data;
-
-            ept = exportList.get(params.id);
-            if (ept === null) return cb(new I.Exception(20102));
-            syn.emit('next');
-        });
-    });
-
-    // get client export config
-    syn.add(function() {
-        ExportConfigModel.retrieve(params.id + ICSConst.EXPORT_CONFIG_CLIENT_SUFFIX, function(err, data) {
-            if (err) return cb(err);
-            exportConfigClient = data;
-            syn.emit('next');
-        });
-    });
-
-    // get server export config
-    syn.add(function() {
-        ExportConfigModel.retrieve(params.id + ICSConst.EXPORT_CONFIG_SERVER_SUFFIX, function(err, data) {
-            if (err) return cb(err);
-            exportConfigServer = data;
-            syn.emit('next');
-        });
-    });
-
-    // return
-    syn.on('final', function() {
-        cb(null, {
-            e: ept.toClient(),
-            ecc: exportConfigClient.toClient(),
-            ecs: exportConfigServer.toClient(),
-        });
-    });
-};
-
-ExportLogic.prototype.modifyExport = function modifyExport(syn, params, cb) {
-    // retrieve exportList
-    var exportList;
-    syn.add(function() {
-        ExportListModel.retrieve(0, function(err, data) {
-            if (err) return cb(err);
-            exportList = data;
-            syn.emit('next');
-        });
-    });
-
-    // verify exists exportName
-    syn.add(function() {
+    },
+    verifyExportExists: function verifyExportExists(exportList, id) {
+        /*
+         * @import ExportList       exportList
+         * @import Number           id
+         * @export Export           ept
+         * */
+            ept = exportList.get(id);
+            if (ept === null) return this.cb(new I.Exception(20102));
+            this.set('ept', ept);
+            this.next();
+    },
+    verifyExportNameNotExists: function verifyExportNameNotExists(exportList, exportName, skipId) {
+        /*
+         * @import ExportList       exportList
+         * @import String           exportName
+         * @import Number           skipId
+         * @export void
+         * */
         var list = exportList.getList();
+        exportName = exportName.toLowerCase();
         for (var i in list) {
-            if (list[i].name.toLowerCase() === params.exportName.toLowerCase()) {
-                if (i == params.id) continue; // skip self
-                return cb(new I.Exception(20103));
-            }
+            if (i == skipId) continue;
+            if (list[i].name.toLowerCase() === exportName) return this.cb(new I.Exception(20101));
         }
-        syn.emit('next');
-    });
-
-    // modify export
-    syn.add(function() {
-        var ept = exportList.get(params.id);
-        if (ept === null) return cb(new I.Exception(20104));
-
-        ept.name = params.exportName;
-        ept.description = params.description;
-        ept.sort = 0;
-
-        exportList.update(ept);
-        ExportListModel.update(exportList, function(err, data) {
-            if (err) return cb(err);
-            exportList = data;
-            syn.emit('next');
+        this.next();
+    },
+    getClientExportConfig: function getClientExportConfig(id) {
+        /*
+         * @import Number           id
+         * @import String           exportName
+         * @export ExportConfig     clientExportConfig
+         * */
+        var self = this;
+        ExportConfigModel.retrieve(id + ICSConst.EXPORT_CONFIG_CLIENT_SUFFIX, function(err, data) {
+            if (err) return self.cb(err);
+            self.set('clientExportConfig', data);
+            self.next();
         });
-    });
+    },
+    updateClientExportConfig: function updateClientExportConfig(client, clientExportConfig) {
+        /*
+         * @import Object           client
+         * @import ExportConfig     clientExportConfig
+         * @export ExportConfig     clientExportConfig
+         * */
+        var self = this;
+        clientExportConfig.path = client.path;
+        clientExportConfig.fileName = client.filename;
+        clientExportConfig.graphTableIds = client.graphTableIds;
+        clientExportConfig.graphStructure = client.graphStructure;
+        clientExportConfig.columnDetail = client.columnDetail;
+        clientExportConfig.canvas = client.canvas;
 
-    // retrieve export config
-    var exportConfigClient, exportConfigServer;
-    syn.add(function() {
-        ExportConfigModel.retrieve(params.id + ICSConst.EXPORT_CONFIG_CLIENT_SUFFIX, function(err, data) {
-            if (err) return cb(err);
-            exportConfigClient = data;
-            syn.emit('next');
+        ExportConfigModel.add(clientExportConfig, function(err, data) {
+            if (err) return self.cb(err);
+            self.next();
         });
-    });
-    syn.add(function() {
-        ExportConfigModel.retrieve(params.id + ICSConst.EXPORT_CONFIG_SERVER_SUFFIX, function(err, data) {
-            if (err) return cb(err);
-            exportConfigServer = data;
-            syn.emit('next');
+    },
+    deleteClientExportConfig: function deleteClientExportConfig(id) {
+        /*
+         * @import Number           id
+         * @export void
+         * */
+        var self = this;
+        ExportConfigModel.del(id + ICSConst.EXPORT_CONFIG_CLIENT_SUFFIX, function(err, data) {
+            if (err) return self.cb(err);
+            self.next();
         });
-    });
-
-    // modify export config
-    syn.add(function() {
-        // client
-        console.log(exportConfigClient);
-        exportConfigClient.path = params.client.path;
-        exportConfigClient.fileName = params.client.filename;
-        exportConfigClient.graphTableIds = params.client.graphTableIds;
-        exportConfigClient.graphStructure = params.client.graphStructure;
-        exportConfigClient.columnDetail = params.client.columnDetail;
-        exportConfigClient.canvas = params.client.canvas;
-
-        // server
-        exportConfigServer.path = params.server.path;
-        exportConfigServer.fileName = params.server.filename;
-        exportConfigServer.graphTableIds = params.server.graphTableIds;
-        exportConfigServer.graphStructure = params.server.graphStructure;
-        exportConfigServer.columnDetail = params.server.columnDetail;
-        exportConfigServer.canvas = params.server.canvas;
-
-        ExportConfigModel.add(exportConfigClient, function(err, data) {
-            if (err) return cb(err);
-            ExportConfigModel.add(exportConfigServer, function(err, data) {
-                if (err) return cb(err);
-                syn.emit('next');
-            });
+    },
+    getServerExportConfig: function getServerExportConfig(id) {
+        /*
+         * @import Number           id
+         * @import String           exportName
+         * @export ExportConfig     serverExportConfig
+         * */
+        var self = this;
+        ExportConfigModel.retrieve(id + ICSConst.EXPORT_CONFIG_SERVER_SUFFIX, function(err, data) {
+            if (err) return self.cb(err);
+            self.set('serverExportConfig', data);
+            self.next();
         });
-    });
+    },
+    updateServerExportConfig: function updateServerExportConfig(server, serverExportConfig) {
+        /*
+         * @import Object           server
+         * @import ExportConfig     serverExportConfig
+         * @export ExportConfig     serverExportConfig
+         * */
+        var self = this;
+        serverExportConfig.path = server.path;
+        serverExportConfig.fileName = server.filename;
+        serverExportConfig.graphTableIds = server.graphTableIds;
+        serverExportConfig.graphStructure = server.graphStructure;
+        serverExportConfig.columnDetail = server.columnDetail;
+        serverExportConfig.canvas = server.canvas;
 
-    // return
-    syn.on('final', function() {
-        cb(null, {});
+        ExportConfigModel.add(serverExportConfig, function(err, data) {
+            if (err) return self.cb(err);
+            self.next();
+        });
+    },
+    deleteServerExportConfig: function deleteServerExportConfig(id) {
+        /*
+         * @import Number           id
+         * @export void
+         * */
+        var self = this;
+        ExportConfigModel.del(id + ICSConst.EXPORT_CONFIG_SERVER_SUFFIX, function(err, data) {
+            if (err) return self.cb(err);
+            self.next();
+        });
+    },
+    cbGetExportList: function cbGetExportList(exportList) {
+        /*
+         * @import ExportList       exportList
+         * @export void
+         * */
+        this.cb(null, { el: exportList.toClient() });
+    },
+    cbCreateExport: function cbCreateExport() {
+        /*
+         * @import void
+         * @export void
+         * */
+        this.cb(null, {});
+    },
+    cbGetExportConfig: function cbGetExportConfig(ept, clientExportConfig, serverExportConfig) {
+        this.cb(null, {
+            e: ept.toClient(),
+            ecc: clientExportConfig.toClient(),
+            ecs: serverExportConfig.toClient(),
+        });
+    },
+    cbModifyExport: function cbModifyExport() {
+        /*
+         * @import void
+         * @export void
+         * */
+        this.cb(null, {});
+    },
+    cbDeleteExport: function cbDeleteExport() {
+        /*
+         * @import void
+         * @export void
+         * */
+        this.cb(null, {});
+    },
+};
+var ExportLogic = function ExportLogic() {};
+
+ExportLogic.prototype.getExportList = function getExportList(lc, params) {
+    lc.add({
+        fn: ExportLogicLib.getExportList,
+        imports: {},
+        exports: { exportList: 'exportList' },
+    });
+    lc.add({
+        fn: ExportLogicLib.cbGetExportList,
+        imports: { _exportList: null },
+        exports: {},
     });
 };
-
-ExportLogic.prototype.deleteExport = function deleteExport(syn, params, cb) {
-    // retrieve exportList
-    var exportList;
-    syn.add(function() {
-        ExportListModel.retrieve(0, function(err, data) {
-            if (err) return cb(err);
-            exportList = data;
-            syn.emit('next');
-        });
+ExportLogic.prototype.createExport = function createExport(lc, params) {
+    lc.add({
+        fn: ExportLogicLib.getExportList,
+        imports: {},
+        exports: { exportList: 'exportList' },
     });
-
-    // modify export
-    syn.add(function() {
-        var ept = exportList.get(params.id);
-        if (ept === null) return cb(new I.Exception(20105));
-
-        exportList.del(ept);
-        ExportListModel.update(exportList, function(err, data) {
-            if (err) return cb(err);
-            exportList = data;
-            syn.emit('next');
-        });
+    lc.add({
+        fn: ExportLogicLib.verifyExportNameNotExists,
+        imports: { _exportList: null, exportName: params.exportName, skipId: null },
+        exports: {},
     });
-
-    // delete export config client
-    syn.add(function() {
-        ExportConfigModel.del(params.id + ICSConst.EXPORT_CONFIG_CLIENT_SUFFIX, function(err, data) {
-            if (err) return cb(err);
-            syn.emit('next');
-        });
+    lc.add({
+        fn: ExportLogicLib.addExport,
+        imports: { 
+            exportName: params.exportName,
+            description: params.description,
+            _exportList: null
+        },
+        exports: { exportList: 'exportList' },
     });
-
-    // delete export config server
-    syn.add(function() {
-        ExportConfigModel.del(params.id + ICSConst.EXPORT_CONFIG_SERVER_SUFFIX, function(err, data) {
-            if (err) return cb(err);
-            syn.emit('next');
-        });
+    lc.add({
+        fn: ExportLogicLib.addExportConfig,
+        imports: { 
+            _exportList: null,
+            client: params.client,
+            server: params.server,
+        },
+        exports: { exportList: 'exportList' },
     });
-
-    // return
-    syn.on('final', function() {
-        cb(null, {});
+    lc.add({
+        fn: ExportLogicLib.cbCreateExport,
+        imports: {},
+        exports: {},
+    });
+};
+ExportLogic.prototype.getExportConfig = function getExportConfig(lc, params) {
+    lc.add({
+        fn: ExportLogicLib.getExportList,
+        imports: {},
+        exports: { exportList: 'exportList' },
+    });
+    lc.add({
+        fn: ExportLogicLib.verifyExportExists,
+        imports: { _exportList: null, id: params.id },
+        exports: { ept: 'ept' },
+    });
+    lc.add({
+        fn: ExportLogicLib.getClientExportConfig,
+        imports: { id: params.id },
+        exports: { clientExportConfig: 'clientExportConfig' },
+    });
+    lc.add({
+        fn: ExportLogicLib.getServerExportConfig,
+        imports: { id: params.id },
+        exports: { serverExportConfig: 'serverExportConfig' },
+    });
+    lc.add({
+        fn: ExportLogicLib.cbGetExportConfig,
+        imports: { _ept: null, _clientExportConfig: null, _serverExportConfig: null },
+        exports: {},
+    });
+};
+ExportLogic.prototype.modifyExport = function modifyExport(lc, params) {
+    lc.add({
+        fn: ExportLogicLib.getExportList,
+        imports: {},
+        exports: { exportList: 'exportList' },
+    });
+    lc.add({
+        fn: ExportLogicLib.verifyExportNameNotExists,
+        imports: { _exportList: null, exportName: params.exportName, skipId: params.id },
+        exports: {},
+    });
+    lc.add({
+        fn: ExportLogicLib.verifyExportExists,
+        imports: { _exportList: null, id: params.id },
+        exports: { ept: 'ept' },
+    });
+    lc.add({
+        fn: ExportLogicLib.updateExport,
+        imports: { 
+            _ept: null,
+            _exportList: null,
+            exportName: params.exportName,
+            description: params.description,
+        },
+        exports: { exportList: 'exportList' },
+    });
+    lc.add({
+        fn: ExportLogicLib.getClientExportConfig,
+        imports: { id: params.id },
+        exports: { clientExportConfig: 'clientExportConfig' },
+    });
+    lc.add({
+        fn: ExportLogicLib.getServerExportConfig,
+        imports: { id: params.id },
+        exports: { serverExportConfig: 'serverExportConfig' },
+    });
+    lc.add({
+        fn: ExportLogicLib.updateClientExportConfig,
+        imports: { client: params.client, _clientExportConfig: null },
+        exports: { clientExportConfig: 'clientExportConfig' },
+    });
+    lc.add({
+        fn: ExportLogicLib.updateServerExportConfig,
+        imports: { server: params.server, _serverExportConfig: null },
+        exports: { serverExportConfig: 'serverExportConfig' },
+    });
+    lc.add({
+        fn: ExportLogicLib.cbModifyExport,
+        imports: {},
+        exports: {},
+    });
+};
+ExportLogic.prototype.deleteExport = function deleteExport(lc, params) {
+    lc.add({
+        fn: ExportLogicLib.getExportList,
+        imports: {},
+        exports: { exportList: 'exportList' },
+    });
+    lc.add({
+        fn: ExportLogicLib.verifyExportExists,
+        imports: { _exportList: null, id: params.id },
+        exports: { ept: 'ept' },
+    });
+    lc.add({
+        fn: ExportLogicLib.delExport,
+        imports: { _ept: null, _exportList: null },
+        exports: { exportList: 'exportList' },
+    });
+    lc.add({
+        fn: ExportLogicLib.deleteClientExportConfig,
+        imports: { id: params.id },
+        exports: {},
+    });
+    lc.add({
+        fn: ExportLogicLib.deleteServerExportConfig,
+        imports: { id: params.id },
+        exports: {},
+    });
+    lc.add({
+        fn: ExportLogicLib.cbDeleteExport,
+        imports: {},
+        exports: {},
     });
 };
 exports.ExportLogic = new ExportLogic();
