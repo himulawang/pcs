@@ -188,7 +188,7 @@ Table.prototype.clickImportData = function clickImportData() {
         modal: true,
         buttons: {
             OK: function() {
-                importer.importFiles();
+                importer.importFilesRequest();
                 $(this).dialog('close');
             },
             Cancel: function() {
@@ -204,4 +204,20 @@ Table.prototype.clickTableName = function clickTableName(id) {
             $('#indexRightBlock').html(html);
         }, obj);
     });
+};
+Table.prototype.clickImport = function clickImport(tableName) {
+    var html = '<input type="file" id="inputDataFile">';
+    $('#dialog').dialog({
+        title: 'Import',
+        modal: true,
+        buttons: {
+            OK: function() {
+                importer.importFileRequest(tableName);
+                $(this).dialog('close');
+            },
+            Cancel: function() {
+                $(this).dialog('close');
+            },
+        }
+    }).html(html);
 };

@@ -1,19 +1,71 @@
 var Importer = function() {};
 
-Importer.prototype.importFiles = function importFiles() {
-    var fileList = $('#inputDataFiles')[0].files;
+Importer.prototype.importFileRequest = function importFileRequest(tableName) {
+    var fileList = $('#inputDataFile')[0].files;
     if (fileList.length === 0) {
         throw new Exception(50102);
     }
+
     var reader = new FileReader();
 
     var self = this;
     reader.onload = function(e) {
         var data = self.parseFile(this.result);
-        var tableName = Util.getFileBasename(fileList[0].name);
         self.uploadData(tableName, data);
     };
     reader.readAsText(fileList[0]);
+};
+Importer.prototype.importFilesRequest = function importFilesRequest() {
+    var fileList = $('#inputDataFiles')[0].files;
+    if (fileList.length === 0) {
+        throw new Exception(50102);
+    }
+
+    var lc = new LogicController();
+    for (var i = 0; i < fileList.length; ++i) {
+        lc.add({
+            fn: this.loadFileData,
+            imports: { file: fileList[0] },
+            exports: { data: 'data' + i },
+        });
+        var dataName = '_data' + i;
+        var imports = {};
+        imports['tableName'] = Util.getFileBasename(fileList[i].name);
+        imports[dataName] = null;
+        lc.add({
+            fn: this.importFile,
+            imports: imports,
+            exports: {},
+        });
+    }
+    lc.cb(function(){});
+    lc.next();
+
+};
+Importer.prototype.loadFileData = function loadFileData(file) {
+    /*
+     * @importer File           file
+     * @exporter Object         data
+     * */
+    var self = this;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var data = importer.parseFile(this.result);
+        self.set('data', data);
+        self.next();
+    };
+    reader.readAsText(file);
+};
+Importer.prototype.importFile = function importFile(tableName, data) {
+    /*
+     * @importer String         tableName
+     * @exporter void
+     * */
+    var self = this;
+    $.post('./uploadData', { req: 'uploadData', tableName: tableName, data: data }, function(json) {
+        var obj = Util.parse(json);
+        self.next();
+    });
 };
 Importer.prototype.parseFile = function parseFile(content) {
     var lines = content.split("\n");

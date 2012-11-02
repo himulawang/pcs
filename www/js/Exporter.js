@@ -110,17 +110,6 @@ Exporter.prototype.restoreExport = function restoreExport(tab, data) {
         }
     }
 
-    /*
-    // change rename input
-    var rename;
-    for (graphTableId in data.columnDetail) {
-        for (var columnId in data.columnDetail[graphTableId].columnRename) {
-            rename = data.columnDetail[graphTableId].columnRename[columnId];
-            uiExporter.domChangeRenameInput(tab, graphTableId, columnId, rename);
-        }
-    }
-    */
-
     // overwrite graph data
     graph[tab] = data;
 };
