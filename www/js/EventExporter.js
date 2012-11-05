@@ -4,6 +4,7 @@ var EventExporter = function EventExporter() {};
 EventExporter.prototype.eventClickCreateExport = function eventClickCreateExport() {
     view.get('createExport', function(html) {
         $('#indexRightBlock').empty().html(html);
+        $('#createExportCreateButton,.delLink,.buttonAddLevel').button();
         $('#exportSettingTabs').tabs();
 
         $.post('./getTableList', { req: 'getTableList' }, function(json) {
@@ -57,8 +58,8 @@ EventExporter.prototype.eventClickDeleteLevel = function eventClickDeleteLevel(e
         var tableEl = $(n);
         var graphTableId = tableEl.find('.graphTableId').val();
         exporter.deleteTable(exporter.tab, level, graphTableId, tableEl);
-        uiExporter.domDelLevel(el);
     });
+    uiExporter.domDelLevel(el);
 
     // change value
     graph.delLevel(exporter.tab, level);
@@ -88,7 +89,6 @@ EventExporter.prototype.eventDragEnterGraph = function eventDragEnterGraph(e) {
 };
 EventExporter.prototype.eventDragOverGraph = function eventDragOverGraph(e) {
     e.preventDefault();
-    return false;
 };
 EventExporter.prototype.eventDragLeaveGraph = function eventDragLeaveGraph(e) {
     this.classList.remove('dragOverGraph');

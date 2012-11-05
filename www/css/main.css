@@ -1,5 +1,6 @@
 body {
     font-size: 80%;
+    font-family: 'Segoe UI', Arial, sans-serif;
     /*
     color: #EEEEEE;
     background-color: #111111;*/
@@ -9,7 +10,7 @@ body {
     cursor: pointer;
 }
 .border { 
-    border: 1px solid #DDDDDD;
+    border: 1px solid #666;
     border-radius: 10px;
 }
 .left {
@@ -40,6 +41,11 @@ body {
 #indexRightBlock {
     width: 1000px;
     height: 750px;
+    background-color: black;
+    color: #EEE;
+    padding-left: 12px;
+    padding-top: 8px;
+    padding-right: 12px;
 }
 #logo { 
     height: 87px; 
@@ -47,7 +53,25 @@ body {
 }
 
 #menuTabs {
-    height: 740px;
+    height: 660px;
+}
+
+.tabTitle {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.inputLabel {
+    margin: 5px 5px 5px 5px;
+    font-weight: bold;
+}
+
+.commonSetting {
+    margin: 5px 5px 5px 5px;
+}
+
+.columns {
+    margin: 15px 5px 5px 5px;
 }
 
 .createTableTitleColumn,
@@ -56,6 +80,7 @@ body {
 .modifyStructureTitleDescription
 {
     width: 180px;
+    font-weight: bold;
 }
 
 .createTableTitleIsPK,
@@ -72,6 +97,7 @@ body {
 .modifyStructureTitleDelColumn
 {
     width: 80px;
+    font-weight: bold;
 }
 
 .tableListButtons, .exportListButtons {
@@ -80,7 +106,6 @@ body {
 }
 
 .modifyStructureNewColumn {
-    background-color: #EEEEEE;
 }
 
 .modifyStructureId,
@@ -99,26 +124,31 @@ body {
 
 /* Exporter */
 #exportSetting {
-    width: 100%;
+    width: 990px;
     height: 100%;
     position: absolute;
 }
 
 #exportSettingTabs {
-    height: 800px;
+    height: 670px;
 }
 
 .levelGraph {
     width: 450px;
-    height: 600px;
+    height: 530px;
+    padding: 5px 5px 5px 5px;
+    margin: 5px 5px 5px 5px;
 }
 
 .dragOverGraph {
-    background-color: #DDDDDD;
+    border: 1px solid #DF1B26;
+}
+
+.graphTableStructure {
+    padding: 5px 5px 5px 5px;
 }
 
 .graphTableStructureTitle {
-    margin-left: 50px;
 }
 
 .graphTableStructureColumnName,

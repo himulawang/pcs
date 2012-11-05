@@ -1,24 +1,26 @@
 div#createTable
-    div
+    div.tabTitle Create Table
+    hr
+    div.commonSetting
         div.left 
-            span TableName:
+            span.inputLabel TableName:
             input#createTableName(type='text')
         div.left
-            span Description:
+            span.inputLabel Description:
             input#createTableDescription(type='text')
         div.left
-            input(type='button',
+            input#createTableButton(type='button',
                 value='Create',
                 onclick='table.createTable();')
         div.clear
-    div#Columns
+    div.columns
         div
-            div.createTableTitleColumn.left Column
-            div.createTableTitleIsPK.left isPK
-            div.createTableTitleAllowEmpty.left allowEmpty
-            div.createTableTitleType.left Type
-            div.createTableTitleClient.left Client
-            div.createTableTitleServer.left Server
-            div.createTableTitleDescription.left Description
+            div.left.createTableTitleColumn Column
+            div.left.createTableTitleIsPK isPK
+            div.left.createTableTitleAllowEmpty allowEmpty
+            div.left.createTableTitleType Type
+            div.left.createTableTitleClient Client
+            div.left.createTableTitleServer Server
+            div.left.createTableTitleDescription Description
             div.clear
         div#createTableOption

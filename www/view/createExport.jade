@@ -1,17 +1,17 @@
 div#createExport
-    div
+    div.tabTitle Create Export
+    div.commonSetting
         div.left 
-            span ExportName:
+            span.inputLabel ExportName:
             input#createExportName(type='text')
         div.left
-            span Description:
+            span.inputLabel Description:
             input#createExportDescription(type='text')
         div.left
-            input(type='button',
+            input#createExportCreateButton(type='button',
                 value='Create',
                 onclick='exporter.createExport();')
         div.clear
-    hr
     div
         div#exportSetting
             div#exportSettingTabs
@@ -22,9 +22,9 @@ div#createExport
                         a#exportTabButtonServer(href='#exportTabServer') Server
                 div#exportTabClient
                     div
-                        span Filename
+                        span.inputLabel Filename:
                         input#clientFileName(type='text')
-                        span Path
+                        span.inputLabel Path:
                         input#clientPath(type='text')
                         input.delLink(type='button',
                             value='Del Link',
@@ -35,9 +35,9 @@ div#createExport
                     div.graph
                 div#exportTabServer
                     div
-                        span Filename
+                        span.inputLabel Filename:
                         input#serverFileName(type='text')
-                        span Path
+                        span.inputLabel Path:
                         input#serverPath(type='text')
                         input.delLink(type='button',
                             value='Del Link',

@@ -4,6 +4,7 @@ Table.prototype.clickCreateTable = function clickCreateTable() {
     var self = this;
     view.get('createTable', function(html) {
         $('#indexRightBlock').html(html);
+        $('#createTableButton').button();
         self.createTableAddOption();
     });
 };
@@ -69,7 +70,8 @@ Table.prototype.clickStructure = function clickStructure(id) {
         var obj = Util.parse(json);
         view.get('modifyStructure', function(html) {
             $('#indexRightBlock').empty().html(html);
-            //$('.modifyStructureAddColumnBefore, .modifyStructureAddColumnAfter').button();
+            $('#modifyStructureModifyButton,#modifyStructureDeleteButton').button();
+            $('.modifyStructureAddColumn,.modifyStructureDelColumn').button();
             self.structure = obj.sl;
         }, obj);
     });
@@ -77,6 +79,7 @@ Table.prototype.clickStructure = function clickStructure(id) {
 Table.prototype.addColumn = function addColumn() {
     view.get('modifyStructureOption', function(html) {
         $('#modifyStructureOption').append(html);
+        $('.modifyStructureAddColumn,.modifyStructureDelColumn').button();
     });
 };
 Table.prototype.delColumn = function delColumn(el) {

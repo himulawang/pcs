@@ -1,7 +1,9 @@
 div#modifyStructure
-    div
+    div.tabTitle Modify Structure
+    hr
+    div.commonSetting
         div.left 
-            span TableName:
+            span.inputLabel TableName:
             input#modifyStructureName(
                 type='text'
                 value='#{t.n}')
@@ -9,31 +11,31 @@ div#modifyStructure
                 type='hidden'
                 value='#{t.i}')
         div.left
-            span Description:
+            span.inputLabel Description:
             input#modifyStructureDescription(
                 type='text'
                 value='#{t.d}')
         div.left
-            input(type='button',
+            input#modifyStructureModifyButton(type='button',
                 value='Modify',
                 onclick='table.modifyStructure(#{t.i});')
         div.left
-            input(type='button',
+            input#modifyStructureDeleteButton(type='button',
                 value='Delete',
                 onclick='table.deleteTableConfirm(#{t.i});')
         div.clear
-    div#columns
+    div.columns
         div
-            div.modifyStructureTitleId.left Id
-            div.modifyStructureTitleColumn.left Column
-            div.modifyStructureTitleIsPK.left isPK
-            div.modifyStructureTitleAllowEmpty.left allowEmpty
-            div.modifyStructureTitleType.left Type
-            div.modifyStructureTitleClient.left Client
-            div.modifyStructureTitleServer.left Server
-            div.modifyStructureTitleDescription.left Description
-            div.modifyStructureTitleAddColumn.left Add
-            div.modifyStructureTitleDelColumn.left Del
+            div.left.modifyStructureTitleId Id
+            div.left.modifyStructureTitleColumn Column
+            div.left.modifyStructureTitleIsPK isPK
+            div.left.modifyStructureTitleAllowEmpty allowEmpty
+            div.left.modifyStructureTitleType Type
+            div.left.modifyStructureTitleClient Client
+            div.left.modifyStructureTitleServer Server
+            div.left.modifyStructureTitleDescription Description
+            div.left.modifyStructureTitleAddColumn Add
+            div.left.modifyStructureTitleDelColumn Del
             div.clear
         div#modifyStructureOption
             for structure in sl

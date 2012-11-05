@@ -46,6 +46,7 @@ UIExporter.prototype.domAddLevel = function domAddLevel(el, zone, level) {
         zone.find('.graph').append(html);
         var graphEl = uiExporter.getGraphLevelZone(zone, level);
         var buttonDeleteLevelEl = graphEl.find('.buttonDeleteLevel');
+        buttonDeleteLevelEl.button();
 
         eventExporter.bindGraphDrop(graphEl[0]);
         eventExporter.bindDelLevel(buttonDeleteLevelEl);
@@ -82,11 +83,12 @@ UIExporter.prototype.getTables = function getTables() {
 UIExporter.prototype.domAddNewTable = function domAddNewTable(tab, level, tableId, graphTableId) {
     var zone = this['getTab' + Util.upperCaseFirst(tab)]();
     var el = this.getGraphLevelZone(zone, level);
-    $.post('/getStructure', { req: 'getStructure', id: tableId }, function(json) {
+    $.post('./getStructure', { req: 'getStructure', id: tableId }, function(json) {
         var obj = Util.parse(json);
         view.get('graphTableStructure', function(html) {
             el.append(html)
                 .find('.graphTableId').last().val(graphTableId);
+            $('.graphTableStructureDeleteTableInput').button();
             eventExporter.bindGraphTable(el);
         }, obj);
     });

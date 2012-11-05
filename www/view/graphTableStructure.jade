@@ -1,5 +1,6 @@
 div.graphTableStructure.border
-    div.graphTableStructureTitle #{t.n}
+    div.graphTableStructureTitle
+        span.inputLabel #{t.n}
         input.graphTableStructureDeleteTableInput(type='button', value='Delete')
     div.graphTableStructureHidden.hide
         input.tableId(type='hidden', value='#{t.i}')
@@ -8,7 +9,7 @@ div.graphTableStructure.border
         for structure in sl
             div.graphTableStructureColumn
                 div.left.graphTableStructureColumnName.pointer(draggable='true')
-                    div #{structure.n}
+                    div.inputLabel #{structure.n}
                 div.left.graphTableStructureSelected
                     input.graphTableStructureSelectedInput(type='checkbox')
                 div.left.graphTableStructureRename
