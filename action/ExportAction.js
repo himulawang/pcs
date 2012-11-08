@@ -1,23 +1,27 @@
 var ExportAction = function ExportAction() {};
 
-ExportAction.prototype.getExportList = function getExportList(syn, params, cb) {
-    return ExportLogic.getExportList(syn, params, cb);
+ExportAction.prototype.getExportList = function getExportList(lc, params) {
+    return ExportLogic.getExportList(lc, params);
 };
 
-ExportAction.prototype.getExportConfig = function getExportConfig(syn, params, cb) {
-    return ExportLogic.getExportConfig(syn, params, cb);
+ExportAction.prototype.getExportConfig = function getExportConfig(lc, params) {
+    return ExportLogic.getExportConfig(lc, params);
 };
 
-ExportAction.prototype.createExport = function createExport(syn, params, cb) {
-    return ExportLogic.createExport(syn, params, cb);
+ExportAction.prototype.createExport = function createExport(lc, params) {
+    return ExportLogic.createExport(lc, params);
 };
 
-ExportAction.prototype.modifyExport = function modifyExport(syn, params, cb) {
-    return ExportLogic.modifyExport(syn, params, cb);
+ExportAction.prototype.modifyExport = function modifyExport(lc, params) {
+    return ExportLogic.modifyExport(lc, params);
 };
 
-ExportAction.prototype.deleteExport = function deleteExport(syn, params, cb) {
-    return ExportLogic.deleteExport(syn, params, cb);
+ExportAction.prototype.deleteExport = function deleteExport(lc, params) {
+    return ExportLogic.deleteExport(lc, params);
+};
+
+ExportAction.prototype.exportData = function exportData(lc, params) {
+    return ExportLogic.deleteExport(lc, params);
 };
 
 exports.ExportAction = new ExportAction();

@@ -1,14 +1,16 @@
 // init on ready
-var view, tab, table, importer, graph, exporter, eventExporter, uiExporter;
+var view, tab, table, importer, graph, exporter, eventExporter, uiExporter, fs;
 
-// init on useing
+// init on using
 var canvas;
 
 $(function() {
+    fs = new FileSystem();
     view = new View();
     tab = new Tab();
     table = new Table();
     importer = new Importer();
+    graph = new Graph();
 
     exporter = new Exporter();
     eventExporter = new EventExporter();

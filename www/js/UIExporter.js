@@ -96,7 +96,7 @@ UIExporter.prototype.domAddNewTable = function domAddNewTable(tab, level, tableI
 UIExporter.prototype.domAddTable = function domAddTable(tab, level, tableId, graphTableId, columnDetail) {
     var zone = this['getTab' + Util.upperCaseFirst(tab)]();
     var el = this.getGraphLevelZone(zone, level);
-    $.post('/getStructure', { req: 'getStructure', id: tableId }, function(json) {
+    $.post('./getStructure', { req: 'getStructure', id: tableId }, function(json) {
         var obj = Util.parse(json);
         view.get('graphTableStructure', function(html) {
             var tableEl = el.append(html).find('.graphTableStructure').last();
@@ -110,6 +110,7 @@ UIExporter.prototype.domAddTable = function domAddTable(tab, level, tableId, gra
             });
 
             eventExporter.bindGraphTable(el);
+            $('.graphTableStructureDeleteTableInput').button();
         }, obj);
     });
 };

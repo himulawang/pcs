@@ -16,6 +16,9 @@ body {
 .left {
     float: left;
 }
+.right {
+    float: right;
+}
 .clear {
     clear: both;
 }
@@ -164,4 +167,10 @@ body {
 
 .graphTableStructureRenameInput {
     width: 70px;
+}
+
+.listTitle {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 8px 5px 8px 5px;
 }

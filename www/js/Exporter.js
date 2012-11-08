@@ -148,3 +148,41 @@ Exporter.prototype.addTable = function addTable(tab, level, tableId, columnDetai
     // add dom
     uiExporter.domAddTable(tab, level, tableId, graphTableId, columnDetail);
 };
+Exporter.prototype.exportData = function exportData(id) {
+    var lc = new LogicController();
+    // get client & server ExportConfig
+    lc.add({
+        fn: ExporterLib.getExportConfig,
+        imports: { id: id },
+        exports: { clientExportConfig: 'clientExportConfig', serverExportConfig: 'serverExportConfig' },
+    });
+    // client
+    // get all dataList & tableStructure
+    lc.add({
+        fn: ExporterLib.getBatchDataList,
+        imports: { _clientExportConfig: null },
+        exports: { graphTableDataList: 'graphTableDataList', tableStructureList: 'tableStructureList' },
+    });
+    // merge & rename column
+    lc.add({
+        fn: ExporterLib.mergeAndRenameColumn,
+        imports: { _clientExportConfig: null, _graphTableDataList: null, _tableStructureList: null },
+        exports: {},
+    });
+
+
+
+    lc.add({
+        fn: ExporterLib.cbDownloadData,
+        imports: {},
+        exports: {},
+    });
+    lc.cb(function() {
+        /*
+        console.log(this.get('clientExportConfig'));
+        console.log(this.get('graphTableDataList'));
+        console.log(this.get('tableStructureList'));
+        */
+    });
+    lc.next();
+};

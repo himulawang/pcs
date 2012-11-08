@@ -40,7 +40,6 @@ Importer.prototype.importFilesRequest = function importFilesRequest() {
     }
     lc.cb(function(){});
     lc.next();
-
 };
 Importer.prototype.loadFileData = function loadFileData(file) {
     /*

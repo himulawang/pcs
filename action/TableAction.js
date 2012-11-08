@@ -1,25 +1,25 @@
 var TableAction = function TableAction() {};
 
-TableAction.prototype.createTable = function createTable(syn, params, cb) {
-    return TableLogic.createTable(syn, params, cb);
+TableAction.prototype.createTable = function createTable(lc, params) {
+    return TableLogic.createTable(lc, params);
 };
-TableAction.prototype.getTableList = function getTableList(syn, params, cb) {
-    return TableLogic.getTableList(syn, params, cb);
+TableAction.prototype.getTableList = function getTableList(lc, params) {
+    return TableLogic.getTableList(lc, params);
 };
-TableAction.prototype.getStructure = function getStructure(syn, params, cb) {
-    return TableLogic.getStructure(syn, params, cb);
+TableAction.prototype.getStructure = function getStructure(lc, params) {
+    return TableLogic.getStructure(lc, params);
 };
-TableAction.prototype.modifyStructure = function modifyStructure(syn, params, cb) {
-    return TableLogic.modifyStructure(syn, params, cb);
+TableAction.prototype.modifyStructure = function modifyStructure(lc, params) {
+    return TableLogic.modifyStructure(lc, params);
 };
-TableAction.prototype.deleteTable = function deleteTable(syn, params, cb) {
-    return TableLogic.deleteTable(syn, params, cb);
+TableAction.prototype.deleteTable = function deleteTable(lc, params) {
+    return TableLogic.deleteTable(lc, params);
 };
-TableAction.prototype.uploadData = function uploadData(syn, params, cb) {
-    return TableLogic.uploadData(syn, params, cb);
+TableAction.prototype.uploadData = function uploadData(lc, params) {
+    return TableLogic.uploadData(lc, params);
 };
-TableAction.prototype.getData = function getData(syn, params, cb) {
-    return TableLogic.getData(syn, params, cb);
+TableAction.prototype.getData = function getData(lc, params) {
+    return TableLogic.getData(lc, params);
 };
 
 exports.TableAction = new TableAction();

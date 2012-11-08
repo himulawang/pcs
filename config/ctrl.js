@@ -86,4 +86,10 @@ exports.ctrl = {
             'id': 'ni',
         },
     },
+    'exportData': {
+        'action': 'ExportAction',
+        'param': {
+            'id': 'ni',
+        },
+    },
 };

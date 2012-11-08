@@ -20,6 +20,7 @@ EventExporter.prototype.eventClickCreateExport = function eventClickCreateExport
                 eventExporter.bindExportSetting();
                 eventExporter.bindTabButton();
                 eventExporter.bindAddLevel();
+                $('#buttonReturnExportList').button();
             }, obj);
         });
     });
@@ -126,8 +127,8 @@ EventExporter.prototype.bindTableDrag = function bindTableDrag(list) {
 
 /* GraphTable Event Bind */
 EventExporter.prototype.eventChangeSelectedInput = function eventChangeSelectedInput(e) {
-    var graphTableId = $(this).parent().parent().parent().parent().find('.graphTableId').val();
-    var columnId = $(this).parent().parent().find('.columnId').val();
+    var graphTableId = $(this).parent().parent().parent().parent().parent().find('.graphTableId').val();
+    var columnId = $(this).parent().parent().parent().find('.columnId').val();
     this.checked ? graph.selectColumn(graphTableId, columnId) : graph.cancelColumn(graphTableId, columnId);
 };
 EventExporter.prototype.eventDragStartColumnName = function eventDragStartColumnName(e) {
@@ -261,6 +262,24 @@ EventExporter.prototype.eventClickExportName = function eventClickExportName(id)
 
             canvas.set(obj.ecc, obj.ecs);
             canvas.render();
+
+            $('#modifyExportModifyButton,#modifyExportDeleteButton,.delLink,.buttonAddLevel').button();
         }, obj);
     });
+};
+
+/* Export Event */
+EventExporter.prototype.eventClickExport = function eventClickExport(id) {
+    /*
+    var param = {
+        req: 'exportData',
+        id: id,
+    };
+    $.post('./exportData', param, function(json) {
+        var obj = Util.parse(json);
+    });
+    */
+};
+EventExporter.prototype.eventClickDownload = function eventClickDownload(id) {
+    exporter.exportData(id);
 };

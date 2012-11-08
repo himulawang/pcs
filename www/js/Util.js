@@ -43,7 +43,7 @@ var Util = {
             throw new Exception(10202);
         }
     },
-    lastIndex: function last(object) {
+    lastIndex: function lastIndex(object) {
         if (Array.isArray(object)) {
             return object.length - 1;
         } else if (typeof object === 'object') {
@@ -57,10 +57,34 @@ var Util = {
             }
             return false;
         } else {
-            throw new Exception(10202);
+            throw new Exception(10207);
         }
     },
-    upperCaseFirst: function(string) {
+    upperCaseFirst: function upperCaseFirst(string) {
         return string[0].toUpperCase() + string.substr(1);
+    },
+    uniqueValue: function uniqueValue(object) {
+        var exists = [];
+        var value;
+        if (Array.isArray(object)) {
+            var result = [];
+            for (var i = 0; i < object.length; ++i) {
+                value = object[i];
+                if (exists.indexOf(value) != -1) continue;
+                exists.push(value);
+                result.push(value);
+            }
+        } else if (typeof object === 'object') {
+            var result = {};
+            for (var i in object) {
+                value = object[i];
+                if (exists.indexOf(value) != -1) continue;
+                exists.push(value);
+                result[i] = value;
+            }
+        } else {
+            throw new Exception(10208);
+        }
+        return result;
     },
 };
