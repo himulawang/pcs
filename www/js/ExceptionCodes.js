@@ -17,6 +17,10 @@ var ExceptionCodes = {
     '50102': 'Must choose an import file.',
     '50103': 'Data column not match with title column when parsing import file.',
     '50104': 'Invalid tableName when uploading data.',
+    '50105': 'Invalid import data type, require number.',
+    '50106': 'Invalid import data type, require string.',
+    '50107': 'Invalid import data type, require json.',
+    '50108': 'Invalid data type set when verify input batch data.',
 
     // graph
     '50201': 'Test table on same level error.',

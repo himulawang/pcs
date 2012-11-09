@@ -106,7 +106,18 @@ Exporter.prototype.restoreExport = function restoreExport(tab, data) {
     for (var level in data.graphStructure) {
         for (var index in data.graphStructure[level]) {
             graphTableId = data.graphStructure[level][index];
-            this.addTable(tab, level, data.graphTableIds[graphTableId], data.columnDetail[graphTableId]);
+            var lc = new LogicController();
+            lc.add({
+                fn: this.addTable,
+                imports: { 
+                    tab: tab,
+                    level: level,
+                    tableId: data.graphTableIds[graphTableId],
+                    columnDetail: data.columnDetail[graphTableId],
+                },
+                exports: {},
+            });
+            lc.next();
         }
     }
 
@@ -146,7 +157,7 @@ Exporter.prototype.addTable = function addTable(tab, level, tableId, columnDetai
     var graphTableId = graph.addNewTable(tab, level, tableId);
 
     // add dom
-    uiExporter.domAddTable(tab, level, tableId, graphTableId, columnDetail);
+    uiExporter.domAddTable.call(this, tab, level, tableId, graphTableId, columnDetail);
 };
 Exporter.prototype.exportData = function exportData(id) {
     var lc = new LogicController();

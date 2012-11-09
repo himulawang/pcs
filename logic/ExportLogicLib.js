@@ -158,7 +158,7 @@ exports.ExportLogicLib = {
         clientExportConfig.columnDetail = client.columnDetail;
         clientExportConfig.canvas = client.canvas;
 
-        ExportConfigModel.add(clientExportConfig, function(err, data) {
+        ExportConfigModel.update(clientExportConfig, function(err, data) {
             if (err) return self.cb(err);
             self.next();
         });
@@ -201,7 +201,7 @@ exports.ExportLogicLib = {
         serverExportConfig.columnDetail = server.columnDetail;
         serverExportConfig.canvas = server.canvas;
 
-        ExportConfigModel.add(serverExportConfig, function(err, data) {
+        ExportConfigModel.update(serverExportConfig, function(err, data) {
             if (err) return self.cb(err);
             self.next();
         });

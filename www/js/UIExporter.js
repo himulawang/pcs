@@ -94,8 +94,9 @@ UIExporter.prototype.domAddNewTable = function domAddNewTable(tab, level, tableI
     });
 };
 UIExporter.prototype.domAddTable = function domAddTable(tab, level, tableId, graphTableId, columnDetail) {
-    var zone = this['getTab' + Util.upperCaseFirst(tab)]();
-    var el = this.getGraphLevelZone(zone, level);
+    var self = this;
+    var zone = uiExporter['getTab' + Util.upperCaseFirst(tab)]();
+    var el = uiExporter.getGraphLevelZone(zone, level);
     $.post('./getStructure', { req: 'getStructure', id: tableId }, function(json) {
         var obj = Util.parse(json);
         view.get('graphTableStructure', function(html) {
@@ -111,6 +112,7 @@ UIExporter.prototype.domAddTable = function domAddTable(tab, level, tableId, gra
 
             eventExporter.bindGraphTable(el);
             $('.graphTableStructureDeleteTableInput').button();
+            self.next();
         }, obj);
     });
 };

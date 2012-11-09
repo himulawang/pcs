@@ -68,6 +68,41 @@ exports.TableLogicLib = {
         });
     },
     /* DataList */
+    verifyBatchData: function verifyBatchData(structureList, data) {
+        /*
+         * @import StructureList    structrueList
+         * @import Object           data
+         * @export void
+         * */
+        var list = structureList.getList();
+        var columnTypes = [];
+        for (var i in list) {
+            columnTypes.push(list[i].type);
+        }
+
+        var util = I.Util;
+        for (var j = 0; j < data.length; ++j) {
+            // skip title
+            var n = data[j];
+            if (j === 0) continue;
+            for (var columnTypeIndex = 0; columnTypeIndex < columnTypes.length; ++columnTypes) {
+                switch (columnTypes[columnTypeIndex]) {
+                    case 'number':
+                        if (!util.isInt(n[columnTypeIndex])) return this.cb(new I.Exception(50105));
+                        break;
+                    case 'string':
+                        if (!util.isString(n[columnTypeIndex])) return this.cb(new I.Exception(50106));
+                        break;
+                    case 'json':
+                        if (!util.isJSON(n[columnTypeIndex])) return this.cb(new I.Exception(50107));
+                        break;
+                    default:
+                        return this.cb(new I.Exception(50108));
+                }
+            }
+        }
+        this.next();
+    },
     getDataList: function getDataList(DataListModel) {
         /*
          * @import Model            DataListModel

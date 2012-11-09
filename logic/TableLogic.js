@@ -218,7 +218,12 @@ TableLogic.prototype.uploadData = function uploadData(lc, params) {
         imports: { _tableId: null },
         exports: { structureList: 'structureList' },
     });
-    // TODO verify import data by column type
+    // verify import data by column type
+    lc.add({
+        fn: TableLogicLib.verifyBatchData,
+        imports: { _structureList: null, data: params.data },
+        exports: {},
+    });
     lc.add({
         fn: TableLogicLib.makeDynamicClass,
         imports: { _table: null, _structureList: null },
