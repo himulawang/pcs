@@ -1,0 +1,42 @@
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.clear {
+    clear: both;
+}
+.border {
+    border: 1px solid #666;
+    border-radius: 10px;
+}
+
+#candyWar {
+    height: 500px;
+    width: 600px;
+}
+
+#candyWarTopBar {
+    height: 60px;
+}
+
+#candyWarTimer {
+    height: 50px;
+    width: 50px;
+}
+#candyWarScore {
+    height: 50px;
+    width: 50px;
+}
+#candyWarCloseButton {
+    height: 50px;
+    width: 50px;
+}
+
+#candyWarCandyWaterfall {
+    height: 400px;
+}
+#candyWarCharacter {
+    height: 50px;
+}

@@ -1,112 +1,76 @@
-var LogicLib = {
-    'getTable': function getTable(tableId1) {
-        console.log('getTable', 'tableId', tableId1);
-        this.set('tableName', 'test');
-        this.next();
-    },
-    'verifyTable': function verifyTable(tableName, outputName) {
-        this.set('verifyResult', tableName);
-        console.log(tableName, outputName);
-        this.next();
-    },
-    'output': function output(outputName) {
-        //console.log('output', outputName);
-        this.next();
-    },
+var CandyWar = function() {
+    this.timer = 30;
+    this.candyGenerateRate = [
+        25,
+        30,
+        20,
+        50
+    ];
+    this.candyScore = [
+        1,
+        2,
+        3,
+        4
+    ];
+    this.candyImageUrl = [
+        'red.png',
+        'green.png',
+        'yellow.png',
+        'white.png'
+    ];
+    this.candyImage = [];
+    
 };
 
-var Runner = function() {
-    this._pipe = [];        // function queue
-    this._imports = [];
-    this._exports = [];     // for function export data rename
-    this._exported = [];    // check function export all values
-    this._data = {};        // save export data
-    this._now = -1;         // which function is running
+CandyWar.prototype.startGame = function() {
 };
 
-Runner.prototype.add = function add(params) {
-    fn = params.fn;
-    // reg func
-    if (this[fn.name]) {
-        console.warn(fn.name, 'exists when add function to runner.');
-    } else {
-        this[fn.name] = fn;
-    }
-    this._pipe.push(fn.name);
+CandyWar.prototype.generateCandy = function() {
 
-    this._imports.push(params.imports);
-    this._exports.push(params.exports);
-
-    var exported = {};
-    for (var i in params.exports) {
-        exported[i] = 0;
-    }
-    this._exported.push(exported);
 };
-Runner.prototype.next = function next() {
-    // check previous function export all values
-    for (var i in this._exported[this._now]) {
-        if (!this._exported[this._now][i]) throw new Error(i + ' not set.');
-    }
 
-    ++this._now;
-    var funcName = this._pipe[this._now];
-    if (!funcName) { // last function
-        console.log('final');
-        return;
-    }
+var Util = {};
+Util.random = function random(start, end) {
+    var n = end - start;
+    return start + Math.floor(Math.random() * n);
+};
+Util.getElementByProbability = function getElementByProbability(probabilityList) {
+    // verify probabilityList is hash
+    if (!this.isHash(probabilityList)) return false;
 
-    // insert middle params
-    var imports = this._imports[this._now] ? this._imports[this._now] : {};
-    var exportsName;
-    var args = [];
-    for (var argName in imports) {
-        if (argName[0] === '_') {
-            argName = argName.slice(1);
-            args.push(this.get(argName));
+    // delete probability = 0 element & sum probabilities
+    var all = 0;
+    for (var i in probabilityList) {
+        if (probabilityList[i] == 0) {
+            delete probabilityList[i];
         } else {
-            args.push(imports[argName]);
+            all += probabilityList[i];
         }
     }
-    this[funcName].apply(this, args);
-};
-Runner.prototype.set = function set(name, val) {
-    var exports = this._exports[this._now];
-    this._exported[this._now][name] = 1;
-    if (exports[name]) {
-        name = exports[name];
+
+    // no element in list
+    if (all === 0) return false;
+
+    // get id by probability
+    var seed = this.random(1, all);
+    var sum = 0;
+    for (var i in probabilityList) {
+        sum += probabilityList[i];
+        if (seed <= sum) {
+            return i;
+        }
     }
 
-    this._data[name] = val;
+    return false;
 };
-Runner.prototype.get = function get(name) {
-    return this._data[name];
+Util.preLoadImage = function preLoadImage(url) {
+    var img = new Image();   
+    /*
+    img.onload = function () {   
+    img.onload = null;   
+        callback(img);   
+    }   
+    */
+    img.src = url;   
+    return img;
 };
-
-var runner = new Runner();
-
-var tableId = 1;
-var outputName = 'ila';
-
-runner.add({
-    fn: LogicLib.getTable,
-    imports: { tableId: tableId },
-    exports: { tableName: 'tableName1' },
-});
-runner.add({
-    fn: LogicLib.getTable,
-    imports: { tableId: tableId },
-    exports: { tableName: 'tableName2' },
-});
-runner.add({
-    fn: LogicLib.verifyTable,
-    imports: { '_tableName1': null, outputName: outputName },
-    exports: { verifyResult: 'verifyResult1' },
-});
-runner.add({
-    fn: LogicLib.verifyTable,
-    imports: { '_tableName2': null, outputName: outputName },
-    exports: { verifyResult: 'verifyResult2' },
-});
-
-runner.next();
