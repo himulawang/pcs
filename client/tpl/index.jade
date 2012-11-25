@@ -1,0 +1,29 @@
+div.row-fluid
+    div#sidebar.span3
+        div#logo
+        div#navTab.tabbable
+            ul.nav.nav-tabs
+                li.dropdown.active
+                    a.dropdown-toggle(href='#', data-toggle='dropdown') Table
+                        b.caret
+                    ul.dropdown-menu
+                        li#btnTableList
+                            a(href='#tabTable', data-toggle='tab') Table List
+                        li.divider
+                        li
+                            a(href='#tabTable', data-toggle='tab') New Table
+                        li
+                            a(href='#tabTable', data-toggle='tab') Import Data
+                li
+                    a(href='#tabExport', data-toggle='tab') Export
+                li
+                    a(href='#tabSystem', data-toggle='tab') System
+            div.tab-content
+                div#tabTable.tab-pane.active
+                    div#tabTableList
+                        | no table
+                div#tabExport.tab-pane
+                    p bb
+                div#tabSystem.tab-pane
+                    p cc
+    div#content.span9 asdf
