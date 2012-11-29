@@ -9,7 +9,7 @@ var LogicController = function LogicController() {
 };
 
 LogicController.prototype.add = function add(params) {
-    fn = params.fn;
+    var fn = params.fn;
     // reg func
     if (this[fn.name]) {
         //console.warn(fn.name, 'exists when add function to runner.');
