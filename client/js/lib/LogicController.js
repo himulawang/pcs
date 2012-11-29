@@ -10,13 +10,14 @@ var LogicController = function LogicController() {
 
 LogicController.prototype.add = function add(params) {
     var fn = params.fn;
+    var name = typeof fn.name === 'string' ? fn.name : /function\s+([^\{\(\s]+)/.test(fn.toString()) ? RegExp['$1'] : '[Unknown]';
     // reg func
-    if (this[fn.name]) {
+    if (this[name]) {
         //console.warn(fn.name, 'exists when add function to runner.');
     } else {
-        this[fn.name] = fn;
+        this[name] = fn;
     }
-    this._pipe.push(fn.name);
+    this._pipe.push(name);
 
     this._imports.push(params.imports);
     this._exports.push(params.exports);
