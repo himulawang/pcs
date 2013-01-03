@@ -1,14 +1,13 @@
 var IndexView = Backbone.View.extend({
     tagName: 'div',
-    id: 'index',
-    className: 'container-fluid',
+    className: 'row-fluid',
     render: function renderIndex() {
-        this.$el.html(Renderer.make('index'));
+        this.$el.html(Renderer.make('Index'));
         $('body').html(this.el);
         this.delegateEvents();
     },
     events: {
-        'click #btnTableList': 'getTableList',
+        'click #Refresh-TableList-Button': 'getTableList',
     },
     getTableList: function() {
         TableController.getTableList();

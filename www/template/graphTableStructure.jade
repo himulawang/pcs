@@ -1,0 +1,24 @@
+div.graphTableStructure.border
+    div.graphTableStructureTitle
+        span.inputLabel #{t.n}
+        input.graphTableStructureDeleteTableInput(type='button', value='Delete')
+    div.graphTableStructureHidden.hide
+        input.tableId(type='hidden', value='#{t.i}')
+        input.graphTableId(type='hidden', value='')
+    div.graphTableStructureColumns
+        for structure in sl
+            div.graphTableStructureColumn
+                div.left.graphTableStructureColumnName.pointer(draggable='true')
+                    div.inputLabel #{structure.n}
+                div.left.graphTableStructureSelected
+                    input.graphTableStructureSelectedInput(type='checkbox')
+                div.left.graphTableStructureRename
+                    input.graphTableStructureRenameInput(type='text', value='#{structure.n}')
+                div.left.graphTableStructurePK
+                    - if (structure.ipk == 1)
+                        span PK
+                    - else
+                        span
+                div.left.hide
+                    input.columnId(type='hidden', value='#{structure.i}')
+                div.clear

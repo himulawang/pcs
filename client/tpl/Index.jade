@@ -1,0 +1,26 @@
+div#sidebar.span3
+    div#logo
+    div#navTab.tabbable
+        ul.nav.nav-tabs
+            li.dropdown.active
+                a.dropdown-toggle(href='#', data-toggle='dropdown') Table
+                    b.caret
+                ul.dropdown-menu
+                    li#Refresh-TableList-Button
+                        a(href='#') Refresh
+                    li.divider
+                    li(onclick='TableController.openCreateTableStructurePanel();')
+                        a(href='#') New
+                    li
+                        a(href='#') Import Data
+            li
+                a(href='#tabExport') Export
+            li
+                a(href='#tabSystem') System
+        div.tab-content
+            div#tabTable.tab-pane.active
+            div#tabExport.tab-pane
+                p bb
+            div#tabSystem.tab-pane
+                p cc
+div#content.span9 asdf

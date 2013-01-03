@@ -1,0 +1,26 @@
+div#createTable
+    div.tabTitle Create Table
+    hr
+    div.commonSetting
+        div.left 
+            span.inputLabel TableName:
+            input#createTableName(type='text')
+        div.left
+            span.inputLabel Description:
+            input#createTableDescription(type='text')
+        div.left
+            input#createTableButton(type='button',
+                value='Create',
+                onclick='table.createTable();')
+        div.clear
+    div.columns
+        div
+            div.left.createTableTitleColumn Column
+            div.left.createTableTitleIsPK isPK
+            div.left.createTableTitleAllowEmpty allowEmpty
+            div.left.createTableTitleType Type
+            div.left.createTableTitleClient Client
+            div.left.createTableTitleServer Server
+            div.left.createTableTitleDescription Description
+            div.clear
+        div#createTableOption

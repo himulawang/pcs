@@ -1,0 +1,31 @@
+div.modifyStructureOption.modifyStructureNewColumn
+    div.modifyStructureTitleId
+        input.modifyStructureId(type='text')
+    div.modifyStructureTitleColumn.left
+        input.modifyStructureColumn(type='text')
+    div.modifyStructureTitleIsPK.left
+        input.modifyStructureIsPK(type='checkbox')
+    div.modifyStructureTitleAllowEmpty.left
+        input.modifyStructureAllowEmpty(type='checkbox')
+    div.modifyStructureTitleType.left
+        select.modifyStructureType
+            option(value='number') number
+            option(value='string') string
+            option(value='json') json
+    div.modifyStructureTitleClient.left
+        input.modifyStructureClient(type='checkbox')
+    div.modifyStructureTitleServer.left
+        input.modifyStructureServer(type='checkbox')
+    div.modifyStructureTitleDescription.left
+        input.modifyStructureDescription(type='text')
+    div.modifyStructureTitleAddColumn.left
+        input.modifyStructureAddColumn(
+            type='button'
+            onclick='table.addColumn();'
+            value='Add')
+    div.modifyStructureTitleDelColumn.left
+        input.modifyStructureDelColumn(
+            type='button'
+            onclick='table.delColumn(this);'
+            value='Del')
+    div.clear

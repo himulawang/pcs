@@ -1,0 +1,54 @@
+div#modifyExport
+    div.tabTitle Create Export
+    div.commonSetting
+        div.left 
+            span.inputLabel ExportName:
+            input#modifyExportName(type='text', value='#{e.n}')
+        div.left
+            span.inputLabel Description:
+            input#modifyExportDescription(type='text', value='#{e.d}')
+        div.left
+            input#modifyExportModifyButton(type='button',
+                value='Modify',
+                onclick='exporter.modifyExport(#{e.i});')
+        div.left
+            input#modifyExportDeleteButton(type='button',
+                value='Delete',
+                onclick='exporter.deleteExport(#{e.i});')
+        div.clear
+    hr
+    div
+        div#exportSetting
+            div#exportSettingTabs
+                ul
+                    li
+                        a#exportTabButtonClient(href='#exportTabClient') Client
+                    li
+                        a#exportTabButtonServer(href='#exportTabServer') Server
+                div#exportTabClient
+                    div
+                        span.inputLabel Filename
+                        input#clientFileName(type='text', value='#{ecc.fn}')
+                        span.inputLabel Path
+                        input#clientPath(type='text', value='#{ecc.p}')
+                        input.delLink(type='button',
+                            value='Del Link',
+                            onclick='exporter.delLink();')
+                    div
+                        input.buttonAddLevel(type='button',
+                            value='Add Level')
+                    div.graph
+                div#exportTabServer
+                    div
+                        span.inputLabel Filename
+                        input#serverFileName(type='text', value='#{ecs.fn}')
+                        span.inputLabel Path
+                        input#serverPath(type='text', value='#{ecs.p}')
+                        input.delLink(type='button',
+                            value='Del Link',
+                            onclick='exporter.delLink();')
+                    div
+                        input.buttonAddLevel(type='button',
+                            value='Add Level')
+                    div.graph
+        canvas#canvas(width='1000', height='1000')

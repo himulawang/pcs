@@ -5,14 +5,27 @@ var view, tab, table, importer, graph, exporter, eventExporter, uiExporter, fs;
 var canvas;
 
 /* view */
-var indexView, tableListView;
+var indexView,
+    tableListView,
+    createTableStructureView,
+    createTableStructureOptionView,
+    modifyTableStructureView,
+    modifyTableStructureOptionView
+;
 var tableList;
 $(function() {
     indexView = new IndexView();
     tableListView = new TableListView();
+    createTableStructureView = new CreateTableStructureView();
+    createTableStructureOptionView = new CreateTableStructureOptionView();
+    modifyTableStructureView = new ModifyTableStructureView();
+    modifyTableStructureOptionView = new ModifyTableStructureOptionView();
     indexView.render();
 
     tableList = new TableList();
+    table = new Table();
+
+    TableController.getTableList();
     //tableList.getTableList();
     /*
     fs = new FileSystem();

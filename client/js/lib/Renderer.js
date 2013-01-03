@@ -1,7 +1,6 @@
 var Renderer = {
     cachedTpl: {},
     make: function make(name, data) {
-        console.log(data);
         data = data || {};
         if (this.cachedTpl[name] === undefined) {
             var jadeSrc = $.ajax({

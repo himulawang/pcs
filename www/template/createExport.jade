@@ -1,0 +1,49 @@
+div#createExport
+    div.tabTitle Create Export
+    div.commonSetting
+        div.left 
+            span.inputLabel ExportName:
+            input#createExportName(type='text')
+        div.left
+            span.inputLabel Description:
+            input#createExportDescription(type='text')
+        div.left
+            input#createExportCreateButton(type='button',
+                value='Create',
+                onclick='exporter.createExport();')
+        div.clear
+    div
+        div#exportSetting
+            div#exportSettingTabs
+                ul
+                    li
+                        a#exportTabButtonClient(href='#exportTabClient') Client
+                    li
+                        a#exportTabButtonServer(href='#exportTabServer') Server
+                div#exportTabClient
+                    div
+                        span.inputLabel Filename:
+                        input#clientFileName(type='text')
+                        span.inputLabel Path:
+                        input#clientPath(type='text')
+                        input.delLink(type='button',
+                            value='Del Link',
+                            onclick='exporter.delLink();')
+                    div
+                        input.buttonAddLevel(type='button',
+                            value='Add Level')
+                    div.graph
+                div#exportTabServer
+                    div
+                        span.inputLabel Filename:
+                        input#serverFileName(type='text')
+                        span.inputLabel Path:
+                        input#serverPath(type='text')
+                        input.delLink(type='button',
+                            value='Del Link',
+                            onclick='exporter.delLink();')
+                    div
+                        input.buttonAddLevel(type='button',
+                            value='Add Level')
+                    div.graph
+        canvas#canvas(width='1000', height='1000')

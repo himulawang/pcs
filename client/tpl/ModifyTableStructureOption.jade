@@ -1,0 +1,25 @@
+for struct in sl
+    div.row-fluid
+        div.span1
+            input.span12(type="text", value='#{struct.i}', disabled=true)
+        div.span1
+            input.span12(type="text", value='#{struct.n}')
+        div.span1
+            input(type="checkbox", checked=struct.ipk==1)
+        div.span1
+            input(type="checkbox", checked=struct.ae==1)
+        div.span2
+            select.span12(type="text")
+                option(value="number", selected=struct.t=='number') number
+                option(value="string", selected=struct.t=='string') string
+                option(value="json", selected=struct.t=='json') json
+        div.span1
+            input(type="checkbox", checked=struct.c==1)
+        div.span1
+            input(type="checkbox", checked=struct.s==1)
+        div.span2
+            input.span12(type="text", value='#{struct.d}')
+        div.span1
+            input.btn(type="button", value="Add")
+        div.span1
+            input.btn(type="button", value="Del")

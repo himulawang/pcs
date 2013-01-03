@@ -1,0 +1,80 @@
+div#modifyStructure
+    div.tabTitle Modify Structure
+    hr
+    div.commonSetting
+        div.left 
+            span.inputLabel TableName:
+            input#modifyStructureName(
+                type='text'
+                value='#{t.n}')
+            input#modifyStructureTableId(
+                type='hidden'
+                value='#{t.i}')
+        div.left
+            span.inputLabel Description:
+            input#modifyStructureDescription(
+                type='text'
+                value='#{t.d}')
+        div.left
+            input#modifyStructureModifyButton(type='button',
+                value='Modify',
+                onclick='table.modifyStructure(#{t.i});')
+        div.left
+            input#modifyStructureDeleteButton(type='button',
+                value='Delete',
+                onclick='table.deleteTableConfirm(#{t.i});')
+        div.clear
+    div.columns
+        div
+            div.left.modifyStructureTitleId Id
+            div.left.modifyStructureTitleColumn Column
+            div.left.modifyStructureTitleIsPK isPK
+            div.left.modifyStructureTitleAllowEmpty allowEmpty
+            div.left.modifyStructureTitleType Type
+            div.left.modifyStructureTitleClient Client
+            div.left.modifyStructureTitleServer Server
+            div.left.modifyStructureTitleDescription Description
+            div.left.modifyStructureTitleAddColumn Add
+            div.left.modifyStructureTitleDelColumn Del
+            div.clear
+        div#modifyStructureOption
+            for structure in sl
+                div.modifyStructureOption
+                    div.modifyStructureTitleId.left
+                        input.modifyStructureId(type='text', value='#{structure.i}')
+                    div.modifyStructureTitleColumn.left
+                        input.modifyStructureColumn(
+                            type='text'
+                            value='#{structure.n}')
+                    div.modifyStructureTitleIsPK.left
+                        input.modifyStructureIsPK(type='checkbox'
+                            checked=structure.ipk == 1)
+                    div.modifyStructureTitleAllowEmpty.left
+                        input.modifyStructureAllowEmpty(type='checkbox'
+                            checked=structure.ae == 1)
+                    div.modifyStructureTitleType.left
+                        select.modifyStructureType
+                            option(value='number', selected=structure.t == 'number') number
+                            option(value='string', selected=structure.t == 'string') string
+                            option(value='json', selected=structure.t == 'json') json
+                    div.modifyStructureTitleClient.left
+                        input.modifyStructureClient(type='checkbox'
+                            checked=structure.c == 1)
+                    div.modifyStructureTitleServer.left
+                        input.modifyStructureServer(type='checkbox'
+                            checked=structure.s == 1)
+                    div.modifyStructureTitleDescription.left
+                        input.modifyStructureDescription(
+                            type='text'
+                            value='#{structure.d}')
+                    div.modifyStructureTitleAddColumn.left
+                        input.modifyStructureAddColumn(
+                            type='button'
+                            onclick='table.addColumn();'
+                            value='Add')
+                    div.modifyStructureTitleDelColumn.left
+                        input.modifyStructureDelColumn(
+                            type='button'
+                            onclick='table.delColumn(this);'
+                            value='Del')
+                    div.clear

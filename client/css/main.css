@@ -35,7 +35,7 @@
 }
 #logo { 
     height: 87px; 
-    background: url('./logo.png') no-repeat;
+    /*background: url('./logo.png') no-repeat;*/
 }
 
 #menuTabs {
