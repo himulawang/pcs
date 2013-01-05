@@ -1,9 +1,8 @@
 var TableListView = Backbone.View.extend({
     tagName: 'div',
-    //id: 'tabTableList',
-    render: function renderTableList(tableListData) {
-        tableListView.$el.html(Renderer.make('TabTableList', tableListData));
-        $('#tabTable').empty().html(tableListView.el);
+    render: function render(data) {
+        this.$el.html(Renderer.make('TableList', data));
+        $('#TableTabBody').empty().html(this.el);
     },
     getTableStructure: function getTableStructure(tableId) {
         TableController.getTableStructure(tableId);

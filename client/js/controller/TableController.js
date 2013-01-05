@@ -1,14 +1,23 @@
 var TableController = {
-    getTableList: function getTableList() {
-        new LogicController().add({
-            fn: tableList.getTableListData,
-            imports: {},
-            exports: { tableListData: 'tableListData' },
-        }).add({
-            fn: tableListView.render,
-            imports: { _tableListData: null },
-            exports: {},
-        }).next();
+    GetTableList: function GetTableList() {
+        tableList.retrieve();
+    },
+    onGetTableList: function onGetTableList(data) {
+        tableListView.render(data);
+    },
+    CreateTable: function CreateTable(table, columnList) {
+        params = {
+            table: table,
+            columnList: columnList,
+        };
+        
+        iWebSocket.send('C0102', params);
+    },
+    onCreateTable: function onCreateTable(data) {
+        indexView.clearContent();
+    },
+    openCreateTableStructurePanel: function openCreateTableStructurePanel() {
+        createTableStructureView.render();
     },
     openModifyTableStructurePanel: function openModifyTableStructurePanel(id) {
         new LogicController().add({
@@ -22,17 +31,6 @@ var TableController = {
         }).add({
             fn: modifyTableStructureOptionView.render,
             imports: { _tableStructure: null },
-            exports: {},
-        }).next();
-    },
-    openCreateTableStructurePanel: function openCreateTableStructurePanel() {
-        new LogicController().add({
-            fn: createTableStructureView.render,
-            imports: {},
-            exports: {},
-        }).add({
-            fn: createTableStructureOptionView.render,
-            imports: {},
             exports: {},
         }).next();
     },

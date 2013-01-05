@@ -1,26 +1,33 @@
-div#sidebar.span3
-    div#logo
-    div#navTab.tabbable
-        ul.nav.nav-tabs
-            li.dropdown.active
-                a.dropdown-toggle(href='#', data-toggle='dropdown') Table
-                    b.caret
-                ul.dropdown-menu
-                    li#Refresh-TableList-Button
-                        a(href='#') Refresh
-                    li.divider
-                    li(onclick='TableController.openCreateTableStructurePanel();')
-                        a(href='#') New
-                    li
-                        a(href='#') Import Data
-            li
-                a(href='#tabExport') Export
-            li
-                a(href='#tabSystem') System
-        div.tab-content
-            div#tabTable.tab-pane.active
-            div#tabExport.tab-pane
-                p bb
-            div#tabSystem.tab-pane
-                p cc
-div#content.span9 asdf
+div.row-fluid
+    div.span3
+        div#Logo
+        div.tabbable
+            ul.nav.nav-tabs
+                li.dropdown.active
+                    a(href='#TableTab', data-toggle="tab") Table
+                li
+                    a(href='#ExportTab', data-toggle="tab") Export
+                li
+                    a(href='#SystemTab', data-toggle="tab") System
+            div#SidebarTab.tab-content
+                div#TableTab.tab-pane.active
+                    div.row-fluid
+                        div.span3.offset2
+                            input.btn(type="button", value="New", onclick='indexView.openCreateTableStructurePanel();')
+                        div.span3
+                            input.btn(type="button", value="Import") 
+                    p
+                    div#TableTabBody
+                div#ExportTab.tab-pane
+                    div#ExportTabBody
+                        p bb
+                div#SystemTab.tab-pane
+                    div#SystemTabBody
+                        p cc
+    div#Content.span9
+div.row-fluid
+    div.span3.row-fluid
+        div#Status.span6
+        div#OnlineUser.span6
+    div.span9 ParaNoidz Stuido All Right Reservered.
+div#DialogPanel

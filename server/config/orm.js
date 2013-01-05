@@ -5,7 +5,6 @@ exports.orms = [
     column: [
         'id',
         'name',
-        'sort',
         'description',
     ],
     updateFilter: [0],

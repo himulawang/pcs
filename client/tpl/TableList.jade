@@ -1,0 +1,14 @@
+for table in tl
+    div.row-fluid
+        div.btn-group.offset1
+            button.btn #{table.n}
+            button.btn.dropdown-toggle(data-toggle='dropdown')
+                span.caret
+            ul.dropdown-menu
+                li
+                    a(href='#', data-toggle='tab', onclick='TableController.openModifyTableStructurePanel(#{table.i});') Structure
+                li
+                    a(href='#', data-toggle='tab') Import Data
+                li.divider
+                li
+                    a(href='#', data-toggle='tab') Delete

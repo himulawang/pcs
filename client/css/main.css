@@ -25,15 +25,15 @@
     margin-right: auto;
 }
 
-#tabTableList {
-    height: 500px;
+#SidebarTab {
+    height: 300px;
 }
 
 #canvas {
     position: absolute;
     pointer-events: none;
 }
-#logo { 
+#Logo { 
     height: 87px; 
     /*background: url('./logo.png') no-repeat;*/
 }

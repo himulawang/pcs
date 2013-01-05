@@ -19,6 +19,8 @@ LogicController.prototype.add = function add(params) {
     }
     this._pipe.push(name);
 
+    params.imports = params.imports || {};
+    params.exports = params.exports || {};
     this._imports.push(params.imports);
     this._exports.push(params.exports);
 

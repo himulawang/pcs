@@ -1,14 +1,13 @@
 var Table = Backbone.Model.extend({
-    getStructure: function getStructure(id) {
-        /* @import Number       id
-         * @export Object       tableStructure
-         * */
-        var self = this;
-        $.post('./getStructure', { req: 'getStructure', id: id }, function(json) {
-            var tableStructure = Util.parse(json);
-            self.set('tableStructure', tableStructure);
-            self.next();
-        });
+    validate: function validate(params) {
+        // name
+        if (!(params.name.length >= 1 && params.name.length <= 32)) {
+            throw new Exception(20001);
+        }
+        // description
+        if (!(params.description.length <= 32)) {
+            throw new Exception(20002);
+        }
     },
 });
 

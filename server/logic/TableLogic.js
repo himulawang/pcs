@@ -23,7 +23,6 @@ TableLogic.prototype.createTable = function createTable(lc, params) {
         imports: { 
             tableName: params.tableName,
             description: params.description, 
-            sort: 1, // TODO
             _tableList: null,
         },
         exports: { tableList: 'tableList' },

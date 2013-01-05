@@ -6,7 +6,7 @@ var ModifyTableStructureView = Backbone.View.extend({
          * */
         data = data || {};
         modifyTableStructureView.$el.html(Renderer.make('ModifyTableStructure', data));
-        $('#content').empty().html(modifyTableStructureView.el);
+        $('#Content').empty().html(modifyTableStructureView.el);
         this.next();
     },
 });

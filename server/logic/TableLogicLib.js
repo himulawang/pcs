@@ -24,9 +24,9 @@ exports.TableLogicLib = {
             self.next();
         });
     },
-    addStructureList: function addStructureList(options, tableList) {
+    addStructureList: function addStructureList(columnList, tableList) {
         /*
-         * @import Object           options
+         * @import Object           columnList
          * @import TableList        tableList
          * @export StructureList    structureList
          * */
@@ -35,18 +35,18 @@ exports.TableLogicLib = {
         var id = table.getPK();
 
         structureList = new StructureList(id);
-        var structure, option;
-        for (var i in options) {
-            option = options[i];
+        var structure, column;
+        for (var i in columnList) {
+            column = columnList[i];
             structure = new Structure([
                 null,
-                i,
-                option.isPK,
-                option.allowEmpty,
-                option.type,
-                option.client,
-                option.server,
-                option.description,
+                column.column,
+                column.isPK,
+                column.allowEmpty,
+                column.type,
+                column.client,
+                column.server,
+                column.description,
             ]);
             structureList.add(structure);
         }
@@ -156,11 +156,10 @@ exports.TableLogicLib = {
         });
     },
     /* Table */
-    addTable: function addTable(tableName, description, sort, tableList) {
+    addTable: function addTable(tableName, description, tableList) {
         /*
          * @import String           tableName
          * @import String           description
-         * @import Number           sort
          * @import TableList        tableList
          * @export TableList        tableList
          * */
@@ -176,7 +175,6 @@ exports.TableLogicLib = {
         // add table
         var table = new Table();
         table.name = tableName;
-        table.sort = 1;
         table.description = description;
 
         tableList.add(table);
@@ -397,6 +395,7 @@ exports.TableLogicLib = {
             tl: tableList.toClient(),
             sl: structureList.toClient(),
         });
+        connectionPool.broadcast('C0101', { tl: tableList.toClient() });
     },
     cbGetStructureList: function cbGetStructureList(table, structureList) {
         /*

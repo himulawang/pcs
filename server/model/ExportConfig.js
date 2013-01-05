@@ -5,5 +5,4 @@ var ExportConfig = function ExportConfig(args) {
 
 ExportConfig.prototype = new ExportConfigBase();
 ExportConfig.prototype.constructor = ExportConfig;
-
 exports.ExportConfig = ExportConfig;

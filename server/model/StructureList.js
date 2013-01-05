@@ -5,13 +5,4 @@ var StructureList = function StructureList(pk, list) {
 
 StructureList.prototype = new StructureListBase();
 StructureList.prototype.constructor = StructureList;
-
-StructureList.prototype.getColumnArray = function getColumnArray(initColumn) {
-    var columnArray = initColumn || [];
-    for (var i in this.list) {
-        columnArray.push(this.list[i].name);
-    }
-    return columnArray;
-};
-
 exports.StructureList = StructureList;
