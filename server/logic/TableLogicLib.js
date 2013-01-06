@@ -168,7 +168,7 @@ exports.TableLogicLib = {
         var list = tableList.getList();
         for (var i in list) {
             if (list[i].name.toLowerCase() == tableName.toLowerCase()) {
-                return self.cb(new I.Exception(20001));
+                return self.cb(new I.Exception(30001));
             }
         }
         
@@ -337,7 +337,7 @@ exports.TableLogicLib = {
         for (var i in list) {
             if (list[i].name.toLowerCase() == tableName) {
                 if (i == id) continue;
-                return this.cb(new I.Exception(20002));
+                return this.cb(new I.Exception(30002));
             }
         }
         this.next();

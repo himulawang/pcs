@@ -1,12 +1,10 @@
-for table in tl
+for table in tableList.list
     div.row-fluid
         div.btn-group.offset1
-            button.btn #{table.n}
+            button.btn(onclick='tableListView.openModifyTableStructurePanel(#{table.id});') #{table.name}
             button.btn.dropdown-toggle(data-toggle='dropdown')
                 span.caret
             ul.dropdown-menu
-                li
-                    a(href='#', data-toggle='tab', onclick='TableController.openModifyTableStructurePanel(#{table.i});') Structure
                 li
                     a(href='#', data-toggle='tab') Import Data
                 li.divider

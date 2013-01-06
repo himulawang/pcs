@@ -31,6 +31,7 @@ var IWebSocket = function() {
         this.connection.onclose = function(error) {
             console.log('close', error);
             self.onclose();
+            self.connect();
         };
 
         this.connection.onmessage = function(message) {
@@ -38,7 +39,7 @@ var IWebSocket = function() {
             if (res.r !== 0) throw new Exception(res.r);
 
             var route = routes[res.a];
-            console.log('api:', res.a, 'data:', res.d);
+            console.log('api:', res.a, 'code', res.r, 'data:', res.d);
             window[route.ctrl + 'Controller']['on' + route.action](res.d);
         };
     };

@@ -1,21 +1,22 @@
-div.span2
-    input.span12.ColumnName(type="text")
-div.span1
-    input.IsPK(type="checkbox")
-div.span1
-    input.AllowEmpty(type="checkbox")
-div.span2
-    select.Type.span12(type="text")
-        option(value="number") number
-        option(value="string") string
-        option(value="json") json
-div.span1
-    input.Client(type="checkbox")
-div.span1
-    input.Server(type="checkbox")
-div.span2
-    input.span12.Description(type="text")
-div.span1
-    input.btn(type="button", value="Add")
-div.span1
-    input.btn(type="button", value="Del")
+.row-fluid.CreateTableStructure-Column
+    div.span2
+        input.span12.ColumnName(type="text")
+    div.span1
+        input.IsPK(type="checkbox")
+    div.span1
+        input.AllowEmpty(type="checkbox")
+    div.span2
+        select.Type.span12(type="text")
+            option(value="number") number
+            option(value="string") string
+            option(value="json") json
+    div.span1
+        input.Client(type="checkbox")
+    div.span1
+        input.Server(type="checkbox")
+    div.span2
+        input.span12.Description(type="text")
+    div.span1
+        input.btn(type="button", value="Add", onclick='createTableStructureOptionView.addColumn();')
+    div.span1
+        input.btn(type="button", value="Del", onclick='createTableStructureOptionView.delColumn(this);')

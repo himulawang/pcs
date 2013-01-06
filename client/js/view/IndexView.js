@@ -1,9 +1,9 @@
-var IndexView = Backbone.View.extend({
-    tagName: 'div',
-    render: function renderIndex() {
-        this.$el.html(Renderer.make('Index'));
-        $('body').html(this.el);
-    },
+var IndexView = function IndexView() {
+    this.render = function render() {
+        var html = Renderer.make('Index');
+        $('body').html(html);
+    };
+    /*
     openCreateTableStructurePanel: function openCreateTableStructurePanel() {
         TableController.openCreateTableStructurePanel();
     },
@@ -13,4 +13,5 @@ var IndexView = Backbone.View.extend({
     clearContent: function clearContent() {
         $('#Content').empty();
     },
-});
+    */
+};

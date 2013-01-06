@@ -6,6 +6,10 @@ var NetController = {
             NetController.GetOnlineUserCount();
             onready();
         };
+        iWebSocket.onclose = function onclose() {
+            $('#Status').html('<span class="label label-important">Offline </span>');
+            $('#OnlineUser').html('<span class="badge badge-default"> ? </span>');
+        };
     },
     GetOnlineUserCount: function GetOnlineUserCount() {
         iWebSocket.send('C0002');

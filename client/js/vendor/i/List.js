@@ -1,7 +1,7 @@
 var List = function() {};
 
 List.prototype.init = function init(listPK, list)  {
-    if (listPK === undefined) throw new I.Exception(10118);
+    if (listPK === undefined) throw new Exception(10118);
     this.pk = listPK;
     this.reset(list);
 };
@@ -20,7 +20,7 @@ List.prototype.add = function add(child) {
 
 // input can be index or object
 List.prototype.del = function del(input) {
-    var index = I.Util.isUInt(input) ? input : input.getPK();
+    var index = Util.isUInt(input) ? input : input.getPK();
     var child = this.get(index);
     this.toDelList.push(child);
 };
@@ -67,20 +67,19 @@ List.prototype.toClient = function toClient() {
     return toClient;
 };
 
-List.prototype.toArray = function toClient() {
-    var toArray = {};
-    for (var i in this.list) {
-        toArray[i] = this.list[i].toArray();
-    }
-    return toArray;
-};
-
 List.prototype.getList = function getList() {
     return this.list;
 };
 
 List.prototype.last = function last() {
-    return I.Util.last(this.list);
+    return Util.last(this.list);
 };
 
-exports.List = List;
+List.prototype.fromServer = function fromServer(dataList) {
+    var child;
+    for (var i in dataList) {
+        child = new this.childObject();
+        child.fromServer(dataList[i]);
+        this.insert(child);
+    }
+};

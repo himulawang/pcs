@@ -1,0 +1,7 @@
+var PCSConst = {
+    EXPORT_CONFIG_CLIENT_SUFFIX: 'c',
+    EXPORT_CONFIG_SERVER_SUFFIX: 's',
+    REQUEST_RESULT_CODE_SUCCESS: 0,
+};
+
+exports.PCSConst = PCSConst;

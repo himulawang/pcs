@@ -11,7 +11,7 @@ exports.TableController = {
             exports: {},
         });
     },
-    Create: function Create(lc, params) {
+    CreateTable: function CreateTable(lc, params) {
         lc.add({
             fn: TableLogicLib.getTableList,
             imports: {},

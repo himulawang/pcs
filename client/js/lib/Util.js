@@ -87,4 +87,18 @@ var Util = {
         }
         return result;
     },
+    valueExist: function valueExist(value, object) {
+        if (Array.isArray(object)) {                                
+            return object.indexOf(value) !== -1;                    
+        } else if (typeof object === 'object') {                    
+            for (var h in object) {                                 
+                if (object[h] === value) {                          
+                    return true;                                    
+                }                                                   
+            }                                                       
+            return false;                                           
+        } else {                                                    
+            throw new Exception(10206);                           
+        }
+    },
 };

@@ -12,7 +12,7 @@ exports.routes = {
     },
     // C01xx Table
     C0101: {                          
-        ctrl: 'Table',                  
+        ctrl: 'TableList',                  
         action: 'Retrieve', 
         param: {},
     },

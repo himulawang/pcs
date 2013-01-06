@@ -6,7 +6,7 @@ var CreateTableStructureView = Backbone.View.extend({
         $('#Content').empty().html(createTableStructureView.el);
 
         // add a column
-        createTableStructureOptionView.render();
+        createTableStructureOptionView.addColumn();
     },
     createTable: function createTable() {
         // table
@@ -33,6 +33,7 @@ var CreateTableStructureView = Backbone.View.extend({
                 server: n.find('.Server').attr('checked') ? 1 : 0,
                 description: n.find('.Description').val(),
             });
+            console.log(column);
             columnList.push(column);
         });
 

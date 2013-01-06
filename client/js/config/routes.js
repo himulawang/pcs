@@ -10,8 +10,8 @@ var routes = {
     },
     // table
     C0101: {
-        ctrl: 'Table',
-        action: 'GetTableList',
+        ctrl: 'TableList',
+        action: 'Retrieve',
     },
     C0102: {
         ctrl: 'Table',

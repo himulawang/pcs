@@ -34,28 +34,18 @@ ws.on('request', function(req) {
         if (message.type === 'binary') return;
         var req = JSON.parse(message.utf8Data);
 
-        var response = function(args) {
-            var err = args[0];
-            var resData = args[1];
-            var r = {};
-            if (err) {
-                if (err instanceof I.Exception) {
-                    r.r = err.message;
-                    r.m = I.ExceptionCodes[r.r];
-                } else {
-                    r.r = -1;
-                    r.m = 'Unexpected Error.';
-                }
-            } else {
-                r.r = 0;
-                r.d = resData;
-            }
-            r.a = req.a;
-            connection.sendUTF(JSON.stringify(r));
-
-            var end = process.hrtime(start);
-            console.log('req:', req.a, 'result:', r, 'cost:', (end[0] + end[1] / 1000000000) * 1000 + 'ms');
-        };
-        I.Route.process(routes, req, response);
+        try {
+            I.Route.process(connection, req);
+        } catch (e) {
+            console.log('Error', e);
+        }
     });
+});
+
+// retrieve data to memory
+global.dataPool = {};
+var tableList;
+TableListModel.retrieve(0 /* Unique */, function(err, data) {
+    if (err) return err;
+    dataPool['tableList'] = data;
 });

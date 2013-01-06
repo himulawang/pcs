@@ -44,12 +44,11 @@ IObject.prototype.toClient = function toClient() {
     }
     return toClient;
 };
-IObject.prototype.toArray = function toArray() {
-    var toArray = {};
-    for (var i in this.column) {
-        toArray[this.column[i]] = this[this.column[i]];
+IObject.prototype.fromServer = function fromServer(data) {
+    var full;
+    for (var abb in data) {
+        full = this.invertAbb[abb];
+        this[full] = data[abb];
     }
-    return toArray;
+    this.resetUpdateList();
 };
-
-exports.Object = IObject;
