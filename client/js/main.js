@@ -24,4 +24,20 @@ $(function() {
         tableList.retrieve();
     });
 
+    var html = Renderer.make('testInclude');
+    $('#Content').html(html);
+
+    /*
+    var jadeSrc = $.ajax({
+        url: '../tpl/Index.jade',
+        async: false,
+    }).responseText;
+
+    var start = Date.now();
+    for (var i = 0; i < 100000; ++i) {
+        jade.compile(jadeSrc);
+    }
+    console.log(Date.now() -start);
+    */
+
 });
