@@ -5,3 +5,11 @@ var Table = function Table(args) {
 
 Table.prototype = new TableBase();
 Table.prototype.constructor = Table;
+
+Table.prototype.create = function create() {
+    iWebSocket.send('C0201');
+};
+
+Table.prototype.update = function update() {
+    iWebSocket.send('C0202', { id: this.id, table: this.toAbbArray() });
+};

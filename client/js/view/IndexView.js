@@ -3,6 +3,10 @@ var IndexView = function IndexView() {
         var html = Renderer.make('Index');
         $('body').html(html);
     };
+    this.newTableDefine = function newTableDefine() {
+        var table = new Table();
+        table.create();
+    };
     /*
     openCreateTableStructurePanel: function openCreateTableStructurePanel() {
         TableController.openCreateTableStructurePanel();

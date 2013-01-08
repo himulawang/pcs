@@ -59,12 +59,12 @@ List.prototype.getKeys = function getKeys() {
 
 List.prototype.getPK = function getPK() { return this.pk; };
 
-List.prototype.toClient = function toClient() {
-    var toClient = {};
+List.prototype.toArray = function toArray() {
+    var toArray = {};
     for (var i in this.list) {
-        toClient[i] = this.list[i].toClient();
+        toArray[i] = this.list[i].toArray();
     }
-    return toClient;
+    return toArray;
 };
 
 List.prototype.getList = function getList() {
@@ -75,11 +75,11 @@ List.prototype.last = function last() {
     return Util.last(this.list);
 };
 
-List.prototype.fromServer = function fromServer(dataList) {
+List.prototype.fromAbbArray = function fromAbbArray(dataList) {
     var child;
     for (var i in dataList) {
         child = new this.childObject();
-        child.fromServer(dataList[i]);
+        child.fromAbbArray(dataList[i]);
         this.insert(child);
     }
 };

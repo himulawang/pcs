@@ -1,0 +1,14 @@
+div.row-fluid
+    div.btn-group.offset1
+        button.btn(
+            id='TableList-Table-#{table.id}-Name'
+            onclick='tableListView.openTableDefine(#{table.id});'
+        ) #{table.name}
+        button.btn.dropdown-toggle(data-toggle='dropdown')
+            span.caret
+        ul.dropdown-menu
+            li
+                a(href='#', data-toggle='tab') Import Data
+            li.divider
+            li
+                a(href='#', data-toggle='tab') Delete

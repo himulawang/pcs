@@ -7,7 +7,7 @@ var Renderer = {
                 url: '../../tpl/' + name + '.jade',
                 async: false,
             }).responseText;
-            var fn = jade.compile(jadeSrc, { filename:'../../tpl/' + name + '.jade' });
+            var fn = jade.compile(jadeSrc);
             this.cachedTpl[name] = fn;
         }
         var html = this.cachedTpl[name](data);

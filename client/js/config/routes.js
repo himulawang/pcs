@@ -8,13 +8,18 @@ var routes = {
         ctrl: 'Net',
         action: 'GetOnlineUserCount',
     },
-    // table
+    // table list
     C0101: {
         ctrl: 'TableList',
         action: 'Retrieve',
     },
-    C0102: {
+    // table
+    C0201: {
         ctrl: 'Table',
-        action: 'CreateTable',
+        action: 'Create',
+    },
+    C0202: {
+        ctrl: 'Table',
+        action: 'Update',
     },
 };

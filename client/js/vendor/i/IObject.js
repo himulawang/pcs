@@ -37,18 +37,23 @@ IObject.prototype.toUpdate = function toUpdate() {
     });
     return toDB;
 };
-IObject.prototype.toClient = function toClient() {
-    var toClient = {};
+IObject.prototype.toAbbArray = function toAbbArray() {
+    var toArray = {};
     for (var column in this.abb) {
-        toClient[this.abb[column]] = this[column];
+        toArray[this.abb[column]] = this[column];
     }
-    return toClient;
+    return toArray;
 };
-IObject.prototype.fromServer = function fromServer(data) {
+IObject.prototype.fromAbbArray = function fromAbbArray(data, resetUpdateList) {
+    if (resetUpdateList === undefined) {
+        resetUpdateList = true;
+    }
     var full;
     for (var abb in data) {
         full = this.invertAbb[abb];
         this[full] = data[abb];
     }
-    this.resetUpdateList();
+    if (resetUpdateList) {
+        this.resetUpdateList();
+    }
 };

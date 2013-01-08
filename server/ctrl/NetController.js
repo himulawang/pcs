@@ -3,6 +3,6 @@ exports.NetController = {
         var data = {
             onlineUserCount: connectionPool.length(),
         };
-        connectionPool.single(connection, api, PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+        connectionPool.broadcast(api, data);
     },
 };

@@ -1,40 +1,24 @@
 exports.TableController = {
-    Retrieve: function Retrieve(lc, params) {
-        lc.add({
-            fn: TableLogicLib.getTableList,
-            imports: {},
-            exports: { tableList: 'tableList' },
-        });
-        lc.add({
-            fn: TableLogicLib.cbGetTableList,
-            imports: { _tableList: null },
-            exports: {},
-        });
+    Create: function Create(connection, api, params) {
+        var table = new Table();
+        var pk = dataPool.incr(TableModel.abb);
+
+        table.setPK(pk);
+        dataPool.get('tableList', 0).insert(table);
+
+        var data = {
+            table: table.toAbbArray(),
+        };
+        connectionPool.broadcast(api, data);
     },
-    CreateTable: function CreateTable(lc, params) {
-        lc.add({
-            fn: TableLogicLib.getTableList,
-            imports: {},
-            exports: { tableList: 'tableList' },
-        });
-        lc.add({
-            fn: TableLogicLib.addTable,
-            imports: { 
-                tableName: params.table.name,
-                description: params.table.description, 
-                _tableList: null,
-            },
-            exports: { tableList: 'tableList' },
-        });
-        lc.add({
-            fn: TableLogicLib.addStructureList,
-            imports: { columnList: params.columnList, _tableList: null, },
-            exports: { structureList: 'structureList' },
-        });
-        lc.add({
-            fn: TableLogicLib.cbCreateTable,
-            imports: { _tableList: null, _structureList: null },
-            exports: {},
-        });
+    Update: function Update(connection, api, params) {
+        var table = dataPool.get('tableList', 0).get(params.id);
+        table.fromAbbArray(params.table);
+
+        var data = {
+            id: table.id,
+            table: table.toAbbArray(),
+        };
+        connectionPool.broadcast(api, data);
     },
 };
