@@ -32,6 +32,7 @@ exports.orms = [
     pkAutoIncrement: true,
     list: 'ColumnList',
 },
+    /*
 {
     name: 'Export',
     abb: 'e',
@@ -65,4 +66,5 @@ exports.orms = [
     pkAutoIncrement: false,
     list: null,
 },
+*/
 ];

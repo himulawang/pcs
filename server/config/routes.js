@@ -55,4 +55,12 @@ exports.routes = {
             column: 'nh',
         },
     },
+    C0403: {
+        ctrl: 'Column',                  
+        action: 'Remove', 
+        param: {
+            listId: 'ni',
+            id: 'ni',
+        },
+    },
 };

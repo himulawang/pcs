@@ -26,4 +26,14 @@ exports.ColumnController = {
         };
         connectionPool.broadcast(api, data);
     },
+    Remove: function Remove(connection, api, params) {
+        var columnList = dataPool.get('columnList', params.listId);
+        columnList.remove(params.id);
+
+        var data = {
+            listId: params.listId,
+            id: params.id,
+        };
+        connectionPool.broadcast(api, data);
+    },
 };

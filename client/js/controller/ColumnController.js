@@ -20,4 +20,10 @@ var ColumnController = {
         tableDefineView.renderColumnServer(data.listId, column);
         tableDefineView.renderColumnDescription(data.listId, column);
     },
+    onRemove: function onRemove(data) {
+        var columnList = dataPool.get('columnList', data.listId);
+        columnList.remove(data.id);
+
+        tableDefineView.renderRemoveColumn(data.listId, data.id);
+    },
 };

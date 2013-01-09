@@ -13,3 +13,7 @@ Column.prototype.create = function create(listId) {
 Column.prototype.update = function update(listId, column) {
     iWebSocket.send('C0402', { listId: listId, id: column.id, column: column.toAbbArray() });
 };
+
+Column.prototype.remove = function remove(listId, id) {
+    iWebSocket.send('C0403', { listId: listId, id: id });
+};

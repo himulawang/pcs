@@ -2,7 +2,7 @@ var List = function() {};
 
 List.prototype.init = function init(listPK, list)  {
     if (listPK === undefined) throw new Exception(10118);
-    this.pk = listPK;
+    this.setPK(listPK);
     this.reset(list);
 };
 
@@ -33,7 +33,6 @@ List.prototype.update = function update(child) {
     this.toUpdateList.push(child);
 };
 
-
 List.prototype.get = function get(pk) {
     var child = this.list[pk];
     if (!child) return null;
@@ -58,6 +57,7 @@ List.prototype.getKeys = function getKeys() {
 };
 
 List.prototype.getPK = function getPK() { return this.pk; };
+List.prototype.setPK = function setPK(pk) { this.pk = pk; };
 
 List.prototype.toArray = function toArray() {
     var toArray = {};

@@ -36,4 +36,8 @@ var routes = {
         ctrl: 'Column',
         action: 'Update',
     },
+    C0403: {
+        ctrl: 'Column',
+        action: 'Remove',
+    },
 };

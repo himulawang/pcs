@@ -8,9 +8,16 @@ var TableDefineView = function TableDefineView() {
         return $(this.name + '-' + this.childType[type] + '-' + id + '-' + Util.upperCaseFirst(attr));
     };
     this.renderAll = function renderAll(table) {
+        // table define
         var data = { table: table };
         var html = Renderer.make('TableDefine', data);
         $('#Content').empty().html(html);
+
+        // column
+        var columnList = dataPool.get('columnList', table.id);
+        for (var id in columnList.list) {
+            this.renderAddColumn(table.id, columnList.get(id));
+        }
     };
     this.renderTableName = function renderTableName(table) {
         if (!this.isViewOpened(table.id)) return;
@@ -29,6 +36,11 @@ var TableDefineView = function TableDefineView() {
         var data = { listId: listId, column: column };
         var html = Renderer.make('TableDefine-Column', data);
         $('#ColumnList').append(html);
+    };
+    this.renderRemoveColumn = function renderRemoveColumn(listId, id) {
+        if (!this.isViewOpened(listId)) return;
+        var el = this.makeId('column', id, 'div');
+        el.remove();
     };
     this.renderColumnName = function renderColumnName(listId, column) {
         if (!this.isViewOpened(listId)) return;
@@ -125,5 +137,8 @@ var TableDefineView = function TableDefineView() {
     this.addColumn = function addColumn(tableId) {
         var column = new Column();
         column.create(tableId);
+    };
+    this.delColumn = function delColumn(tableId, columnId) {
+        dataPool.get('columnList', tableId).get(columnId).remove(tableId, columnId);
     };
 };

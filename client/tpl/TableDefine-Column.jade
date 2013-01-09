@@ -1,4 +1,4 @@
-.row-fluid
+.row-fluid(id='TableDefine-Column-#{column.id}-Div')
     div.span2.input-prepend
         span.span4.add-on #{column.id}
         input.span8(
@@ -11,18 +11,21 @@
         input.IsPK(
             id='TableDefine-Column-#{column.id}-IsPK'
             type="checkbox"
+            checked=column.isPK==1
             onchange='tableDefineView.onColumnIsPKChange(#{listId}, #{column.id}, this);'
         )
     div.span1
         input.AllowEmpty(
             id='TableDefine-Column-#{column.id}-AllowEmpty'
             type="checkbox"
+            checked=column.allowEmpty==1
             onchange='tableDefineView.onColumnAllowEmptyChange(#{listId}, #{column.id}, this);'
         )
     div.span2
         select.Type.span12(
             id='TableDefine-Column-#{column.id}-Type'
             onchange='tableDefineView.onColumnTypeChange(#{listId}, #{column.id}, this);'
+            value='#{column.type}'
         )
             option(value="number") number
             option(value="string") string
@@ -31,12 +34,14 @@
         input.Client(
             id='TableDefine-Column-#{column.id}-Client'
             type="checkbox"
+            checked=column.client==1
             onchange='tableDefineView.onColumnClientChange(#{listId}, #{column.id}, this);'
         )
     div.span1
         input.Server(
             id='TableDefine-Column-#{column.id}-Server'
             type="checkbox"
+            checked=column.server==1
             onchange='tableDefineView.onColumnServerChange(#{listId}, #{column.id}, this);'
         )
     div.span2
@@ -50,5 +55,5 @@
         input.btn(
             type="button"
             value="Del"
-            onclick='tableDefineView.delColumn(this);'
+            onclick='tableDefineView.delColumn(#{listId}, #{column.id});'
         )
