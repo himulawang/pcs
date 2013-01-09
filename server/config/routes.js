@@ -25,6 +25,34 @@ exports.routes = {
     C0202: {
         ctrl: 'Table',                  
         action: 'Update', 
-        param: {},
+        param: {
+            id: 'ni',
+            table: 'nh',
+        },
+    },
+    // column list
+    C0301: {
+        ctrl: 'ColumnList',                  
+        action: 'Retrieve', 
+        param: {
+            id: 'ni',
+        },
+    },
+    //  column
+    C0401: {
+        ctrl: 'Column',                  
+        action: 'Create', 
+        param: {
+            listId: 'ni',
+        },
+    },
+    C0402: {
+        ctrl: 'Column',                  
+        action: 'Update', 
+        param: {
+            listId: 'ni',
+            id: 'ni',
+            column: 'nh',
+        },
     },
 };

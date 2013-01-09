@@ -5,7 +5,4 @@ var ColumnList = function ColumnList(pk, list) {
 
 ColumnList.prototype = new ColumnListBase();
 ColumnList.prototype.constructor = ColumnList;
-
-ColumnList.prototype.retrieve = function retrieve(id) {
-    iWebSocket.send('C0301', { id: id });
-};
+exports.ColumnList = ColumnList;

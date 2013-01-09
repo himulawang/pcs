@@ -8,7 +8,7 @@ var TableController = {
         tableDefineView.renderAll(table);
     },
     onUpdate: function onUpdate(data) {
-        var table = tableList.get(data.id);
+        var table = dataPool.get('tableList', 0).get(data.id);
         table.fromAbbArray(data.table);
 
         tableListView.renderTableName(table);

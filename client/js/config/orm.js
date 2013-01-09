@@ -14,8 +14,8 @@ var orms = [
     list: 'TableList',
 },
 {
-    name: 'Structure',
-    abb: 's',
+    name: 'Column',
+    abb: 'c',
     column: [
         'id',
         'name',
@@ -30,7 +30,7 @@ var orms = [
     clientFilter: [],
     pk: 'id',
     pkAutoIncrement: true,
-    list: 'StructureList',
+    list: 'ColumnList',
 },
 {
     name: 'Export',

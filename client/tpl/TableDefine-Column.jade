@@ -1,0 +1,54 @@
+.row-fluid
+    div.span2.input-prepend
+        span.span4.add-on #{column.id}
+        input.span8(
+            id='TableDefine-Column-#{column.id}-Name'
+            type="text"
+            value='#{column.name}'
+            onkeyup='tableDefineView.onColumnNameChange(#{listId}, #{column.id}, this);'
+        )
+    div.span1
+        input.IsPK(
+            id='TableDefine-Column-#{column.id}-IsPK'
+            type="checkbox"
+            onchange='tableDefineView.onColumnIsPKChange(#{listId}, #{column.id}, this);'
+        )
+    div.span1
+        input.AllowEmpty(
+            id='TableDefine-Column-#{column.id}-AllowEmpty'
+            type="checkbox"
+            onchange='tableDefineView.onColumnAllowEmptyChange(#{listId}, #{column.id}, this);'
+        )
+    div.span2
+        select.Type.span12(
+            id='TableDefine-Column-#{column.id}-Type'
+            onchange='tableDefineView.onColumnTypeChange(#{listId}, #{column.id}, this);'
+        )
+            option(value="number") number
+            option(value="string") string
+            option(value="json") json
+    div.span1
+        input.Client(
+            id='TableDefine-Column-#{column.id}-Client'
+            type="checkbox"
+            onchange='tableDefineView.onColumnClientChange(#{listId}, #{column.id}, this);'
+        )
+    div.span1
+        input.Server(
+            id='TableDefine-Column-#{column.id}-Server'
+            type="checkbox"
+            onchange='tableDefineView.onColumnServerChange(#{listId}, #{column.id}, this);'
+        )
+    div.span2
+        input.span12.Description(
+            id='TableDefine-Column-#{column.id}-Description'
+            type="text"
+            value='#{column.description}'
+            onkeyup='tableDefineView.onColumnDescriptionChange(#{listId}, #{column.id}, this);'
+        )
+    div.span1
+        input.btn(
+            type="button"
+            value="Del"
+            onclick='tableDefineView.delColumn(this);'
+        )

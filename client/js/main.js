@@ -18,10 +18,11 @@ $(function() {
     window.modifyTableStructureOptionView = new ModifyTableStructureOptionView();
     */
 
-    /* model */
-    tableList = new TableList(0);
+    
+    /* data */
+    window.dataPool = new DataPool();
 
     NetController.Connect(function() {
-        tableList.retrieve();
+        new TableList(0).retrieve();
     });
 });

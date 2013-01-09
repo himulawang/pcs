@@ -1,8 +1,16 @@
 h2.text-info Table Define
 hr
-div.row-fluid
-    div.span8
-        div.input-prepend
+.row-fluid
+    .span8
+        .input-prepend
+            span.add-on.span4 Id
+            input.span6(
+                id='TableDefine-Table-#{table.id}-Id'
+                type="text"
+                value='#{table.id}'
+                disabled
+            )
+        .input-prepend
             span.add-on.span4 Name
             input.span6(
                 id='TableDefine-Table-#{table.id}-Name'
@@ -10,7 +18,7 @@ div.row-fluid
                 value='#{table.name}'
                 onkeyup='tableDefineView.onTableNameChange(#{table.id}, this);'
             )
-        div.input-prepend
+        .input-prepend
             span.add-on.span4 Description
             input.span6(
                 id='TableDefine-Table-#{table.id}-Description'
@@ -18,7 +26,8 @@ div.row-fluid
                 value='#{table.description}'
                 onkeyup='tableDefineView.onTableDescriptionChange(#{table.id}, this);'
             )
-div.row-fluid
+hr                
+.row-fluid
     h5.span2 Column
     h5.span1 IsPK
     h5.span1 AllowEmpty
@@ -26,6 +35,12 @@ div.row-fluid
     h5.span1 Client
     h5.span1 Server
     h5.span2 Description
-    h5.span1 Add
     h5.span1 Del
-div#CreateTableStructure-Option
+#ColumnList
+.row-fluid
+    .span6
+        input.btn(
+            type='button'
+            value='Add Column'
+            onclick='tableDefineView.addColumn(#{table.id});'
+        )

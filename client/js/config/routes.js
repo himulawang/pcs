@@ -22,4 +22,18 @@ var routes = {
         ctrl: 'Table',
         action: 'Update',
     },
+    // column list
+    C0301: {
+        ctrl: 'ColumnList',
+        action: 'Retrieve',
+    },
+    // column
+    C0401: {
+        ctrl: 'Column',
+        action: 'Create',
+    },
+    C0402: {
+        ctrl: 'Column',
+        action: 'Update',
+    },
 };

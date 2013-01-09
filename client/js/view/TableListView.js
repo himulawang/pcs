@@ -2,14 +2,15 @@ var TableListView = function TableListView() {
     this.el = $('#TableList');
     this.renderAll = function renderAll() {
         this.el.empty();
+        var tableList = dataPool.get('tableList', 0);
         var table;
         for (var id in tableList.list) {
             table = tableList.list[id];
             this.renderCreate(table);
         }
     };
-    this.renderCreate = function renderCreate(input) {
-        var data = { table: input };
+    this.renderCreate = function renderCreate(table) {
+        var data = { table: table };
         var html = Renderer.make('TableList-Table', data);
         this.el.append(html);
     };
@@ -19,7 +20,7 @@ var TableListView = function TableListView() {
     };
     // event
     this.openTableDefine = function openTableDefine(id) {
-        var table = tableList.get(id);
+        var table = dataPool.get('tableList', 0).get(id);
         tableDefineView.renderAll(table);
     };
 };

@@ -6,7 +6,6 @@ var server = require('http').createServer(app);
 app.use(express.bodyParser());
 app.use(app.router);
 app.use(express.static(APP_ABS_PATH + '/client'));
-server.listen(8081);
 
 var routes = require('./config/routes.js').routes;
 
@@ -44,13 +43,37 @@ ws.on('request', function(req) {
 
 // retrieve data to memory
 global.dataPool = new I.DataPool();
-TableListModel.retrieve(0 /* Unique */, function(err, data) {
-    if (err) return console.log(err);
-    dataPool.set('tableList', 0, data);
-});
-
+// PK
 db.get(I.Const.GLOBAL_KEY_PREFIX + TableModel.abb, function(err, data) {
     if (err) return console.log(err);
     dataPool.setPK(TableModel.abb, data);
 });
+
+db.get(I.Const.GLOBAL_KEY_PREFIX + ColumnModel.abb, function(err, data) {
+    if (err) return console.log(err);
+    dataPool.setPK(ColumnModel.abb, data);
+});
+
+// Object / List
+TableListModel.retrieve(0 /* Unique */, function(err, data) {
+    if (err) return console.log(err);
+    dataPool.set('tableList', 0, data);
+
+    var id;
+    for (var id in data.list) {
+        getColumnList(id);
+    }
+});
+
+function getColumnList(id) {
+    ColumnListModel.retrieve(id, function(err, data) {
+        if (err) return console.log(err);
+        dataPool.set('columnList', id, data);
+    });
+};
+
+setTimeout(function() {
+    console.log(dataPool.pool);
+    server.listen(8081);
+}, 1000);
 

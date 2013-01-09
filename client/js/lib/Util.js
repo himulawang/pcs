@@ -101,4 +101,7 @@ var Util = {
             throw new Exception(10206);                           
         }
     },
+    isChecked: function isChecked(el) {
+        return $(el).attr('checked') ? 1 : 0;
+    },
 };

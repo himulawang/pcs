@@ -1,13 +1,19 @@
 exports.TableController = {
     Create: function Create(connection, api, params) {
+        // table
         var table = new Table();
         var pk = dataPool.incr(TableModel.abb);
 
         table.setPK(pk);
         dataPool.get('tableList', 0).insert(table);
 
+        // columnList
+        var columnList = new ColumnList(pk);
+        dataPool.get('columnList', pk, columnList);
+
         var data = {
             table: table.toAbbArray(),
+            columnList: columnList.toAbbArray(),
         };
         connectionPool.broadcast(api, data);
     },
