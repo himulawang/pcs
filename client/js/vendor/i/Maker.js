@@ -100,7 +100,7 @@ Maker.prototype.makeObjectModelClass = function makeObjectModelClass(orm) {
 Maker.prototype.makeListClass = function makeListClass(orm) {
     // class create
     var content = '';
-    content += "this.childObject = " + orm.name + ";";
+    content += "this.childModel = " + orm.name + ";";
 
     var Class = new Function('pk', 'list', content);
 
