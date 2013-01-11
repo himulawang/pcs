@@ -14,6 +14,7 @@ var ws = new WebSocketServer({
 });
 
 global.connectionPool = new I.ConnectionPool();
+var Route = new I.Route(routes);
 ws.on('request', function(req) {
     var connection = req.accept('pcs', req.origin);
     connectionPool.push(connection);
@@ -34,7 +35,7 @@ ws.on('request', function(req) {
         var req = JSON.parse(message.utf8Data);
 
         try {
-            I.Route.process(connection, req);
+            Route.process(connection, req);
         } catch (e) {
             console.log('Error', e);
         }
