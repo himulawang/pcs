@@ -1,4 +1,4 @@
-var IWebSocket = function() {
+I.WebSocket = function() {
     this.connection = null;
     this.url = '';
     this.protocol = '';

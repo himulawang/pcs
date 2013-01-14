@@ -12,7 +12,7 @@ var CreateTableStructureView = Backbone.View.extend({
         // table
         var tableName = this.$('#Name').val();
         var description = this.$('#Description').val();
-        var table = new Table();
+        var table = new I.Models.Table();
         table.set({
             name: tableName,
             description: description,
@@ -20,10 +20,10 @@ var CreateTableStructureView = Backbone.View.extend({
 
         // columnList
         var columnListEl = $('.CreateTableStructure-Column');
-        var columnList = new ColumnList();
+        var columnList = new I.Models.ColumnList();
         columnListEl.each(function(i, n) {
             n = $(n);
-            var column = new Column();
+            var column = new I.Models.Column();
             column.set({
                 column: n.find('.ColumnName').val(),
                 isPK: n.find('.IsPK').attr('checked') ? 1 : 0,

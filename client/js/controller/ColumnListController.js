@@ -1,6 +1,6 @@
 var ColumnListController = {
-    onRetrieve: function onRetrieve(data) {
-        var columnList = new ColumnList(data.id);
+    onGet: function onGet(data) {
+        var columnList = new I.Models.ColumnList(data.id);
         columnList.fromAbbArray(data.columnList);
 
         dataPool.set('columnList', data.id, columnList);

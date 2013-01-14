@@ -4,7 +4,7 @@ var IndexView = function IndexView() {
         $('body').html(html);
     };
     this.newTableDefine = function newTableDefine() {
-        var table = new Table();
+        var table = new I.Models.Table();
         table.create();
     };
     /*

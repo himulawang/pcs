@@ -1,10 +1,10 @@
 var ColumnController = {
     onCreate: function onCreate(data) {
         var columnList = dataPool.get('columnList', data.listId);
-        var column = new Column();
+        var column = new I.Models.Column();
         column.fromAbbArray(data.column);
 
-        columnList.insert(column);
+        columnList.set(column);
         tableDefineView.renderAddColumn(data.listId, column);
     },
     onUpdate: function onUpdate(data) {
@@ -22,7 +22,7 @@ var ColumnController = {
     },
     onRemove: function onRemove(data) {
         var columnList = dataPool.get('columnList', data.listId);
-        columnList.remove(data.id);
+        columnList.unset(data.id);
 
         tableDefineView.renderRemoveColumn(data.listId, data.id);
     },

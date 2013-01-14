@@ -11,7 +11,7 @@ var routes = {
     // table list
     C0101: {
         ctrl: 'TableList',
-        action: 'Retrieve',
+        action: 'Get',
     },
     // table
     C0201: {
@@ -25,7 +25,7 @@ var routes = {
     // column list
     C0301: {
         ctrl: 'ColumnList',
-        action: 'Retrieve',
+        action: 'Get',
     },
     // column
     C0401: {

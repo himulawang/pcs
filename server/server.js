@@ -5,7 +5,7 @@ var app = express();
 var server = require('http').createServer(app);
 app.use(express.bodyParser());
 app.use(app.router);
-app.use(express.static(APP_ABS_PATH + '/client'));
+app.use(express.static(STA_ABS_PATH));
 
 var routes = require('./config/routes.js').routes;
 
@@ -25,7 +25,7 @@ ws.on('request', function(req) {
         console.log(reasonCode, description);
         connectionPool.remove(connection);
 
-        NetController.GetOnlineUserCount(null, 'C0002', {});
+        I.Ctrl.NetController.GetOnlineUserCount(null, 'C0002', {});
     });
 
     connection.on('message', function(message) {
@@ -42,6 +42,7 @@ ws.on('request', function(req) {
     });
 });
 
+console.log(I);
 // retrieve data to memory
 global.dataPool = new I.DataPool();
 // PK
@@ -81,6 +82,7 @@ function getColumnList(id) {
         dataPool.set('columnList', id, data);
     });
 };
+
 
 setTimeout(function() {
     console.log(dataPool.pool);

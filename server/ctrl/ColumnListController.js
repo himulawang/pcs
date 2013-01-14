@@ -4,7 +4,7 @@ exports.ColumnListController = {
             id: params.id,
             columnList: dataPool.get('columnList', params.id).toAbbArray(),
         };
-        connectionPool.single(connection, api, PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+        connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
     },
 };
 

@@ -1,8 +1,8 @@
 var TableController = {
     onCreate: function onCreate(data) {
-        var table = new Table();
+        var table = new I.Models.Table();
         table.fromAbbArray(data.table);
-        tableList.insert(table);
+        dataPool.get('tableList', 0).set(table);
 
         tableListView.renderCreate(table);
         tableDefineView.renderAll(table);

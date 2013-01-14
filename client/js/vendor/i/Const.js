@@ -1,5 +1,6 @@
-!function () {
-    var Const = {
+var global = undefined;
+var I = {
+    Const: {
         // prefix
         GLOBAL_KEY_PREFIX: 'I-GK-',
 
@@ -11,7 +12,5 @@
         PARAM_TYPE_STRING: 's',
         PARAM_TYPE_HASH: 'h',
         PARAM_TYPE_ARRAY: 'a',
-    };
-
-    I.Util.require('Const', '', Const);
-}();
+    },
+};

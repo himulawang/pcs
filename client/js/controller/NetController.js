@@ -1,6 +1,6 @@
 var NetController = {
     Connect: function Connect(onready) {
-        iWebSocket = new IWebSocket().start(WS_URL, WS_PROTOCOL);
+        iWebSocket = new I.WebSocket().start(WS_URL, WS_PROTOCOL);
         iWebSocket.onopen = function onopen() {
             $('#Status').html('<span class="label label-success">Online </span>');
             NetController.GetOnlineUserCount();

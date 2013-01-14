@@ -1,5 +1,5 @@
-function() {
-    var List = function() {};
+!function () {
+    var List = function List() {};
 
     List.prototype.init = function init(pk, list)  {
         if (pk === undefined) throw new I.Exception(10118);
@@ -189,6 +189,5 @@ function() {
         this.set(child);
     };
 
-    if (exports) exports.List = List;
-    if (window) window.I.Models.List = List;
+    I.Util.require('List', 'Models', List);
 }();

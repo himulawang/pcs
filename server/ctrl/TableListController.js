@@ -3,6 +3,6 @@ exports.TableListController = {
         var data = {
             tableList: dataPool.get('tableList', 0).toAbbArray(),
         };
-        connectionPool.single(connection, api, PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+        connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
     },
 };

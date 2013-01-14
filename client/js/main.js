@@ -20,9 +20,9 @@ $(function() {
 
     
     /* data */
-    window.dataPool = new DataPool();
+    window.dataPool = new I.DataPool();
 
     NetController.Connect(function() {
-        new TableList(0).retrieve();
+        new I.Models.TableList(0).get();
     });
 });

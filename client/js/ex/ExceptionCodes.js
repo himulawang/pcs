@@ -1,4 +1,4 @@
-var ExceptionCodes = {
+I.ExceptionCodes = {
     // table
     20001: 'Invalid table name.',
     20002: 'Invalid table desciption.',

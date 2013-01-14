@@ -135,7 +135,7 @@ var TableDefineView = function TableDefineView() {
         column.update(listId, column);
     };
     this.addColumn = function addColumn(tableId) {
-        var column = new Column();
+        var column = new I.Models.Column();
         column.create(tableId);
     };
     this.delColumn = function delColumn(tableId, columnId) {
