@@ -7,8 +7,10 @@ var orms = [
         'name',
         'description',
     ],
-    updateFilter: [0],
-    clientFilter: [],
+    toAddFilter: [],
+    toUpdateFilter: [0],
+    toAbbFilter: [],
+    toArrayFilter: [],
     pk: 'id',
     pkAutoIncrement: true,
     list: 'TableList',
@@ -26,12 +28,15 @@ var orms = [
         'server',
         'description',
     ],
-    updateFilter: [0],
-    clientFilter: [],
+    toAddFilter: [],
+    toUpdateFilter: [0],
+    toAbbFilter: [],
+    toArrayFilter: [],
     pk: 'id',
     pkAutoIncrement: true,
     list: 'ColumnList',
 },
+    /*
 {
     name: 'Export',
     abb: 'e',
@@ -65,4 +70,5 @@ var orms = [
     pkAutoIncrement: false,
     list: null,
 },
+*/
 ];

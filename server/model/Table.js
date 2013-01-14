@@ -3,6 +3,6 @@ var Table = function Table(args) {
     this.init.call(this, args);
 };
 
-Table.prototype = new TableBase();
+Table.prototype = new I.Models.TableBase();
 Table.prototype.constructor = Table;
-exports.Table = Table;
+if (exports) exports.Table = Table;

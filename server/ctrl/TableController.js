@@ -1,15 +1,15 @@
 exports.TableController = {
     Create: function Create(connection, api, params) {
         // table
-        var table = new Table();
-        var pk = dataPool.incr(TableModel.abb);
+        var table = new I.Models.Table();
+        var pk = dataPool.get('table', 'PK').incr();
 
         table.setPK(pk);
-        dataPool.get('tableList', 0).insert(table);
+        dataPool.get('tableList', 0).addSync(table);
 
         // columnList
-        var columnList = new ColumnList(pk);
-        dataPool.get('columnList', pk, columnList);
+        var columnList = new I.Models.ColumnList(pk);
+        dataPool.set('columnList', pk, columnList);
 
         var data = {
             table: table.toAbbArray(),

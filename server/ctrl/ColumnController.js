@@ -1,11 +1,11 @@
 exports.ColumnController = {
     Create: function Create(connection, api, params) {
         var columnList = dataPool.get('columnList', params.listId);
-        var pk = dataPool.incr(ColumnModel.abb);
+        var pk = dataPool.get('column', 'PK').get().incr();
 
-        var column = new Column();
+        var column = new I.Models.Column();
         column.setPK(pk);
-        columnList.insert(column);
+        columnList.addSync(column);
 
         var data = {
             id: pk,
@@ -18,6 +18,7 @@ exports.ColumnController = {
         var columnList = dataPool.get('columnList', params.listId);
         var column = columnList.get(params.id);
         column.fromAbbArray(params.column); 
+        columnList.updateSync(column);
 
         var data = {
             listId: params.listId,
@@ -28,7 +29,7 @@ exports.ColumnController = {
     },
     Remove: function Remove(connection, api, params) {
         var columnList = dataPool.get('columnList', params.listId);
-        columnList.remove(params.id);
+        columnList.delSync(params.id);
 
         var data = {
             listId: params.listId,

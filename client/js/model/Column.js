@@ -3,8 +3,9 @@ var Column = function Column(args) {
     this.init.call(this, args);
 };
 
-Column.prototype = new ColumnBase();
+Column.prototype = new I.Models.ColumnBase();
 Column.prototype.constructor = Column;
+if (exports) exports.Column = Column;
 
 Column.prototype.create = function create(listId) {
     iWebSocket.send('C0401', { listId: listId });

@@ -1,8 +1,7 @@
-var IConst = {
-    // object type
-    OBJECT_TYPE_HASH: 0,
-    OBJECT_TYPE_LIST: 1,
-
+var I = {
+    Models: {},
+};
+var I.Const = {
     // prefix
     GLOBAL_KEY_PREFIX: 'I-GK-',
 

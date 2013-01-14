@@ -45,18 +45,27 @@ ws.on('request', function(req) {
 // retrieve data to memory
 global.dataPool = new I.DataPool();
 // PK
-db.get(I.Const.GLOBAL_KEY_PREFIX + TableModel.abb, function(err, data) {
+I.Models.TablePKStore.get(function(err, data) {
+    dataPool.set('table', 'PK', data);
+});
+I.Models.ColumnPKStore.get(function(err, data) {
+    dataPool.set('column', 'PK', data);
+});
+
+/*
+db.get(I.Const.GLOBAL_KEY_PREFIX + I.Models.TableModel.abb, function(err, data) {
     if (err) return console.log(err);
     dataPool.setPK(TableModel.abb, data);
 });
 
-db.get(I.Const.GLOBAL_KEY_PREFIX + ColumnModel.abb, function(err, data) {
+db.get(I.Const.GLOBAL_KEY_PREFIX + I.Models.ColumnModel.abb, function(err, data) {
     if (err) return console.log(err);
     dataPool.setPK(ColumnModel.abb, data);
 });
+*/
 
 // Object / List
-TableListModel.retrieve(0 /* Unique */, function(err, data) {
+I.Models.TableListStore.get(0 /* Unique */, function(err, data) {
     if (err) return console.log(err);
     dataPool.set('tableList', 0, data);
 
@@ -67,7 +76,7 @@ TableListModel.retrieve(0 /* Unique */, function(err, data) {
 });
 
 function getColumnList(id) {
-    ColumnListModel.retrieve(id, function(err, data) {
+    I.Models.ColumnListStore.get(id, function(err, data) {
         if (err) return console.log(err);
         dataPool.set('columnList', id, data);
     });
@@ -77,4 +86,3 @@ setTimeout(function() {
     console.log(dataPool.pool);
     server.listen(8081);
 }, 1000);
-
