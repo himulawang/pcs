@@ -75,3 +75,7 @@ setTimeout(function() {
     server.listen(8081);
 }, 1000);
 
+setInterval(function() {
+    dataPool.sync();
+    console.log('Syncing');
+}, 50000);
