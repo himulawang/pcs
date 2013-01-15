@@ -42,7 +42,6 @@ ws.on('request', function(req) {
     });
 });
 
-console.log(I);
 // retrieve data to memory
 global.dataPool = new I.DataPool();
 // PK
@@ -52,18 +51,6 @@ I.Models.TablePKStore.get(function(err, data) {
 I.Models.ColumnPKStore.get(function(err, data) {
     dataPool.set('column', 'PK', data);
 });
-
-/*
-db.get(I.Const.GLOBAL_KEY_PREFIX + I.Models.TableModel.abb, function(err, data) {
-    if (err) return console.log(err);
-    dataPool.setPK(TableModel.abb, data);
-});
-
-db.get(I.Const.GLOBAL_KEY_PREFIX + I.Models.ColumnModel.abb, function(err, data) {
-    if (err) return console.log(err);
-    dataPool.setPK(ColumnModel.abb, data);
-});
-*/
 
 // Object / List
 I.Models.TableListStore.get(0 /* Unique */, function(err, data) {
@@ -83,8 +70,8 @@ function getColumnList(id) {
     });
 };
 
-
 setTimeout(function() {
     console.log(dataPool.pool);
     server.listen(8081);
 }, 1000);
+

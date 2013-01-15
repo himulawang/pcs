@@ -5,7 +5,7 @@ var TableDefineView = function TableDefineView() {
         column: 'Column',
     };
     this.makeId = function makeId(type, id, attr) {
-        return $(this.name + '-' + this.childType[type] + '-' + id + '-' + Util.upperCaseFirst(attr));
+        return $(this.name + '-' + this.childType[type] + '-' + id + '-' + I.Util.upperCaseFirst(attr));
     };
     this.renderAll = function renderAll(table) {
         // table define
@@ -106,12 +106,12 @@ var TableDefineView = function TableDefineView() {
     };
     this.onColumnIsPKChange = function onColumnIsPKChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
-        column.isPK = Util.isChecked(el);
+        column.isPK = I.Util.isChecked(el);
         column.update(listId, column);
     };
     this.onColumnAllowEmptyChange = function onColumnAllowEmptyChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
-        column.allowEmpty = Util.isChecked(el);
+        column.allowEmpty = I.Util.isChecked(el);
         column.update(listId, column);
     };
     this.onColumnTypeChange = function onColumnTypeChange(listId, columnId, el) {
@@ -121,12 +121,12 @@ var TableDefineView = function TableDefineView() {
     };
     this.onColumnClientChange = function onColumnClientChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
-        column.client = Util.isChecked(el);
+        column.client = I.Util.isChecked(el);
         column.update(listId, column);
     };
     this.onColumnServerChange = function onColumnServerChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
-        column.server = Util.isChecked(el);
+        column.server = I.Util.isChecked(el);
         column.update(listId, column);
     };
     this.onColumnDescriptionChange = function onColumnDescriptionChange(listId, columnId, el) {

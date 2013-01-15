@@ -7,9 +7,9 @@
     TableList.prototype = new I.Models.TableListBase();
     TableList.prototype.constructor = TableList;
 
-    TableList.prototype.get = function get() {
-        iWebSocket.send('C0101');                       
-    };                                                  
+    TableList.prototype.retrieve = function retrieve() {
+        iWebSocket.send('C0101');
+    };
 
     I.Util.require('TableList', 'Models', TableList);
 }();

@@ -13,7 +13,7 @@ exports.routes = {
     // table list
     C0101: {                          
         ctrl: 'TableList',                  
-        action: 'Get', 
+        action: 'Retrieve', 
         param: {},
     },
     //  table
@@ -33,7 +33,7 @@ exports.routes = {
     // column list
     C0301: {
         ctrl: 'ColumnList',                  
-        action: 'Get', 
+        action: 'Retrieve', 
         param: {
             id: 'ni',
         },

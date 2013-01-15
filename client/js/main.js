@@ -23,6 +23,6 @@ $(function() {
     window.dataPool = new I.DataPool();
 
     NetController.Connect(function() {
-        new I.Models.TableList(0).get();
+        new I.Models.TableList(0).retrieve();
     });
 });

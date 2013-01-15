@@ -5,10 +5,12 @@ exports.TableController = {
         var pk = dataPool.get('table', 'PK').incr();
 
         table.setPK(pk);
+        table.markAddSync();
         dataPool.get('tableList', 0).addSync(table);
 
         // columnList
         var columnList = new I.Models.ColumnList(pk);
+        columnList.markAddSync();
         dataPool.set('columnList', pk, columnList);
 
         var data = {
@@ -23,7 +25,7 @@ exports.TableController = {
 
         var data = {
             id: table.id,
-            table: table.toAbbArray(),
+            table: table.toAbbDiff(),
         };
         connectionPool.broadcast(api, data);
     },

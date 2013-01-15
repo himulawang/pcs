@@ -12,7 +12,7 @@
     };
 
     Table.prototype.update = function update() {
-        iWebSocket.send('C0202', { id: this.id, table: this.toAbbArray() });
+        iWebSocket.send('C0202', { id: this.id, table: this.toAbbDiff() });
     };
 
     I.Util.require('Table', 'Models', Table);

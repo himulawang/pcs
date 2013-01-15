@@ -7,7 +7,7 @@
     ColumnList.prototype = new I.Models.ColumnListBase();
     ColumnList.prototype.constructor = ColumnList;
 
-    ColumnList.prototype.get = function get(id) {
+    ColumnList.prototype.retrieve = function retrieve(id) {
         iWebSocket.send('C0301', { id: id });
     };
 

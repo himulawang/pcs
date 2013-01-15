@@ -1,10 +1,11 @@
 exports.ColumnController = {
     Create: function Create(connection, api, params) {
         var columnList = dataPool.get('columnList', params.listId);
-        var pk = dataPool.get('column', 'PK').get().incr();
+        var pk = dataPool.get('column', 'PK').incr();
 
         var column = new I.Models.Column();
         column.setPK(pk);
+        column.markAddSync();
         columnList.addSync(column);
 
         var data = {
