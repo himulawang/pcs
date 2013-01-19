@@ -30,6 +30,13 @@ exports.routes = {
             table: 'nh',
         },
     },
+    C0203: {
+        ctrl: 'Table',                  
+        action: 'Remove', 
+        param: {
+            id: 'ni',
+        },
+    },
     // column list
     C0301: {
         ctrl: 'ColumnList',                  

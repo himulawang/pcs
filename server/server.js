@@ -78,4 +78,4 @@ setTimeout(function() {
 setInterval(function() {
     dataPool.sync();
     console.log('Syncing');
-}, 50000);
+}, 10000);

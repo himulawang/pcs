@@ -1,0 +1,11 @@
+.modal-header
+    h3.text-info Import Table Data
+.modal-body
+    .hide#ImportTableId= table.id
+    div Import data to '#{table.name}'
+    div
+        input#ImportTableDataFile(type='file', onchange='Importer.preview();');
+    #TableDataPreview
+.modal-footer
+    button.btn(href='#', data-dismiss='modal', aria-hidden='true', onclick='DataController.import();') Import
+    button.btn(href='#', data-dismiss='modal', aria-hidden='true') Cancel

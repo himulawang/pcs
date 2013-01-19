@@ -7,6 +7,9 @@ var IndexView = function IndexView() {
         var table = new I.Models.Table();
         table.create();
     };
+    this.clearContent = function clearContent() {
+        $('#Content').empty();
+    };
     /*
     openCreateTableStructurePanel: function openCreateTableStructurePanel() {
         TableController.openCreateTableStructurePanel();

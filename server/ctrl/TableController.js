@@ -20,12 +20,30 @@ exports.TableController = {
         connectionPool.broadcast(api, data);
     },
     Update: function Update(connection, api, params) {
-        var table = dataPool.get('tableList', 0).get(params.id);
+        var tableList = dataPool.get('tableList', 0)
+        var table = tableList.get(params.id);
         table.fromAbbArray(params.table);
+
+        tableList.updateSync(table);
 
         var data = {
             id: table.id,
             table: table.toAbbDiff(),
+        };
+        connectionPool.broadcast(api, data);
+    },
+    Remove: function Remove(connection, api, params) {
+        var id = params.id;
+        // table
+        var tableList = dataPool.get('tableList', 0);
+        tableList.delSync(id);
+
+        // columnList
+        var columnList = dataPool.get('columnList', id);
+        dataPool.del('columnList', id);
+
+        var data = {
+            id: id,
         };
         connectionPool.broadcast(api, data);
     },

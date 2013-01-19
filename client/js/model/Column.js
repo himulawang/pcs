@@ -12,7 +12,7 @@
     };
 
     Column.prototype.update = function update(listId, column) {
-        iWebSocket.send('C0402', { listId: listId, id: column.id, column: column.toAbbArray() });
+        iWebSocket.send('C0402', { listId: listId, id: column.id, column: column.toAbbDiff() });
     };
 
     Column.prototype.remove = function remove(listId, id) {

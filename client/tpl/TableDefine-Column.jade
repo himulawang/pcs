@@ -1,5 +1,5 @@
 .row-fluid(id='TableDefine-Column-#{column.id}-Div')
-    div.span2.input-prepend
+    .span2.input-prepend
         span.span4.add-on #{column.id}
         input.span8(
             id='TableDefine-Column-#{column.id}-Name'
@@ -7,21 +7,21 @@
             value='#{column.name}'
             onkeyup='tableDefineView.onColumnNameChange(#{listId}, #{column.id}, this);'
         )
-    div.span1
+    .span1
         input.IsPK(
             id='TableDefine-Column-#{column.id}-IsPK'
             type="checkbox"
             checked=column.isPK==1
             onchange='tableDefineView.onColumnIsPKChange(#{listId}, #{column.id}, this);'
         )
-    div.span1
+    .span1
         input.AllowEmpty(
             id='TableDefine-Column-#{column.id}-AllowEmpty'
             type="checkbox"
             checked=column.allowEmpty==1
             onchange='tableDefineView.onColumnAllowEmptyChange(#{listId}, #{column.id}, this);'
         )
-    div.span2
+    .span2
         select.Type.span12(
             id='TableDefine-Column-#{column.id}-Type'
             onchange='tableDefineView.onColumnTypeChange(#{listId}, #{column.id}, this);'
@@ -30,28 +30,28 @@
             option(value="number") number
             option(value="string") string
             option(value="json") json
-    div.span1
+    .span1
         input.Client(
             id='TableDefine-Column-#{column.id}-Client'
             type="checkbox"
             checked=column.client==1
             onchange='tableDefineView.onColumnClientChange(#{listId}, #{column.id}, this);'
         )
-    div.span1
+    .span1
         input.Server(
             id='TableDefine-Column-#{column.id}-Server'
             type="checkbox"
             checked=column.server==1
             onchange='tableDefineView.onColumnServerChange(#{listId}, #{column.id}, this);'
         )
-    div.span2
+    .span2
         input.span12.Description(
             id='TableDefine-Column-#{column.id}-Description'
             type="text"
             value='#{column.description}'
             onkeyup='tableDefineView.onColumnDescriptionChange(#{listId}, #{column.id}, this);'
         )
-    div.span1
+    .span1
         input.btn(
             type="button"
             value="Del"

@@ -20,4 +20,19 @@ var TableController = {
         tableDefineView.renderTableName(table);
         tableDefineView.renderTableDescription(table);
     },
+    remove: function remove(id) {
+        dataPool.get("tableList", 0).get(id).remove(id);
+    },
+    onRemove: function onRemove(data) {
+        var id = data.id;
+        // table
+        var tableList = dataPool.get('tableList', 0);
+        tableList.unset(id);
+
+        // columnList
+        dataPool.unset('columnList', id);
+
+        tableListView.renderRemoveTable(id);
+        tableDefineView.renderRemoveTable(id);
+    },
 };

@@ -22,6 +22,10 @@ var routes = {
         ctrl: 'Table',
         action: 'Update',
     },
+    C0203: {
+        ctrl: 'Table',
+        action: 'Remove',
+    },
     // column list
     C0301: {
         ctrl: 'ColumnList',

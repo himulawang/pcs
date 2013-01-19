@@ -1,7 +1,7 @@
-div.row-fluid
-    div.span3
-        div#Logo
-        div.tabbable
+.row-fluid
+    .span3
+        #Logo
+        .tabbable
             ul.nav.nav-tabs
                 li.dropdown.active
                     a(href='#TableTab', data-toggle="tab") Table
@@ -9,25 +9,25 @@ div.row-fluid
                     a(href='#ExportTab', data-toggle="tab") Export
                 li
                     a(href='#SystemTab', data-toggle="tab") System
-            div#SidebarTab.tab-content
-                div#TableTab.tab-pane.active
-                    div.row-fluid
-                        div.span3.offset2
+            #SidebarTab.tab-content
+                #TableTab.tab-pane.active
+                    .row-fluid
+                        .span3.offset2
                             input.btn(type="button", value="New", onclick='indexView.newTableDefine();')
-                        div.span3
+                        .span3
                             input.btn(type="button", value="Import") 
                     p
-                    div#TableList
-                div#ExportTab.tab-pane
-                    div#ExportTabBody
+                    #TableList
+                #ExportTab.tab-pane
+                    #ExportTabBody
                         p bb
-                div#SystemTab.tab-pane
-                    div#SystemTabBody
+                #SystemTab.tab-pane
+                    #SystemTabBody
                         p cc
-    div#Content.span9
-div.row-fluid
-    div.span3.row-fluid
-        div#Status.span6
-        div#OnlineUser.span6
-    div.span9 ParaNoidz Stuido All Right Reservered.
-div#DialogPanel
+    #Content.span9
+.row-fluid
+    .span3.row-fluid
+        #Status.span6
+        #OnlineUser.span6
+    .span9 ParaNoidz Stuido All Right Reservered.
+#Dialog.modal.fade.hide

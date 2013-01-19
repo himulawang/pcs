@@ -18,9 +18,15 @@ var TableListView = function TableListView() {
         var id = table.id;
         $('#TableList-Table-' + id + '-Name').html(table.name);
     };
+    this.renderRemoveTable = function renderRemoveTable(id) {
+        $('#TableList-Table-' + id).remove();
+    };
     // event
     this.openTableDefine = function openTableDefine(id) {
         var table = dataPool.get('tableList', 0).get(id);
         tableDefineView.renderAll(table);
+    };
+    this.openTableData = function openTableData(id) {
+        var table = dataPool.get('tableList', 0).get(id);
     };
 };

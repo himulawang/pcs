@@ -10,8 +10,8 @@ $(function() {
     indexView.render();
     window.tableListView = new TableListView();
     window.tableDefineView = new TableDefineView();
-    /*
     window.dialogView = new DialogView();
+    /*
     window.createTableStructureView = new CreateTableStructureView();
     window.createTableStructureOptionView = new CreateTableStructureOptionView();
     window.modifyTableStructureView = new ModifyTableStructureView();

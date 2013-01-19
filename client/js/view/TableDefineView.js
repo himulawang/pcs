@@ -19,6 +19,10 @@ var TableDefineView = function TableDefineView() {
             this.renderAddColumn(table.id, columnList.get(id));
         }
     };
+    this.renderRemoveTable = function renderRemoveTable(id) {
+        if (!this.isViewOpened(id)) return;
+        indexView.clearContent();
+    };
     this.renderTableName = function renderTableName(table) {
         if (!this.isViewOpened(table.id)) return;
         var id = table.id;
@@ -86,7 +90,7 @@ var TableDefineView = function TableDefineView() {
     };
     this.isViewOpened = function isViewOpened(tableId) {
         var el = this.makeId('table', tableId, 'id');
-        if (el.length !== 0) return true;
+        return el.length !== 0;
     };
     // event
     this.onTableNameChange = function onTableNameChange(id, el) {

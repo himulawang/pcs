@@ -21,9 +21,7 @@ I.ExceptionCodes = {
     //'50011': 'Invalid id when get data.',
 
     // importer
-    '50101': 'Invalid import file.',
     '50102': 'Must choose an import file.',
-    '50103': 'Data column not match with title column when parsing import file.',
     '50104': 'Invalid tableName when uploading data.',
     '50105': 'Invalid import data type, require number.',
     '50106': 'Invalid import data type, require string.',
@@ -37,5 +35,7 @@ I.ExceptionCodes = {
     '50301': 'ExporterName cannot be empty when creating exporter.',
     '50302': 'ExporterName cannot be empty when modifying exporter.',
     */
+    '50101': 'Invalid import file.',
+    '50103': 'Data column not match with title column when parsing import file.',
 
 };
