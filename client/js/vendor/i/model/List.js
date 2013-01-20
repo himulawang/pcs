@@ -41,6 +41,13 @@
         this.toDelList.push(child);
     };
 
+    List.prototype.drop = function drop() {
+        for (var i in this.list) {
+            this.toDelList.push(this.list[i]);
+        }
+        this.list = {};
+    };
+
     List.prototype.update = function update(child) {
         if (child instanceof this.getChildModel() === false) throw new I.Exception(10130);
         var index = child.getPK();
@@ -167,12 +174,25 @@
         var pos = this.toAddSyncList.indexOf(index);
         if (pos === -1) { // child in redis, need delete
             var updatePos = this.toUpdateSyncList.indexOf(index);
-            if (updatePos) this.toUpdateSyncList.splice(updatePos, 1);
+            if (updatePos !== -1) this.toUpdateSyncList.splice(updatePos, 1);
             this.toDelSyncList.push(child);
         } else { // child not in redis, delete direct in memory
             this.toAddSyncList.splice(pos, 1);
         }
         this.unset(index);
+    };
+    List.prototype.dropSync = function dropSync() {
+        for (var i in this.list) {
+            var pos = this.toAddSyncList.indexOf(i);
+            if (pos === -1) { // child in redis, need delete
+                var updatePos = this.toUpdateSyncList.indexOf(i);
+                if (updatePos !== -1) this.toUpdateSyncList.splice(updatePos, 1);
+                this.toDelSyncList.push(this.get(i));
+            } else { // child not in redis, delete direct in memory
+                this.toAddSyncList.splice(pos, 1);
+            }
+        }
+        this.list = {};
     };
     List.prototype.updateSync = function updateSync(child) {
         if (child instanceof this.getChildModel() === false) throw new I.Exception(10138);

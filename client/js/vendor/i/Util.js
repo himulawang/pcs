@@ -80,6 +80,9 @@
         isInt: function isInt(val) {
             return parseInt(val) == val;
         },
+        isNumber: function isNumber(val) {
+            return !isNaN(parseFloat(val)) && isFinite(val);
+        },
         isArray: function isArray(array) {
             return Array.isArray(array);
         },

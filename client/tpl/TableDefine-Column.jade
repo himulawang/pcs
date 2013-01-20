@@ -25,11 +25,10 @@
         select.Type.span12(
             id='TableDefine-Column-#{column.id}-Type'
             onchange='tableDefineView.onColumnTypeChange(#{listId}, #{column.id}, this);'
-            value='#{column.type}'
         )
-            option(value="number") number
-            option(value="string") string
-            option(value="json") json
+            option(value="number", selected=column.type == 'number') number
+            option(value="string", selected=column.type == 'string') string
+            option(value="json", selected=column.type == 'json') json
     .span1
         input.Client(
             id='TableDefine-Column-#{column.id}-Client'

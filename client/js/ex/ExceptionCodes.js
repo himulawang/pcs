@@ -35,7 +35,14 @@ I.ExceptionCodes = {
     '50301': 'ExporterName cannot be empty when creating exporter.',
     '50302': 'ExporterName cannot be empty when modifying exporter.',
     */
+    // importer
     '50101': 'Invalid import file.',
+    '50102': 'PK confilct.',
     '50103': 'Data column not match with title column when parsing import file.',
+    '50104': 'Column is not allow empty.',
+    '50105': 'Invalid import data type, require number.',
+    '50106': 'Invalid import data type, require string.',
+    '50107': 'Invalid import data type, require json.',
+    '50109': 'Import file column name does not match table column name.',
 
 };
