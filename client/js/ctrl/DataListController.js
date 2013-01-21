@@ -1,6 +1,7 @@
-var DataController = {
-    importData: function importData(id) {
-        var datas = Importer.data;
+var DataListController = {
+    Import: function Import(id) {
+        iWebSocket.send('C0501', { id: id, dataList: Importer.data });
+        /*
         // clear pre
         var preDataList = dataPool.get('DataList', id);
         if (preDataList) {
@@ -24,6 +25,7 @@ var DataController = {
         });
 
         dataPool.set('DataList', id, dataList);
+        */
     },
 };
 

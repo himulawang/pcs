@@ -45,7 +45,7 @@ exports.routes = {
             id: 'ni',
         },
     },
-    //  column
+    // column
     C0401: {
         ctrl: 'Column',                  
         action: 'Create', 
@@ -68,6 +68,15 @@ exports.routes = {
         param: {
             listId: 'ni',
             id: 'ni',
+        },
+    },
+    // data
+    C0501: {
+        ctrl: 'DataList',                  
+        action: 'Import', 
+        param: {
+            id: 'ni',
+            dataList: 'nh',
         },
     },
 };
