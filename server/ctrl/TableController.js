@@ -10,7 +10,6 @@ exports.TableController = {
 
         // columnList
         var columnList = new I.Models.ColumnList(pk);
-        columnList.markAddSync();
         dataPool.set('columnList', pk, columnList);
 
         var data = {

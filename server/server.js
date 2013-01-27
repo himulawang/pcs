@@ -67,6 +67,7 @@ function getColumnList(id) {
     I.Models.ColumnListStore.get(id, function(err, data) {
         if (err) return console.log(err);
         dataPool.set('columnList', id, data);
+        I.Lib.DynamicMaker.make(id);
     });
 };
 

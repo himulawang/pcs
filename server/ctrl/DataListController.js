@@ -6,15 +6,19 @@ exports.DataListController = {
         if (preDataList) {
             preDataList.dropSync();
             var dataList = preDataList;
+            var dataPK = dataPool.get('DataPK', id);
         } else {
-            var DataListClass = I.Models.DynamicMaker.getList(id);
-            var DataModelClass = I.Models.DynamicMaker.getModel(id);
+            var DataPKClass = I.Lib.DynamicMaker.getPKClass(id);
+            var DataListClass = I.Lib.DynamicMaker.getListClass(id);
+            var DataModelClass = I.Lib.DynamicMaker.getModelClass(id);
             var dataList = new DataListClass(0);
+            var dataPK = new DataPKClass();
         }
 
+        // list
         var data, args;
         importDataList.forEach(function(n, i) {
-            args = [i];
+            args = [i + 1];
             n.forEach(function(m) {
                 args.push(m);
             });
@@ -22,7 +26,12 @@ exports.DataListController = {
             dataList.addSync(data);
         });
 
-        dataPool.set('DataList', id);
+        dataPool.set('DataList', id, dataList);
+
+        // pk
+        dataPK.set(importDataList.length);
+        dataPool.set('DataPK', id, dataPK);
+
         /*
         var data = {
             onlineUserCount: connectionPool.length(),
