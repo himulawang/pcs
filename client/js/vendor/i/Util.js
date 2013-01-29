@@ -117,6 +117,25 @@
 
             return Date.now();
         },
+        getTime: function getTime(time) {
+            if (time === undefined) { //nothing input
+                var d = new Date();
+            } else if (this.isUInt(time)) { // timestamp
+                var d = new Date(parseInt(time) * 1000);
+            } else { //date object
+                var d = time;
+            }
+            var hour = this.fill0(d.getHours());
+            var minute = this.fill0(d.getMinutes());
+            var second = this.fill0(d.getSeconds());
+            var month = this.fill0(d.getMonth() + 1);
+            var date = this.fill0(d.getDate());
+            var year = d.getFullYear();
+            return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+        },
+        fill0 : function(s) {
+            return s.toString().length === 1 ? "0" + s : s;
+        },
         /* Error */
         printError: function printError(error) {
             console.log(error.message + ':', I.ExceptionCodes[error.message]);
