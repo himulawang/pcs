@@ -2,19 +2,19 @@ exports.DataListController = {
     Import: function Import(connection, api, params) {
         var id = params.id;
         var importDataList = params.dataList;
-        var preDataList = dataPool.get('DataList', id);
+        var preDataList = dataPool.get('dataList', id);
+        var DataPKClass = I.Lib.DynamicMaker.getPKClass(id);
+        var DataListClass = I.Lib.DynamicMaker.getListClass(id);
+        var DataModelClass = I.Lib.DynamicMaker.getModelClass(id);
+
         if (preDataList) {
             preDataList.dropSync();
             var dataList = preDataList;
-            var dataPK = dataPool.get('DataPK', id);
+            var dataPK = dataPool.get('dataPK', id);
         } else {
-            var DataPKClass = I.Lib.DynamicMaker.getPKClass(id);
-            var DataListClass = I.Lib.DynamicMaker.getListClass(id);
-            var DataModelClass = I.Lib.DynamicMaker.getModelClass(id);
-            var dataList = new DataListClass(0);
+            var dataList = new DataListClass(id);
             var dataPK = new DataPKClass();
         }
-
         // list
         var data, args;
         importDataList.forEach(function(n, i) {
@@ -26,18 +26,17 @@ exports.DataListController = {
             dataList.addSync(data);
         });
 
-        dataPool.set('DataList', id, dataList);
+        dataPool.set('dataList', id, dataList);
 
         // pk
         dataPK.set(importDataList.length);
-        dataPool.set('DataPK', id, dataPK);
+        dataPool.set('dataPK', id, dataPK);
 
-        /*
-        var data = {
-            onlineUserCount: connectionPool.length(),
+        var output = {
+            id: id,
+            dataList: dataList.toAbbArray(),
         };
-        connectionPool.broadcast(api, data);
-        */
+        connectionPool.broadcast(api, output);
     },
 };
 

@@ -1,6 +1,3 @@
-global.db = require('redis').createClient();
+require('i').init();
 
-db.hmset('test', [1,0], function(err, data) {
-    console.log(err);
-    console.log(data);
-});
+

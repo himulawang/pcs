@@ -27,6 +27,6 @@ var TableListView = function TableListView() {
         tableDefineView.renderAll(table);
     };
     this.openTableData = function openTableData(id) {
-        var table = dataPool.get('tableList', 0).get(id);
+        tableDataView.renderAll(id);
     };
 };

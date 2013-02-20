@@ -3,38 +3,32 @@ var DynamicMaker = function() {
 };
 
 DynamicMaker.prototype.getPKClass = function getPKClass(id) {
-    this.refresh();
     return I.Models['Data' + id + 'PK'];
 };
 
 DynamicMaker.prototype.getModelClass = function getModelClass(id) {
-    this.refresh();
     return I.Models['Data' + id];
 };
 
 DynamicMaker.prototype.getListClass = function getListClass(id) {
-    this.refresh();
     return I.Models['Data' + id + 'List'];
 };
 
 DynamicMaker.prototype.getPKStoreClass = function getPKStoreClass(id) {
-    this.refresh();
     return I.Models['Data' + id + 'PKStore'];
 };
 
 DynamicMaker.prototype.getModelStoreClass = function getModelStoreClass(id) {
-    this.refresh();
     return I.Models['Data' + id + 'Store'];
 };
 
 DynamicMaker.prototype.getListStoreClass = function getListStoreClass(id) {
-    this.refresh();
     return I.Models['Data' + id + 'ListStore'];
 };
 
 DynamicMaker.prototype.refresh = function refresh() {
     for (var id in this.changed) {
-        if (!this.changed[id]) this.make(id);
+        if (this.changed[id]) this.make(id);
     }
 };
 
@@ -59,7 +53,7 @@ DynamicMaker.prototype.makeOrm = function makeOrm(id) {
     });
     var orm = {
         name: 'Data' + id,
-        abb: 'd' + id,
+        abb: 'd' + id + '-',
         column: columns,
         toAddFilter: [],
         toUpdateFilter: [0],
@@ -75,10 +69,10 @@ DynamicMaker.prototype.makeOrm = function makeOrm(id) {
 DynamicMaker.prototype.makePKClass = function makePKClass(orm) {
     var content = '';
     content += "this.className = '" + orm.name + "PK';\n";
-    content += "this.getStore = function getStore() { return I.Models." + orm.name + "PKStore; };";
+    content += "this.getStore = function getStore() { return I.Models." + orm.name + "PKStore; };\n";
+    content += "this.init.call(this, pk);";
 
     var Class = new Function('pk', content);
-    content += "this.init.call(this, pk);";
 
     Class.prototype = new I.Models.PK();
     Class.prototype.constructor = Class;
@@ -167,12 +161,12 @@ DynamicMaker.prototype.makeListClass = function makeListClass(orm) {
 DynamicMaker.prototype.makePKStoreClass = function makePKStoreClass(orm) {
     var content = '';
     content += "this.className = '" + orm.name + "PKStore';\n";
-    content += "this.key = '" + I.Const.GLOBAL_KEY_PREFIX + orm.abb + "';\n";
+    content += "this.key = '" + I.Const.Frame.GLOBAL_KEY_PREFIX + orm.abb + "';\n";
     content += "this.getModel = function getModel() { return I.Models." + orm.name + "PK; };\n";
     content += "this.modelName = '" + orm.name + "';\n";
     content += "this.db = db;";
 
-    var Class = new Function('pk', content);
+    var Class = new Function('db', content);
 
     Class.prototype = new I.Models.PKStore();
     Class.prototype.constructor = Class;
@@ -191,7 +185,7 @@ DynamicMaker.prototype.makeModelStoreClass = function makeModelStoreClass(orm) {
     content += "this.pkAutoIncrement = " + orm.pkAutoIncrement.toString() + ";\n";
     content += "this.db = db;";
 
-    var Class = new Function(content);
+    var Class = new Function('db', content);
 
     // extends
     Class.prototype = new I.Models.ModelStore();
@@ -217,7 +211,7 @@ DynamicMaker.prototype.makeListStoreClass = function makeListStoreClass(orm) {
 
     content += "this.db = db;";
 
-    var Class = new Function(content);
+    var Class = new Function('db', content);
 
     // extends
     Class.prototype = new I.Models.ListStore();

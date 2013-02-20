@@ -38,11 +38,9 @@ DynamicMaker.prototype.make = function make(id) {
     this.makeModelClass(orm);
     this.makeListClass(orm);
 
-    /*
     this.makePKStoreClass(orm);
     this.makeModelStoreClass(orm);
     this.makeListStoreClass(orm);
-    */
 
     this.changed[id] = false;
 };
@@ -68,29 +66,13 @@ DynamicMaker.prototype.makeOrm = function makeOrm(id) {
     return orm;
 };
 
-DynamicMaker.prototype.makePKClass = function makePKClass(orm) {
-    var content = '';
-    content += "this.className = '" + orm.name + "PK';\n";
-    content += "this.getStore = function getStore() { return I.Models." + orm.name + "PKStore; };\n";
-    content += "this.init.call(this, pk);";
-
-    var Class = new Function('pk', content);
-
-    Class.prototype = new I.Models.PK();
-    Class.prototype.constructor = Class;
-
-    I.Models[orm.name + 'PK'] = Class;
-};
-
-DynamicMaker.prototype.makeModelClass = function makeModelClass(orm) {
+DynamicMaker.prototype.makeModel = function makeModel(id, orm) {
     var abbs = this.makeAbbs(orm.column, []);
 
     // class create
     var content = '';
-    content += "this.className = '" + orm.name + "';\n";
     content += "args = args || [];\n";
     content += "this.pk = '" + orm.pk + "';\n";
-    content += "this.getStore = function getStore() { return I.Models." + orm.name + "Store; };\n";
 
     // column
     var columns = [];
@@ -140,15 +122,13 @@ DynamicMaker.prototype.makeModelClass = function makeModelClass(orm) {
         );
     });
 
-    I.Models[orm.name] = Class;
+    this.classes[id].model = Class;
 };
 
-DynamicMaker.prototype.makeListClass = function makeListClass(orm) {
+DynamicMaker.prototype.makeList = function makeList(id, orm) {
     // class create
     var content = '';
-    content += "this.className = '" + orm.list + "';\n";
-    content += "this.getStore = function getStore() { return I.Models." + orm.list + "Store; };\n";
-    content += "this.getChildModel = function getChildModel() { return I.Models." + orm.name + "; };\n";
+    content += "this.getChildModel = function getChildModel() { return dynamicMaker.getModel(" + id + "); };";
     content += "this.init.call(this, pk, list);\n";
 
     var Class = new Function('pk', 'list', content);
@@ -157,69 +137,7 @@ DynamicMaker.prototype.makeListClass = function makeListClass(orm) {
     Class.prototype = new I.Models.List();
     Class.prototype.constructor = Class;
 
-    I.Models[orm.name + 'List'] = Class;
-};
-
-DynamicMaker.prototype.makePKStoreClass = function makePKStoreClass(orm) {
-    var content = '';
-    content += "this.className = '" + orm.name + "PKStore';\n";
-    content += "this.key = '" + I.Const.Frame.GLOBAL_KEY_PREFIX + orm.abb + "';\n";
-    content += "this.getModel = function getModel() { return I.Models." + orm.name + "PK; };\n";
-    content += "this.modelName = '" + orm.name + "';\n";
-    content += "this.db = db;";
-
-    var Class = new Function('db', content);
-
-    Class.prototype = new I.Models.PKStore();
-    Class.prototype.constructor = Class;
-
-    I.Models[orm.name + 'PKStore'] = new Class(db);
-};
-
-DynamicMaker.prototype.makeModelStoreClass = function makeModelStoreClass(orm) {
-    // class create
-    var content = '';
-    content += "this.className = '" + orm.name + "Store';\n";
-    content += "this.getModel = function getModel() { return I.Models." + orm.name + "; };\n";
-    content += "this.modelName = '" + orm.name + "';\n";
-    content += "this.pk = '" + orm.pk + "';\n";
-    content += "this.abb = '" + orm.abb + "';\n";
-    content += "this.pkAutoIncrement = " + orm.pkAutoIncrement.toString() + ";\n";
-    content += "this.db = db;";
-
-    var Class = new Function('db', content);
-
-    // extends
-    Class.prototype = new I.Models.ModelStore();
-    Class.prototype.constructor = Class;
-
-    I.Models[orm.name + 'Store'] = new Class(db);
-};
-
-DynamicMaker.prototype.makeListStoreClass = function makeListStoreClass(orm) {
-    // class create
-    var content = '';
-    content += "this.className = '" + orm.list + "Store';\n";
-    content += "this.abb = '" + orm.abb + "l';\n";
-
-    content += "this.getListModel = function getListModel() { return I.Models." + orm.list + "; };\n";
-    content += "this.listModelName = '" + orm.list + "';\n";
-
-    content += "this.getChildModel = function getChildModel() { return I.Models." + orm.name + "; };\n";
-    content += "this.childModelName = '" + orm.name + "';\n";
-
-    content += "this.getChildStore = function getChildStore() { return I.Models." + orm.name + "Store; };\n";
-    content += "this.childStoreName = '" + orm.name + "Store';\n";
-
-    content += "this.db = db;";
-
-    var Class = new Function('db', content);
-
-    // extends
-    Class.prototype = new I.Models.ListStore();
-    Class.prototype.constructor = Class;
-
-    I.Models[orm.list + 'Store'] = new Class(db);
+    this.classes[id].list = Class;
 };
 
 /* Abb */
@@ -302,6 +220,31 @@ DynamicMaker.prototype.getClasses = function getClasses() {
     return this.classes;
 };
 
+DynamicMaker.prototype.makePKClass = function makePKClass(orm) {
+    var content = '';
+
+    var Class = new Function('pk', content);
+
+    Class.prototype = new I.Models.PK();
+    Class.prototype.constructor = Class;
+
+    this.classes[orm.name + 'PKBase'] = Class;
+};
+
+DynamicMaker.prototype.makePKStoreClass = function makePKStoreClass(orm) {
+    var content = '';
+    content += "this.key = '" + I.Const.GLOBAL_KEY_PREFIX + orm.abb + "';\n";
+    content += "this.getModel = function getModel() { return I.Models." + orm.name + "PK; };\n";
+    content += "this.modelName = '" + orm.name + "';\n";
+
+    var Class = new Function('pk', content);
+
+    Class.prototype = new I.Models.PKStore();
+    Class.prototype.constructor = Class;
+
+    this.classes[orm.name + 'PKStoreBase'] = Class;
+};
+
 DynamicMaker.prototype.makeModelClass = function makeModelClass(orm) {
     var abbs = this.makeAbbs(orm.column, []);
 
@@ -359,6 +302,24 @@ DynamicMaker.prototype.makeModelClass = function makeModelClass(orm) {
     this.classes[orm.name + 'Base'] = Class;
 };
 
+DynamicMaker.prototype.makeModelStoreClass = function makeModelStoreClass(orm) {
+    // class create
+    var content = '';
+    content += "this.getModel = function getModel() { return I.Models." + orm.name + "; };\n";
+    content += "this.modelName = '" + orm.name + "';\n";
+    content += "this.pk = '" + orm.pk + "';\n";
+    content += "this.abb = '" + orm.abb + "';\n";
+    content += "this.pkAutoIncrement = " + orm.pkAutoIncrement.toString() + ";\n";
+
+    var Class = new Function(content);
+
+    // extends
+    Class.prototype = new I.Models.ModelStore();
+    Class.prototype.constructor = Class;
+
+    this.classes[orm.name + 'StoreBase'] = Class;
+};
+
 DynamicMaker.prototype.makeListClass = function makeListClass(orm) {
     // class create
     var content = '';
@@ -372,6 +333,29 @@ DynamicMaker.prototype.makeListClass = function makeListClass(orm) {
     Class.prototype.constructor = Class;
 
     this.classes[orm.name + 'ListBase'] = Class;
+};
+
+DynamicMaker.prototype.makeListStoreClass = function makeListStoreClass(orm) {
+    // class create
+    var content = '';
+    content += "this.abb = '" + orm.abb + "l';\n";
+
+    content += "this.getListModel = function getListModel() { return I.Models." + orm.list + "; };\n";
+    content += "this.listModelName = '" + orm.list + "';\n";
+
+    content += "this.getChildModel = function getChildModel() { return I.Models." + orm.name + "; };\n";
+    content += "this.childModelName = '" + orm.name + "';\n";
+
+    content += "this.getChildStore = function getChildStore() { return I.Models." + orm.name + "Store; };\n";
+    content += "this.childStoreName = '" + orm.name + "Store';\n";
+
+    var Class = new Function(content);
+
+    // extends
+    Class.prototype = new I.Models.ListStore();
+    Class.prototype.constructor = Class;
+
+    this.classes[orm.list + 'StoreBase'] = Class;
 };
 
 

@@ -67,7 +67,24 @@ function getColumnList(id) {
     I.Models.ColumnListStore.get(id, function(err, data) {
         if (err) return console.log(err);
         dataPool.set('columnList', id, data);
+
+        // make dynamic classes
         I.Lib.DynamicMaker.make(id);
+
+        getTableData(id);
+    });
+};
+
+global.getTableData = function getTableData(id) {
+    var DataPKStoreClass = I.Lib.DynamicMaker.getPKStoreClass(id);
+    DataPKStoreClass.get(function(err, data) {
+        if (err) return console.log(err);
+        dataPool.set('dataPK', id, data);
+    });
+    var DataListStoreClass = I.Lib.DynamicMaker.getListStoreClass(id);
+    DataListStoreClass.get(id, function(err, data) {
+        if (err) return console.log(err);
+        dataPool.set('dataList', id, data);
     });
 };
 

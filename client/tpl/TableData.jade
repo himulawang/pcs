@@ -1,0 +1,25 @@
+h2.text-info Table Data: #{table.name}
+div(id='TableData-#{table.id}-Sheet')
+    .row-fluid
+        .span1
+            table.table.table-condensed
+                tr
+                    th 0
+        .span11
+            table.table.table-condensed
+                tr
+                    for column in columnList.list 
+                        th #{column.name} (#{column.type})
+    .row-fluid
+        .span1
+            table.table.table-condensed.table-striped.table-hover
+                for row in dataList.list
+                    tr
+                        td= row.c0
+        .span11
+            table.table.table-condensed.table-striped.table-hover
+                for row in dataList.list
+                    tr
+                        for cell, i in row.args
+                            - if (i !== 0)
+                                td= row['c' + i]

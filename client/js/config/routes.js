@@ -8,6 +8,10 @@ var routes = {
         ctrl: 'Net',
         action: 'GetOnlineUserCount',
     },
+    C0003: {
+        ctrl: 'Net',
+        action: 'Init',
+    },
     // table list
     C0101: {
         ctrl: 'TableList',
@@ -43,5 +47,10 @@ var routes = {
     C0403: {
         ctrl: 'Column',
         action: 'Remove',
+    },
+    // data list
+    C0501: {
+        ctrl: 'DataList',
+        action: 'Import',
     },
 };

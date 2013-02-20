@@ -17,4 +17,27 @@ var NetController = {
     onGetOnlineUserCount: function onGetOnlineUserCount(data) {
         $('#OnlineUser').html('<span class="badge badge-info">' + data.onlineUserCount + '</span>');
     },
+    init: function init() {
+        iWebSocket.send('C0003');
+    },
+    onInit: function onInit(data) {
+        var tableList = new I.Models.TableList(0);
+        tableList.fromAbbArray(data.tableList, true);
+        dataPool.set('tableList', 0, tableList);
+        tableListView.renderAll();
+
+        for (var id in data.columnLists) {
+            var columnList = new I.Models.ColumnList(id);
+            columnList.fromAbbArray(data.columnLists[id], true);
+            dataPool.set('columnList', id, columnList);
+            dynamicMaker.make(id);
+        }
+
+        for (var id in data.dataLists) {
+            var DataListClass = dynamicMaker.getListClass(id);
+            var dataList = new DataListClass(id);
+            dataList.fromAbbArray(data.dataLists[id], true);
+            dataPool.set('dataList', id, dataList);
+        }
+    },
 };

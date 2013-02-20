@@ -10,6 +10,11 @@ exports.routes = {
         action: 'GetOnlineUserCount', 
         param: {},
     },
+    C0003: {
+        ctrl: 'Net',
+        action: 'Init', 
+        param: {},
+    },
     // table list
     C0101: {                          
         ctrl: 'TableList',                  

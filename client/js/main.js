@@ -10,20 +10,14 @@ $(function() {
     indexView.render();
     window.tableListView = new TableListView();
     window.tableDefineView = new TableDefineView();
+    window.tableDataView = new TableDataView();
     window.dialogView = new DialogView();
     window.dynamicMaker = new DynamicMaker();
-    /*
-    window.createTableStructureView = new CreateTableStructureView();
-    window.createTableStructureOptionView = new CreateTableStructureOptionView();
-    window.modifyTableStructureView = new ModifyTableStructureView();
-    window.modifyTableStructureOptionView = new ModifyTableStructureOptionView();
-    */
-
     
     /* data */
     window.dataPool = new I.DataPool();
 
     NetController.Connect(function() {
-        new I.Models.TableList(0).retrieve();
+        NetController.init();
     });
 });
