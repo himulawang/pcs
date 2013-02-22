@@ -12,4 +12,3 @@ var DataListController = {
         tableDataView.renderImport(id);
     },
 };
-

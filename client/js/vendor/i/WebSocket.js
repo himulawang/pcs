@@ -31,7 +31,9 @@ I.WebSocket = function() {
         this.connection.onclose = function(error) {
             console.log('close', error);
             self.onclose();
-            self.connect();
+            setTimeout(function() {
+                self.connect();
+            }, 800);
         };
 
         this.connection.onmessage = function(message) {

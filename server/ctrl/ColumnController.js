@@ -6,6 +6,9 @@ exports.ColumnController = {
 
         var column = new I.Models.Column();
         column.setPK(pk);
+        column.allowEmpty = 1;
+        column.name = 'toChange';
+        column.type = 'string';
         column.markAddSync();
         columnList.addSync(column);
 
@@ -16,25 +19,39 @@ exports.ColumnController = {
         };
         connectionPool.broadcast(api, data);
 
-        /*
         // if tableData exists change it
         var dataList = dataPool.get('dataList', listId);
         if (dataList === undefined) return;
 
-        var rawData = dataList.toAbbArray();
-        var newColumnAbb = 'c' + I.Util.getLength(columnList.list);
-        // add new column to raw data
-        for (var i in rawData) {
-            rawData[i][newColumnAbb] = '';
+        // sync to redis
+        var StoreClass = dataList.getStore();
+        StoreClass.sync(dataList);
+
+        // make altered class
+        var orm = I.Lib.DynamicMaker.makeOrm(listId);
+        I.Lib.DynamicMaker.makeModelClass(orm);
+
+        // add column
+        var ModelClass = dataList.getChildModel();
+        for (var i in dataList.list) {
+            var preData = dataList.get(i);
+            var newData = preData.clone();
+            /*
+            var array = preData.toAdd();
+            array.push('');
+            var newData = new ModelClass(array);
+            */
+            newData['c' + pk] = '';
+            dataList.updateSync(newData);
         }
+        StoreClass.sync(dataList);
 
-        // regenerate class
-        I.Lib.DynamicMaker.make(listId);
-
-        var DataListClass = I.Lib.DynamicMaker.getListClass(listId);
-        newDataList = new DataListClass(listId);
-        newDataList.fromAbbArray(rawData, true);
-        */
+        // boardcast
+        var output = {
+            id: listId,
+            dataList: dataList.toAbbArray(),
+        };
+        connectionPool.broadcast('C0501', output);
     },
     Update: function Update(connection, api, params) {
         var columnList = dataPool.get('columnList', params.listId);

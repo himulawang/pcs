@@ -6,6 +6,9 @@ var ColumnController = {
 
         columnList.set(column);
         tableDefineView.renderAddColumn(data.listId, column);
+
+        var orm = dynamicMaker.makeOrm(data.listId);
+        dynamicMaker.makeModelClass(orm);
     },
     onUpdate: function onUpdate(data) {
         var columnList = dataPool.get('columnList', data.listId);
