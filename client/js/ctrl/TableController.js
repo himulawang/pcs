@@ -32,6 +32,9 @@ var TableController = {
         // columnList
         dataPool.unset('columnList', id);
 
+        // dataList
+        dataPool.unset('dataList', id);
+
         tableListView.renderRemoveTable(id);
         tableDefineView.renderRemoveTable(id);
     },

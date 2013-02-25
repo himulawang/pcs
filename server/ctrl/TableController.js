@@ -41,6 +41,12 @@ exports.TableController = {
         var columnList = dataPool.get('columnList', id);
         dataPool.del('columnList', id);
 
+        // dataList
+        var dataList = dataPool.get('dataList', id);
+        if (dataList) {
+            dataPool.del('dataList', id);
+        }
+
         var data = {
             id: id,
         };

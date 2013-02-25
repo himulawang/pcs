@@ -22,4 +22,4 @@ div(id='TableData-#{table.id}-Sheet')
                     tr
                         for cell, i in row.args
                             - if (i !== 0)
-                                td= row['c' + i]
+                                td= row.args[i]

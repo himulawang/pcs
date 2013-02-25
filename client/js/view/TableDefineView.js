@@ -105,6 +105,7 @@ var TableDefineView = function TableDefineView() {
     };
     this.onColumnNameChange = function onColumnNameChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
+        if (column.name == el.value) return;
         column.name = el.value;
         column.update(listId, column);
     };
@@ -135,7 +136,8 @@ var TableDefineView = function TableDefineView() {
     };
     this.onColumnDescriptionChange = function onColumnDescriptionChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
-        column.description = $(el).val();
+        if (column.description ==  el.value) return;
+        column.description = el.value;
         column.update(listId, column);
     };
     this.addColumn = function addColumn(tableId) {

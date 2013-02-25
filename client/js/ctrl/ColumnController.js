@@ -28,5 +28,8 @@ var ColumnController = {
         columnList.unset(data.id);
 
         tableDefineView.renderRemoveColumn(data.listId, data.id);
+
+        var orm = dynamicMaker.makeOrm(data.listId);
+        dynamicMaker.makeModelClass(orm);
     },
 };

@@ -62,6 +62,9 @@ DynamicMaker.prototype.makeOrm = function makeOrm(id) {
         pk: 'c0',
         pkAutoIncrement: true,
         list: 'Data' + id + 'List',
+        getColumnIndex: function(id) {
+            return this.column.indexOf('c' + id);
+        },
     };
     return orm;
 };
