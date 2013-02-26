@@ -4,7 +4,7 @@ div(id='TableData-#{table.id}-Sheet')
         .span1
             table.table.table-condensed
                 tr
-                    th 0
+                    th Column
         .span11
             table.table.table-condensed
                 tr
@@ -22,4 +22,6 @@ div(id='TableData-#{table.id}-Sheet')
                     tr
                         for cell, i in row.args
                             - if (i !== 0)
-                                td= row.args[i]
+                                td(
+                                    onmouseover='tableDataView.enterInputModel(#{row.c0}, #{i}, this);'
+                                ) #{row.args[i]}

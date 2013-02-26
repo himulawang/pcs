@@ -12,6 +12,9 @@ exports.TableController = {
         var columnList = new I.Models.ColumnList(pk);
         dataPool.set('columnList', pk, columnList);
 
+        // dynamicClass
+        I.Lib.DynamicMaker.make(pk);
+
         var data = {
             table: table.toAbbArray(),
             columnList: columnList.toAbbArray(),
@@ -45,6 +48,12 @@ exports.TableController = {
         var dataList = dataPool.get('dataList', id);
         if (dataList) {
             dataPool.del('dataList', id);
+        }
+
+        // dataPK
+        var dataPK = dataPool.get('dataPK', id);
+        if (dataPK) {
+            dataPool.del('dataPK', id);
         }
 
         var data = {

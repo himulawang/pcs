@@ -11,6 +11,8 @@ var TableController = {
 
         tableListView.renderCreate(table);
         tableDefineView.renderAll(table);
+
+        dynamicMaker.make(pk);
     },
     onUpdate: function onUpdate(data) {
         var table = dataPool.get('tableList', 0).get(data.id);
@@ -37,5 +39,6 @@ var TableController = {
 
         tableListView.renderRemoveTable(id);
         tableDefineView.renderRemoveTable(id);
+        tableDataView.renderRemoveTable(id);
     },
 };
