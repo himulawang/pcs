@@ -75,13 +75,24 @@ exports.routes = {
             id: 'ni',
         },
     },
-    // data
+    // data list
     C0501: {
         ctrl: 'DataList',                  
         action: 'Import', 
         param: {
             id: 'ni',
             dataList: 'nh',
+        },
+    },
+    // data
+    C0602: {
+        ctrl: 'Data',                  
+        action: 'Update', 
+        param: {
+            tableId: 'ni',
+            columnId: 'ni',
+            dataId: 'ni',
+            data: 'nh',
         },
     },
 };

@@ -1,4 +1,5 @@
 input(type='text'
-    onmouseout='tableDataView.leaveInputModel(#{rowId}, #{columnId}, this);'
+    onblur='tableDataView.leaveInputModel(#{rowId}, #{columnId}, this);'
+    onkeyup='tableDataView.onDataChange(#{tableId}, #{rowId}, #{columnId}, this);'
     value='#{value}'
 )

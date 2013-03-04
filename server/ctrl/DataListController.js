@@ -39,4 +39,3 @@ exports.DataListController = {
         connectionPool.broadcast(api, output);
     },
 };
-

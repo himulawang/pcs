@@ -23,5 +23,6 @@ div(id='TableData-#{table.id}-Sheet')
                         for cell, i in row.args
                             - if (i !== 0)
                                 td(
-                                    onmouseover='tableDataView.enterInputModel(#{row.c0}, #{i}, this);'
+                                    id='TableData-#{row.c0}-#{i}-Cell'
+                                    onclick='tableDataView.enterInputModel(#{table.id}, #{row.c0}, #{i}, this);'
                                 ) #{row.args[i]}

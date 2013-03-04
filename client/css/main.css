@@ -1,3 +1,10 @@
+#Logo { 
+    height: 87px; 
+}
+#SidebarTab {
+    height: 300px;
+}
+/*
 .pointer {
     cursor: pointer;
 }
@@ -25,18 +32,7 @@
     margin-right: auto;
 }
 
-#SidebarTab {
-    height: 300px;
-}
 
-#canvas {
-    position: absolute;
-    pointer-events: none;
-}
-#Logo { 
-    height: 87px; 
-    /*background: url('./logo.png') no-repeat;*/
-}
 
 #menuTabs {
     height: 660px;
@@ -108,7 +104,6 @@
     width: 100px;
 }
 
-/* Exporter */
 #exportSetting {
     width: 990px;
     height: 100%;
@@ -157,3 +152,4 @@
     font-weight: bold;
     margin: 8px 5px 8px 5px;
 }
+*/
