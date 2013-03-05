@@ -88,7 +88,6 @@ DynamicMaker.prototype.makeModelClass = function makeModelClass(orm) {
     // class create
     var content = '';
     content += "this.className = '" + orm.name + "';\n";
-    content += "args = args || [];\n";
     content += "this.pk = '" + orm.pk + "';\n";
     content += "this.getStore = function getStore() { return I.Models." + orm.name + "Store; };\n";
 

@@ -16,6 +16,31 @@ var TableDataView = function TableDataView() {
         };
         var html = Renderer.make('TableData', data);
         this.el.html(html);
+
+        this.renderIndexColumn(table.id, dataList);
+        this.renderDataColumn(table.id, dataList);
+    };
+    this.makeDataRowHTML = function makeDataRowHTML(tableId, row) {
+        return Renderer.make('TableData-DataRow', { tableId: tableId, row: row });
+    };
+    this.renderIndexColumn = function renderIndexColumn(tableId, dataList) {
+        var row;
+        var html = '';
+        for (var i in dataList.list) {
+            row = dataList.get(i);
+            html += Renderer.make('TableData-Index', { row: row });
+        }
+        html += Renderer.make('TableData-LastRow', { tableId: tableId });
+        $('#TableData-Index').html(html);
+    };
+    this.renderDataColumn = function renderDataColumn(tableId, dataList) {
+        var row;
+        var html = '';
+        for (var i in dataList.list) {
+            row = dataList.get(i);
+            html += this.makeDataRowHTML(tableId, row);
+        }
+        $('#TableData-Data').html(html);
     };
     this.renderImport = function renderImport(id) {
         if (!this.isViewOpened(id)) return;
@@ -25,7 +50,12 @@ var TableDataView = function TableDataView() {
         if (!this.isViewOpened(id)) return;
         $('#Content').empty();
     };
-    this.renderDataChange = function renderDataChange(tableId, dataId, columnId, data) {
+    this.renderDataCreate = function renderDataCreate(tableId, row) {
+        if (!this.isViewOpened(tableId)) return;
+        var html = this.makeDataRowHTML(tableId, row);
+        $('#TableData-Data').append(html);
+    };
+    this.renderDataUpdate = function renderDataUpdate(tableId, dataId, columnId, data) {
         if (!this.isViewOpened(tableId)) return;
         var el = $('#TableData-' + dataId + '-' + columnId + '-Cell');
         var columnName = data.column[columnId].abb;
@@ -68,7 +98,11 @@ var TableDataView = function TableDataView() {
         var columnName = data.column[columnId].abb;
 
         var value = $(el).val();
+        if (value == data[columnName]) return;
         data[columnName] = value;
         DataController.Update(tableId, columnId, data);
+    };
+    this.createData = function createData(tableId) {
+        DataController.Create(tableId);
     };
 };

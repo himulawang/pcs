@@ -12,17 +12,6 @@ div(id='TableData-#{table.id}-Sheet')
                         th #{column.name} (#{column.type})
     .row-fluid
         .span1
-            table.table.table-condensed.table-striped.table-hover
-                for row in dataList.list
-                    tr
-                        td= row.c0
+            table#TableData-Index.table.table-condensed.table-striped.table-hover
         .span11
-            table.table.table-condensed.table-striped.table-hover
-                for row in dataList.list
-                    tr
-                        for cell, i in row.args
-                            - if (i !== 0)
-                                td(
-                                    id='TableData-#{row.c0}-#{i}-Cell'
-                                    onclick='tableDataView.enterInputModel(#{table.id}, #{row.c0}, #{i}, this);'
-                                ) #{row.args[i]}
+            table#TableData-Data.table.table-condensed.table-striped.table-hover

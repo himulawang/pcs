@@ -1,0 +1,7 @@
+tr
+    for cell, i in row.args
+        - if (i !== 0)
+            td(
+                id='TableData-#{row.c0}-#{i}-Cell'
+                onclick='tableDataView.enterInputModel(#{tableId}, #{row.c0}, #{i}, this);'
+            ) #{row.args[i]}

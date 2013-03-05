@@ -54,6 +54,10 @@ var routes = {
         action: 'Import',
     },
     // data list
+    C0601: {
+        ctrl: 'Data',
+        action: 'Create',
+    },
     C0602: {
         ctrl: 'Data',
         action: 'Update',

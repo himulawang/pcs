@@ -85,6 +85,13 @@ exports.routes = {
         },
     },
     // data
+    C0601: {
+        ctrl: 'Data',                  
+        action: 'Create', 
+        param: {
+            tableId: 'ni',
+        },
+    },
     C0602: {
         ctrl: 'Data',                  
         action: 'Update', 
