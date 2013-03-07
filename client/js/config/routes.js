@@ -62,4 +62,26 @@ var routes = {
         ctrl: 'Data',
         action: 'Update',
     },
+    C0603: {
+        ctrl: 'Data',
+        action: 'Remove',
+    },
+    // exporter list
+    C0701: {
+        ctrl: 'ExporterList',
+        action: 'Retrieve',
+    },
+    // exporter
+    C0801: {
+        ctrl: 'Exporter',
+        action: 'Create',
+    },
+    C0802: {
+        ctrl: 'Exporter',
+        action: 'Update',
+    },
+    C0803: {
+        ctrl: 'Exporter',
+        action: 'Remove',
+    },
 };

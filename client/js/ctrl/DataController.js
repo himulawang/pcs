@@ -30,4 +30,18 @@ var DataController = {
 
         tableDataView.renderDataUpdate(tableId, dataId, columnId, preData);
     },
+    Remove: function Remove(tableId, rowId) {
+        iWebSocket.send('C0603', {
+            tableId: tableId,
+            rowId: rowId,
+        });
+    },
+    onRemove: function onRemove(data) {
+        var tableId = data.tableId;
+        var rowId = data.rowId;
+        var dataList = dataPool.get('dataList', tableId);
+        dataList.unset(rowId);
+
+        tableDataView.renderDataRemove(tableId, rowId);
+    },
 };

@@ -5,7 +5,7 @@ var TableListView = function TableListView() {
         var tableList = dataPool.get('tableList', 0);
         var table;
         for (var id in tableList.list) {
-            table = tableList.list[id];
+            table = tableList.get(id);
             this.renderCreate(table);
         }
     };

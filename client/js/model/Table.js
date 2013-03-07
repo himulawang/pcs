@@ -15,7 +15,7 @@
         iWebSocket.send('C0202', { id: this.id, table: this.toAbbDiff() });
     };
 
-    Table.prototype.remove = function remove(id) {
+    Table.prototype.remove = function remove() {
         iWebSocket.send('C0203', { id: this.id });
     };
 

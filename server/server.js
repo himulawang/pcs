@@ -51,6 +51,9 @@ I.Models.TablePKStore.get(function(err, data) {
 I.Models.ColumnPKStore.get(function(err, data) {
     dataPool.set('column', 'PK', data);
 });
+I.Models.ExporterPKStore.get(function(err, data) {
+    dataPool.set('exporter', 'PK', data);
+});
 
 // Object / List
 I.Models.TableListStore.get(0 /* Unique */, function(err, data) {
@@ -61,6 +64,11 @@ I.Models.TableListStore.get(0 /* Unique */, function(err, data) {
     for (var id in data.list) {
         getColumnList(id);
     }
+});
+
+I.Models.ExporterListStore.get(0 /* Unique */, function(err, data) {
+    if (err) return console.log(err);
+    dataPool.set('exporterList', 0, data);
 });
 
 function getColumnList(id) {

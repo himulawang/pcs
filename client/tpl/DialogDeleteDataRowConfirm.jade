@@ -1,0 +1,8 @@
+.modal-header
+    h3.text-info Confirm Dialog
+.modal-body
+    .alert.alert-block.alert-error.fade.in
+        p Are you sure to delete data rowId: #{rowId} ?
+.modal-footer
+    button.btn(href='#', data-dismiss='modal', aria-hidden='true', onclick='DataController.Remove(#{tableId}, #{rowId});') OK
+    button.btn(href='#', data-dismiss='modal', aria-hidden='true') Cancel

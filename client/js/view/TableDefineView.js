@@ -95,11 +95,13 @@ var TableDefineView = function TableDefineView() {
     // event
     this.onTableNameChange = function onTableNameChange(id, el) {
         var table = dataPool.get('tableList', 0).get(id);
+        if (table.name == el.value) return;
         table.name = el.value;
         table.update();
     };
     this.onTableDescriptionChange = function onTableDescriptionChange(id, el) {
         var table = dataPool.get('tableList', 0).get(id);
+        if (table.description == el.value) return;
         table.description = el.value;
         table.update();
     };
@@ -107,44 +109,44 @@ var TableDefineView = function TableDefineView() {
         var column = dataPool.get('columnList', listId).get(columnId);
         if (column.name == el.value) return;
         column.name = el.value;
-        column.update(listId, column);
+        column.update(listId);
     };
     this.onColumnIsPKChange = function onColumnIsPKChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
         column.isPK = I.Util.isChecked(el);
-        column.update(listId, column);
+        column.update(listId);
     };
     this.onColumnAllowEmptyChange = function onColumnAllowEmptyChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
         column.allowEmpty = I.Util.isChecked(el);
-        column.update(listId, column);
+        column.update(listId);
     };
     this.onColumnTypeChange = function onColumnTypeChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
         column.type = $(el).val();
-        column.update(listId, column);
+        column.update(listId);
     };
     this.onColumnClientChange = function onColumnClientChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
         column.client = I.Util.isChecked(el);
-        column.update(listId, column);
+        column.update(listId);
     };
     this.onColumnServerChange = function onColumnServerChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
         column.server = I.Util.isChecked(el);
-        column.update(listId, column);
+        column.update(listId);
     };
     this.onColumnDescriptionChange = function onColumnDescriptionChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
         if (column.description ==  el.value) return;
         column.description = el.value;
-        column.update(listId, column);
+        column.update(listId);
     };
     this.addColumn = function addColumn(tableId) {
         var column = new I.Models.Column();
         column.create(tableId);
     };
     this.delColumn = function delColumn(tableId, columnId) {
-        dataPool.get('columnList', tableId).get(columnId).remove(tableId, columnId);
+        dataPool.get('columnList', tableId).get(columnId).remove(tableId);
     };
 };

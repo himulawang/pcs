@@ -11,12 +11,12 @@
         iWebSocket.send('C0401', { listId: listId });
     };
 
-    Column.prototype.update = function update(listId, column) {
-        iWebSocket.send('C0402', { listId: listId, id: column.id, column: column.toAbbDiff() });
+    Column.prototype.update = function update(listId) {
+        iWebSocket.send('C0402', { listId: listId, id: this.id, column: this.toAbbDiff() });
     };
 
-    Column.prototype.remove = function remove(listId, id) {
-        iWebSocket.send('C0403', { listId: listId, id: id });
+    Column.prototype.remove = function remove(listId) {
+        iWebSocket.send('C0403', { listId: listId, id: this.id });
     };
 
     I.Util.require('Column', 'Models', Column);

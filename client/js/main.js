@@ -11,6 +11,8 @@ $(function() {
     window.tableListView = new TableListView();
     window.tableDefineView = new TableDefineView();
     window.tableDataView = new TableDataView();
+    window.exporterListView = new ExporterListView();
+    window.exporterDefineView = new ExporterDefineView();
     window.dialogView = new DialogView();
     window.dynamicMaker = new DynamicMaker();
     

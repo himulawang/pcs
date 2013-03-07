@@ -19,8 +19,11 @@
                     p
                     #TableList
                 #ExportTab.tab-pane
-                    #ExportTabBody
-                        p bb
+                    .row-fluid
+                        .span3.offset2
+                            input.btn(type="button", value="New", onclick='indexView.newExporterDefine();')
+                    p
+                    #ExporterList
                 #SystemTab.tab-pane
                     #SystemTabBody
                         p cc

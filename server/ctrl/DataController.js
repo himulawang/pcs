@@ -31,5 +31,9 @@ exports.DataController = {
         connectionPool.broadcast(api, data);
     },
     Remove: function Remove(connection, api, params) {
+        var dataList = dataPool.get('dataList', params.tableId);
+        dataList.delSync(params.rowId);
+
+        connectionPool.broadcast(api, params);
     },
 };

@@ -1,0 +1,29 @@
+h2.text-info Exporter Define
+hr
+.row-fluid
+    .span8
+        .input-prepend
+            span.add-on.span4 Id
+            input.span6(
+                id='ExporterDefine-Exporter-#{exporter.id}-Id'
+                type="text"
+                value='#{exporter.id}'
+                disabled
+            )
+        .input-prepend
+            span.add-on.span4 Name
+            input.span6(
+                id='ExporterDefine-Exporter-#{exporter.id}-Name'
+                type="text"
+                value='#{exporter.name}'
+                onkeyup='exporterDefineView.onExporterNameChange(#{exporter.id}, this);'
+            )
+        .input-prepend
+            span.add-on.span4 Description
+            input.span6(
+                id='ExporterDefine-Exporter-#{exporter.id}-Description'
+                type="text"
+                value='#{exporter.description}'
+                onkeyup='exporterDefineView.onExporterDescriptionChange(#{exporter.id}, this);'
+            )
+hr                

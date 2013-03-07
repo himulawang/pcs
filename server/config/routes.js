@@ -102,4 +102,33 @@ exports.routes = {
             data: 'nh',
         },
     },
+    C0603: {
+        ctrl: 'Data',                  
+        action: 'Remove', 
+        param: {
+            tableId: 'ni',
+            rowId: 'ni',
+        },
+    },
+    // exporter list
+    C0701: {
+        ctrl: 'ExporterList',                  
+        action: 'Retrieve', 
+        param: {
+        },
+    },
+    // exporter
+    C0801: {
+        ctrl: 'Exporter',                  
+        action: 'Create', 
+        param: {
+        },
+    },
+    C0803: {
+        ctrl: 'Exporter',                  
+        action: 'Remove', 
+        param: {
+            id: 'ni',
+        },
+    },
 };

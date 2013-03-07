@@ -7,6 +7,10 @@ var IndexView = function IndexView() {
         var table = new I.Models.Table();
         table.create();
     };
+    this.newExporterDefine = function newExporterDefine() {
+        var exporter = new I.Models.Exporter();
+        exporter.create();
+    };
     this.clearContent = function clearContent() {
         $('#Content').empty();
     };

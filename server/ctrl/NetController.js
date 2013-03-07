@@ -7,6 +7,7 @@ exports.NetController = {
     },
     Init: function Init(connection, api, params) {
         var tableList = dataPool.get('tableList', 0);
+        var exporterList = dataPool.get('exporterList', 0);
         var columnLists = {};
         var dataLists = {};
         tableList.getKeys().forEach(function(n) {
@@ -18,6 +19,7 @@ exports.NetController = {
             tableList: tableList.toAbbArray(),
             columnLists: columnLists,
             dataLists: dataLists,
+            exporterList: exporterList.toAbbArray(),
         };
         connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
     },

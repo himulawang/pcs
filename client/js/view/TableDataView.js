@@ -23,12 +23,15 @@ var TableDataView = function TableDataView() {
     this.makeDataRowHTML = function makeDataRowHTML(tableId, row) {
         return Renderer.make('TableData-DataRow', { tableId: tableId, row: row });
     };
+    this.makeIndexRowHTML = function makeIndexRowHTML(tableId, row) {
+        return Renderer.make('TableData-Index', { tableId: tableId, row: row });
+    };
     this.renderIndexColumn = function renderIndexColumn(tableId, dataList) {
         var row;
         var html = '';
         for (var i in dataList.list) {
             row = dataList.get(i);
-            html += Renderer.make('TableData-Index', { row: row });
+            html += this.makeIndexRowHTML(tableId, row);
         }
         html += Renderer.make('TableData-LastRow', { tableId: tableId });
         $('#TableData-Index').html(html);
@@ -52,8 +55,11 @@ var TableDataView = function TableDataView() {
     };
     this.renderDataCreate = function renderDataCreate(tableId, row) {
         if (!this.isViewOpened(tableId)) return;
-        var html = this.makeDataRowHTML(tableId, row);
-        $('#TableData-Data').append(html);
+        var indexHTML = this.makeIndexRowHTML(tableId, row);
+        $('#TableData-Index-LastRow').before(indexHTML);
+
+        var dataHTML = this.makeDataRowHTML(tableId, row);
+        $('#TableData-Data').append(dataHTML);
     };
     this.renderDataUpdate = function renderDataUpdate(tableId, dataId, columnId, data) {
         if (!this.isViewOpened(tableId)) return;
@@ -67,7 +73,11 @@ var TableDataView = function TableDataView() {
             return;
         }
 
-        el.html(value);
+        el.text(value);
+    };
+    this.renderDataRemove = function renderDataRemove(tableId, rowId) {
+        if (!this.isViewOpened(tableId)) return;
+        $('#TableData-Index-' + rowId + ',' + '#TableData-Row-' + rowId).remove();
     };
     this.isViewOpened = function isViewOpened(id) {
         return $('#TableData-' + id + '-Sheet').length !== 0;
@@ -104,5 +114,8 @@ var TableDataView = function TableDataView() {
     };
     this.createData = function createData(tableId) {
         DataController.Create(tableId);
+    };
+    this.removeData = function removeData(tableId, rowId) {
+        dialogView.renderDeleteDataRowConfirm(tableId, rowId);
     };
 };

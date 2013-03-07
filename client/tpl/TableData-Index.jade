@@ -1,2 +1,5 @@
-tr
-    td= row.c0
+tr(id='TableData-Index-#{row.c0}')
+    td
+        span= row.c0
+        span
+            i.icon-remove-circle.pointer(onclick='tableDataView.removeData(#{tableId}, #{row.c0});')
