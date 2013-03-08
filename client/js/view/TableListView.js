@@ -15,8 +15,7 @@ var TableListView = function TableListView() {
         this.el.append(html);
     };
     this.renderTableName = function renderTableName(table) {
-        var id = table.id;
-        $('#TableList-Table-' + id + '-Name').html(table.name);
+        $('#TableList-Table-' + table.id + '-Name').html(table.name);
     };
     this.renderRemoveTable = function renderRemoveTable(id) {
         $('#TableList-Table-' + id).remove();

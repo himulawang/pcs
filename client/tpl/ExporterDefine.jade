@@ -26,4 +26,20 @@ hr
                 value='#{exporter.description}'
                 onkeyup='exporterDefineView.onExporterDescriptionChange(#{exporter.id}, this);'
             )
+        .input-prepend
+            span.add-on.span4 Path
+            input.span6(
+                id='ExporterDefine-Exporter-#{exporter.id}-Path'
+                type="text"
+                value='#{exporter.path}'
+                onkeyup='exporterDefineView.onExporterPathChange(#{exporter.id}, this);'
+                placeholder='/home/ila/example.json'
+            )
+        .input-prepend
+            span.add-on.span4 Root Table
+            select.span6(
+                id='ExporterDefine-Exporter-#{exporter.id}-RootTable'
+                class='ExporterDefine-RootTable-Select'
+            )
 hr                
+#ExporterDefine-Levels.row

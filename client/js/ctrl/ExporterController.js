@@ -9,6 +9,12 @@ var ExporterController = {
         exporterListView.renderCreate(exporter);
     },
     onUpdate: function onUpdate(data) {
+        var exporterList = dataPool.get('exporterList', 0);
+        var exporter = exporterList.get(data.id);
+        exporter.fromAbbArray(data.exporter, true);
+
+        exporterListView.renderExporterName(exporter);
+        exporterDefineView.renderExporterUpdate(exporter);
     },
     remove: function remove(id) {
         dataPool.get("exporterList", 0).get(id).remove(id);

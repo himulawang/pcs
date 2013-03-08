@@ -12,7 +12,7 @@
     };
 
     Exporter.prototype.update = function update() {
-        iWebSocket.send('C0802', { exporter: this.toAbbDiff(), });
+        iWebSocket.send('C0802', { id: this.id, exporter: this.toAbbDiff(), });
     };
 
     Exporter.prototype.remove = function remove() {

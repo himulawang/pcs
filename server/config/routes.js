@@ -124,6 +124,13 @@ exports.routes = {
         param: {
         },
     },
+    C0802: {
+        ctrl: 'Exporter',                  
+        action: 'Update', 
+        param: {
+            exporter: 'nh'
+        },
+    },
     C0803: {
         ctrl: 'Exporter',                  
         action: 'Remove', 

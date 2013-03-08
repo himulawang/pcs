@@ -9,6 +9,9 @@ var ExporterListView = function ExporterListView() {
             this.renderCreate(exporter);
         }
     };
+    this.renderExporterName = function renderExporterName(exporter) {
+        $('#ExporterList-Exporter-' + exporter.id + '-Name').html(exporter.name);
+    };
     this.renderCreate = function renderCreate(exporter) {
         var data = { exporter: exporter };
         var html = Renderer.make('ExporterList-Exporter', data);

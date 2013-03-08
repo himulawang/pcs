@@ -69,6 +69,7 @@ var TableDataView = function TableDataView() {
 
         var input = el.children('input');
         if (input.length !== 0) {
+            if (input.val() === value) return;
             input.val(value);
             return;
         }

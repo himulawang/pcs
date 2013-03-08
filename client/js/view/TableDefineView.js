@@ -27,12 +27,14 @@ var TableDefineView = function TableDefineView() {
         if (!this.isViewOpened(table.id)) return;
         var id = table.id;
         var el = this.makeId('table', id, 'name');
+        if (el.val() === table.name) return;
         el.val(table.name);
     };
     this.renderTableDescription = function renderTableDescription(table) {
         if (!this.isViewOpened(table.id)) return;
         var id = table.id;
         var el = this.makeId('table', id, 'description');
+        if (el.val() === table.description) return;
         el.val(table.description);
     };
     this.renderAddColumn = function renderAddColumn(listId, column) {
@@ -50,6 +52,7 @@ var TableDefineView = function TableDefineView() {
         if (!this.isViewOpened(listId)) return;
         var data = { listId: listId, column: column };
         var el = this.makeId('column', column.id, 'name');
+        if (el.val() === column.name) return;
         el.val(column.name);
     };
     this.renderColumnIsPK = function renderColumnIsPK(listId, column) {
@@ -86,6 +89,7 @@ var TableDefineView = function TableDefineView() {
         if (!this.isViewOpened(listId)) return;
         var data = { listId: listId, column: column };
         var el = this.makeId('column', column.id, 'description');
+        if (el.val() === column.description) return;
         el.val(column.description);
     };
     this.isViewOpened = function isViewOpened(tableId) {

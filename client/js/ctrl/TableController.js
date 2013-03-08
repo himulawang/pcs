@@ -21,6 +21,7 @@ var TableController = {
         tableListView.renderTableName(table);
         tableDefineView.renderTableName(table);
         tableDefineView.renderTableDescription(table);
+        exporterDefineView.renderTableName(table);
     },
     remove: function remove(id) {
         dataPool.get("tableList", 0).get(id).remove(id);
