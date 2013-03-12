@@ -10,7 +10,7 @@ var TableController = {
         dataPool.set('columnList', pk, columnList);
 
         tableListView.renderCreate(table);
-        tableDefineView.renderAll(table);
+        exporterDefineView.renderTableCreate(table);
 
         dynamicMaker.make(pk);
     },

@@ -138,4 +138,39 @@ exports.routes = {
             id: 'ni',
         },
     },
+    C0901: {
+        ctrl: 'Exporter',                  
+        action: 'UpdateRootTable', 
+        param: {
+            id: 'ni',
+            tableId: 'ni',
+        },
+    },
+    C0902: {
+        ctrl: 'Exporter',                  
+        action: 'AddBlock', 
+        param: {
+            id: 'ni',
+            level: 'ni',
+            tableId: 'ni',
+        },
+    },
+    C0903: {
+        ctrl: 'Exporter',
+        action: 'RemoveBlock',
+        param: {
+            id: 'ni',
+            level: 'ni',
+            blockId: 'ni',
+        },
+    },
+    C0904: {
+        ctrl: 'Exporter',
+        action: 'RootTableRenameChange',
+        param: {
+            id: 'ni',
+            columnId: 'ni',
+            rename: 'es',
+        },
+    },
 };

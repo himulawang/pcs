@@ -1,0 +1,8 @@
+div.row-fluid
+    .span4 #{column.name}
+    .span2 G R B
+    .span1
+        input(type='radio', class='ExporterDefine-Table-#{blockId}-PK')
+    .span1
+        input(type='checkbox', id='ExporterDefine-Table-#{blockId}-#{column.id}-Choose')
+    input.span4(type='text', placeholder='Rename')

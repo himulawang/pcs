@@ -1,0 +1,13 @@
+div(id='ExporterDefine-Block-#{blockId}')
+    .row-fluid
+        strong.span6 #{table.name}
+        .span1 
+            i.icon-remove-circle.pointer(onclick='exporterDefineView.onRemoveTable(#{exporter.id}, #{level}, #{table.id}, #{blockId});')
+    div(class='ExporterDefine-Columns-TableId-#{table.id} ExporterDefine-Columns-BlockId-#{blockId}')
+        .row-fluid
+            .span4 Column
+            .span2 Link
+            .span1 PK
+            .span1 Choose
+            .span4
+    hr

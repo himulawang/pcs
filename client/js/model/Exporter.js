@@ -19,5 +19,9 @@
         iWebSocket.send('C0803', { id: this.id });
     };
 
+    Exporter.prototype.updateRootTable = function updateRootTable() {
+        iWebSocket.send('C0901', { id: this.id, tableId: this.rootTableId });
+    };
+
     I.Util.require('Exporter', 'Models', Exporter);
 }();

@@ -84,4 +84,20 @@ var routes = {
         ctrl: 'Exporter',
         action: 'Remove',
     },
+    C0901: {
+        ctrl: 'Exporter',
+        action: 'UpdateRootTable',
+    },
+    C0902: {
+        ctrl: 'Exporter',
+        action: 'AddBlock',
+    },
+    C0903: {
+        ctrl: 'Exporter',
+        action: 'RemoveBlock',
+    },
+    C0904: {
+        ctrl: 'Exporter',
+        action: 'RootTableRenameChange',
+    },
 };

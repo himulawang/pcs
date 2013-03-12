@@ -12,7 +12,10 @@ exports.NetController = {
         var dataLists = {};
         tableList.getKeys().forEach(function(n) {
             columnLists[n] = dataPool.get('columnList', n).toAbbArray();
-            dataLists[n] = dataPool.get('dataList', n).toAbbArray();
+            var dataList = dataPool.get('dataList', n);
+            if (dataList) {
+                dataLists[n] = dataList.toAbbArray();
+            }
         });
 
         var data = {

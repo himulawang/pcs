@@ -39,7 +39,8 @@ hr
             span.add-on.span4 Root Table
             select.span6(
                 id='ExporterDefine-Exporter-#{exporter.id}-RootTable'
-                class='ExporterDefine-RootTable-Select'
+                class='ExporterDefine-Table-Select'
+                onchange='exporterDefineView.onRootTableChange(#{exporter.id}, this);'
             )
 hr                
 #ExporterDefine-Levels.row

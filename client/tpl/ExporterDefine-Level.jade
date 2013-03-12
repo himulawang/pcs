@@ -1,8 +1,10 @@
 .ExporterDefine-Level.span4.border(id='ExporterDefine-Level-#{level}')
-    #ExporterDefine-Level-Top.row-fluid
+    .row-fluid
         .span4 Level#{level}
         .span8.input-append
             select.span6(
-                class='ExporterDefine-RootTable-Select'
+                class='ExporterDefine-Table-Select'
             )
-            button.btn Add
+            button.btn(onclick='exporterDefineView.onAddBlock(#{exporter.id}, #{level}, this);') Add
+    hr
+    div(class='ExporterDefine-Level-#{level}-Body')

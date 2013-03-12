@@ -36,7 +36,7 @@ var orms = [
     pkAutoIncrement: true,
     list: 'ColumnList',
 },
-{                         
+{
     name: 'Exporter',
     abb: 'e',
     column: [
@@ -45,7 +45,8 @@ var orms = [
         'description',
         'path',
         'changed',
-        'baseTableId',
+        'rootTableId',
+        'rootTableDetail',
         'tables',
         'levels',
         'links',
@@ -57,5 +58,44 @@ var orms = [
     pk: 'id',
     pkAutoIncrement: true,
     list: 'ExporterList',
-},                        
+},
+/*
+{
+    name: 'Block',
+    abb: 'b',
+    column: [
+        'id',
+        'pk',
+        'choose',
+        'bind',
+        'rename',
+    ],
+    toAddFilter: [],
+    toUpdateFilter: [0],
+    toAbbFilter: [],
+    toArrayFilter: [],
+    pk: 'id',
+    pkAutoIncrement: true,
+    list: 'BlockList',
+},
+{
+    name: 'Bind',
+    abb: 'i',
+    column: [
+        'id',
+        'fromBlockId',
+        'fromColumnId',
+        'toBlockId',
+        'toColumnId',
+        'color',
+    ],
+    toAddFilter: [],
+    toUpdateFilter: [0],
+    toAbbFilter: [],
+    toArrayFilter: [],
+    pk: 'id',
+    pkAutoIncrement: true,
+    list: 'BindList',
+},
+*/
 ];

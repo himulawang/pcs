@@ -28,4 +28,11 @@ var DialogView = function DialogView() {
         var html = Renderer.make('DialogImportTableData', data);
         this.getEl().html(html).modal('show');
     };
+    this.renderDeleteExporterDefineTableConfirm = function renderDeleteExporterDefineTableConfirm(exporterId, level, tableId, blockId) {
+        var table = dataPool.get('tableList', 0).get(tableId);
+        var exporter = dataPool.get('exporterList', 0).get(exporterId);
+        var data = { exporter: exporter, level: level, table: table, blockId: blockId };
+        var html = Renderer.make('DialogDeleteExporterDefineTableConfirm', data);
+        this.getEl().html(html).modal('show');
+    };
 };
