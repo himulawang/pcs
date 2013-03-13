@@ -173,4 +173,57 @@ exports.routes = {
             rename: 'es',
         },
     },
+    C0905: {
+        ctrl: 'Exporter',
+        action: 'RootTableChooseChange',
+        param: {
+            id: 'ni',
+            columnId: 'ni',
+            checked: 'ni',
+        },
+    },
+    C0906: {
+        ctrl: 'Exporter',
+        action: 'RootTablePKChange',
+        param: {
+            id: 'ni',
+            columnId: 'ni',
+        },
+    },
+    C0907: {
+        ctrl: 'Exporter',
+        action: 'TablePKChange',
+        param: {
+            id: 'ni',
+            blockId: 'ni',
+            columnId: 'ni',
+        },
+    },
+    C0908: {
+        ctrl: 'Exporter',
+        action: 'TableChooseChange',
+        param: {
+            id: 'ni',
+            blockId: 'ni',
+            columnId: 'ni',
+            checked: 'ni',
+        },
+    },
+    C0909: {
+        ctrl: 'Exporter',
+        action: 'TableRenameChange',
+        param: {
+            id: 'ni',
+            blockId: 'ni',
+            columnId: 'ni',
+            rename: 'es',
+        },
+    },
+    C0910: {
+        ctrl: 'Exporter',
+        action: 'AddLevel',
+        param: {
+            id: 'ni',
+        },
+    },
 };

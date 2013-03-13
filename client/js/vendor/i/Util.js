@@ -5,6 +5,33 @@
             return string[0].toUpperCase() + string.substr(1);
         },
         /* Array & Object */
+        max: function max(object) {
+            if (Array.isArray(object)) {
+                var array = object;
+            } else if (typeof object === 'object') {
+                var array = this.getKeys(object);
+            } else {
+                throw new I.Exception(10209);
+            }
+            return Math.max.apply(Math, array);
+        },
+        min: function min(object) {
+            if (Array.isArray(object)) {
+                var array = object;
+            } else if (typeof object === 'object') {
+                var array = this.getKeys(object);
+            } else {
+                throw new I.Exception(10210);
+            }
+            return Math.min.apply(Math, array);     
+        },
+        getKeys: function getKeys(object) {
+            var keys = [];
+            for (var i in object) {
+                keys.push(i);
+            }
+            return keys;
+        },
         getLength: function getLength(object) {
             if (Array.isArray(object)) {
                 return object.length;

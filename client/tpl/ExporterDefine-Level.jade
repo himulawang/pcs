@@ -1,6 +1,12 @@
 .ExporterDefine-Level.span4.border(id='ExporterDefine-Level-#{level}')
     .row-fluid
-        .span4 Level#{level}
+        .span2 Level#{level}
+        .span2
+            i.icon-remove-circle.pointer(
+                id='ExporterDefine-RemoveLevel-#{level}'
+                onclick='exporterDefineView.onRemoveLevel(#{exporter.id}, #{level});'
+                class=displayRemoveLevel&&level!=1 ? '' : 'hide'
+            )
         .span8.input-append
             select.span6(
                 class='ExporterDefine-Table-Select'

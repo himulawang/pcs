@@ -2,7 +2,18 @@ div.row-fluid
     .span4 #{column.name}
     .span2 G R B
     .span1
-        input(type='radio', class='ExporterDefine-Table-#{blockId}-PK')
+        input(type='radio'
+            id='ExporterDefine-Table-#{blockId}-#{column.id}-PK'
+            name='ExporterDefine-Table-#{blockId}-PK'
+            onclick='exporterDefineView.onTablePKChange(#{exporter.id}, #{blockId}, #{column.id});'
+        )
     .span1
-        input(type='checkbox', id='ExporterDefine-Table-#{blockId}-#{column.id}-Choose')
-    input.span4(type='text', placeholder='Rename')
+        input(type='checkbox'
+            id='ExporterDefine-Table-#{blockId}-#{column.id}-Choose'
+            onclick='exporterDefineView.onTableChooseChange(#{exporter.id}, #{blockId}, #{column.id}, this);'
+        )
+    input.span4(type='text'
+        placeholder='Rename'
+        id='ExporterDefine-Table-#{blockId}-#{column.id}-Rename'
+        onkeyup='exporterDefineView.onTableChooseRename(#{exporter.id}, #{blockId}, #{column.id}, this);'
+    )

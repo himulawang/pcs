@@ -42,5 +42,11 @@ hr
                 class='ExporterDefine-Table-Select'
                 onchange='exporterDefineView.onRootTableChange(#{exporter.id}, this);'
             )
-hr                
+hr
+#ExporterDefine-Levels-Top.row
+    input(value='Add Level'
+        type='button'
+        class='btn'
+        onclick='exporterDefineView.onAddLevel(#{exporter.id});'
+    )
 #ExporterDefine-Levels.row

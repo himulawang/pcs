@@ -2,10 +2,18 @@ div.row-fluid
     .span4 #{column.name}
     .span2 G R B
     .span1
-        input(type='radio', class='ExporterDefine-RootTable-PK')
+        input(type='radio'
+            id='ExporterDefine-RootTable-#{column.id}-PK'
+            name='ExporterDefine-RootTable-PK'
+            onclick='exporterDefineView.onRootTablePKChange(#{exporter.id}, #{column.id});'
+        )
     .span1
         input(type='checkbox'
             id='ExporterDefine-RootTable-#{column.id}-Choose'
-            onchange='exporterDefineView.onRootTableChooseChange(#{exporter.id}, #{column.id}, this);'
+            onclick='exporterDefineView.onRootTableChooseChange(#{exporter.id}, #{column.id}, this);'
         )
-    input.span4(type='text', placeholder='Rename')
+    input.span4(type='text'
+        placeholder='Rename'
+        id='ExporterDefine-RootTable-#{column.id}-Rename'
+        onkeyup='exporterDefineView.onRootTableChooseRename(#{exporter.id}, #{column.id}, this);'
+    )

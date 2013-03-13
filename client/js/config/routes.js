@@ -100,4 +100,28 @@ var routes = {
         ctrl: 'Exporter',
         action: 'RootTableRenameChange',
     },
+    C0905: {
+        ctrl: 'Exporter',
+        action: 'RootTableChooseChange',
+    },
+    C0906: {
+        ctrl: 'Exporter',
+        action: 'RootTablePKChange',
+    },
+    C0907: {
+        ctrl: 'Exporter',
+        action: 'TablePKChange',
+    },
+    C0908: {
+        ctrl: 'Exporter',
+        action: 'TableChooseChange',
+    },
+    C0909: {
+        ctrl: 'Exporter',
+        action: 'TableRenameChange',
+    },
+    C0910: {
+        ctrl: 'Exporter',
+        action: 'AddLevel',
+    },
 };
