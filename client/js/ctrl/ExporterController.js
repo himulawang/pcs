@@ -42,6 +42,14 @@ var ExporterController = {
 
         exporterDefineView.renderAddLevel(exporter, data.level);
     },
+    RemoveLevel: function RemoveLevel(id, level) {
+        iWebSocket.send('C0911', { id: id, level: level });
+    },
+    onRemoveLevel: function onRemoveLevel(data) {
+        var exporter = this.updateExporter(data.id, data.exporter);
+
+        exporterDefineView.renderRemoveLevel(exporter, data.level);
+    },
     AddBlock: function AddBlock(id, level, tableId) {
         iWebSocket.send('C0902', { id: id, level: level, tableId: tableId });
     },

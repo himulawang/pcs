@@ -226,4 +226,12 @@ exports.routes = {
             id: 'ni',
         },
     },
+    C0911: {
+        ctrl: 'Exporter',
+        action: 'RemoveLevel',
+        param: {
+            id: 'ni',
+            level: 'ni',
+        },
+    },
 };

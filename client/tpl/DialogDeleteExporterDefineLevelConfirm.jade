@@ -1,0 +1,9 @@
+.modal-header
+    h3.text-info Confirm Dialog
+.modal-body
+    .alert.alert-block.alert-error.fade.in
+        p Are you sure to delete level #{level} ?
+.modal-footer
+    button.btn(href='#', data-dismiss='modal', aria-hidden='true', onclick='ExporterController.RemoveLevel(#{id}, #{level});') OK
+    button.btn(href='#', data-dismiss='modal', aria-hidden='true') Cancel
+

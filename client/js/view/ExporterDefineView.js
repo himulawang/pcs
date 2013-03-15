@@ -103,11 +103,19 @@ var ExporterDefineView = function ExporterDefineView() {
 
         // columns
         var columnHTML = ''; 
-        columnList.getKeys().forEach(function(n) {
+        var columnKeys = columnList.getKeys();
+        columnKeys.forEach(function(n) {
             var column = columnList.get(n);
             columnHTML += Renderer.make('ExporterDefine-Table-Column', { exporter: exporter, blockId: blockId, column: column });
         });
         $('.ExporterDefine-Columns-BlockId-' + blockId).append(columnHTML);
+        // bind column drop event
+        var self = this;
+        columnKeys.forEach(function(n) {
+            var el = $('#ExporterDefine-Table-' + blockId + '-' + n + '-Column')[0];
+            el.addEventListener('dragover', self.onLinkDragOver, false);
+            el.addEventListener('drop', self.onLinkDrop, false);
+        });
 
         var links = JSON.parse(exporter.links);
         // pk
@@ -118,6 +126,9 @@ var ExporterDefineView = function ExporterDefineView() {
         links[blockId].choose.forEach(function(n) {
             $('#ExporterDefine-Table-' + blockId + '-' + n + '-Choose').attr('checked', 'checked');
         });
+
+        // bind drag event
+        $('#ExporterDefine-Link-' + blockId)[0].addEventListener('dragstart', this.onLinkDragStart, false);
     };
     this.renderExporterUpdate = function renderExporterUpdate(exporter) {
         if (!this.isViewOpened(exporter.id)) return;
@@ -168,6 +179,16 @@ var ExporterDefineView = function ExporterDefineView() {
         // render table select
         var tableOptionHTML = this.makeTableOption(exporter.id);
         $('#ExporterDefine-Level-' + level).find('.ExporterDefine-Table-Select').html(tableOptionHTML);
+    };
+    this.renderRemoveLevel = function renderRemoveLevel(exporter, level) {
+        if (!this.isViewOpened(exporter.id)) return;
+
+        // remove level
+        $('#ExporterDefine-Level-' + level).remove();
+
+        var preLevel = level - 1;
+        if (preLevel === 1) return;
+        $('#ExporterDefine-RemoveLevel-' + preLevel).removeClass('hide');
     };
     this.renderRootTablePKChange = function renderRootTablePKChange(exporter, columnId) {
         if (!this.isViewOpened(exporter.id)) return;
@@ -236,6 +257,7 @@ var ExporterDefineView = function ExporterDefineView() {
         ExporterController.AddLevel(id);
     };
     this.onRemoveLevel = function onRemoveLevel(id, level) {
+        dialogView.renderDeleteExporterDefineLevelConfirm(id, level);
     };
     this.onAddBlock = function onAddBlock(id, level, el) {
         var tableId = $(el).prev('select').val();
@@ -263,5 +285,37 @@ var ExporterDefineView = function ExporterDefineView() {
     };
     this.onTableChooseRename = function onTableChooseRename(exporterId, blockId, columnId, el) {
         ExporterController.TableRenameChange(exporterId, blockId, columnId, el.value);
+    };
+    this.onOverDragButton = function onOverDragButton(el) {
+        $(el).popover('show');
+    };
+    this.onOutDragButton = function onOutDragButton(el) {
+        $(el).popover('hide');
+    };
+    this.onLinkDragStart = function onLinkDragStart(e) {
+        var blockId = this.dataset.blockId;
+        console.dir(this);
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('blockId', blockId);
+        console.log(e.dataTransfer);
+    };
+    this.onLinkDragOver = function onLinkDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    };
+    this.onLinkDrop = function onLinkDrop(e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+
+        console.log(e);
+        console.log(e.dataTransfer.getData('blockId'));
+        console.log(this);
+
+        return false;
     };
 };

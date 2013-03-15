@@ -124,4 +124,8 @@ var routes = {
         ctrl: 'Exporter',
         action: 'AddLevel',
     },
+    C0911: {
+        ctrl: 'Exporter',
+        action: 'RemoveLevel',
+    },
 };

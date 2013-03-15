@@ -91,6 +91,42 @@ exports.ExporterController = {
         };
         connectionPool.broadcast(api, data);
     },
+    RemoveLevel: function RemoveLevel(connection, api, params) {
+        var id = params.id;
+        var level = params.level;
+        var exporterList = dataPool.get('exporterList', 0);
+        var exporter = exporterList.get(id);
+
+        // levels
+        var levels = JSON.parse(exporter.levels);
+        var maxLevel = I.Util.max(levels);
+        if (maxLevel != level) return;
+        
+        // remove links & tables
+        var tables = JSON.parse(exporter.tables);
+        var links = JSON.parse(exporter.links);
+        for (var blockIndex in levels[level]) {
+            var blockId = levels[level][blockIndex];
+            delete links[blockId];
+            tables[blockId] = null;
+        }
+
+        // remove level
+        delete levels[level];
+
+        exporter.tables = JSON.stringify(tables);
+        exporter.links = JSON.stringify(links);
+        exporter.levels = JSON.stringify(levels);
+
+        exporterList.updateSync(exporter);
+
+        var data = {
+            id: params.id,
+            level: level,
+            exporter: exporter.toAbbDiff(),
+        };
+        connectionPool.broadcast(api, data);
+    },
     AddBlock: function AddBlock(connection, api, params) {
         var exporterList = dataPool.get('exporterList', 0);
         var exporter = exporterList.get(params.id);

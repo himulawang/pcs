@@ -1,8 +1,20 @@
 div(id='ExporterDefine-Block-#{blockId}')
     .row-fluid
         strong.span6 #{table.name}
-        .span1 
+        .span2 
             i.icon-remove-circle.pointer(onclick='exporterDefineView.onRemoveTable(#{exporter.id}, #{level}, #{table.id}, #{blockId});')
+        .span2 
+            i.icon-resize-small.pointer(
+                id='ExporterDefine-Link-#{blockId}'
+                data-toggle='popover'
+                data-placement='right'
+                data-content='Drag this to column.'
+                data-original-title='Tips'
+                onmouseover='exporterDefineView.onOverDragButton(this);'
+                onmouseout='exporterDefineView.onOutDragButton(this);'
+                draggable='true'
+                data-block-id='#{blockId}'
+            )
     div(class='ExporterDefine-Columns-TableId-#{table.id} ExporterDefine-Columns-BlockId-#{blockId}')
         .row-fluid
             .span4 Column

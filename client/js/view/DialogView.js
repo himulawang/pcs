@@ -35,4 +35,9 @@ var DialogView = function DialogView() {
         var html = Renderer.make('DialogDeleteExporterDefineTableConfirm', data);
         this.getEl().html(html).modal('show');
     };
+    this.renderDeleteExporterDefineLevelConfirm = function renderDeleteExporterDefineLevelConfirm(id, level) {
+        var data = { id: id, level: level };
+        var html = Renderer.make('DialogDeleteExporterDefineLevelConfirm', data);
+        this.getEl().html(html).modal('show');
+    };
 };
