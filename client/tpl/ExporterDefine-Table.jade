@@ -13,6 +13,8 @@ div(id='ExporterDefine-Block-#{blockId}')
                 onmouseover='exporterDefineView.onOverDragButton(this);'
                 onmouseout='exporterDefineView.onOutDragButton(this);'
                 draggable='true'
+                data-exporter-id='#{exporter.id}'
+                data-level='#{level}'
                 data-block-id='#{blockId}'
             )
     div(class='ExporterDefine-Columns-TableId-#{table.id} ExporterDefine-Columns-BlockId-#{blockId}')

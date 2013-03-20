@@ -1,0 +1,10 @@
+.span3(
+    class='ExporterDefine-Link-#{fromLevel}-#{fromBlockId}-#{fromColumnId}-#{toLevel}-#{toBlockId}-#{toColumnId}'
+    style='background-color: #{color}'
+    data-name='.ExporterDefine-Link-#{fromLevel}-#{fromBlockId}-#{fromColumnId}-#{toLevel}-#{toBlockId}-#{toColumnId}'
+    onmouseover='exporterDefineView.onOverLink(this);'
+    onmouseout='exporterDefineView.onOutLink(this);'
+)
+    i.icon-remove-circle.pointer(
+        onclick='exporterDefineView.onRemoveLink(#{exporter.id}, #{fromBlockId});'    
+    )

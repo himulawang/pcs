@@ -234,4 +234,24 @@ exports.routes = {
             level: 'ni',
         },
     },
+    C0912: {
+        ctrl: 'Exporter',
+        action: 'AddLink',
+        param: {
+            id: 'ni',
+            fromLevel: 'ni',
+            fromBlockId: 'ni',
+            toLevel: 'ni',
+            toBlockId: 'ns',
+            toColumnId: 'ni',
+        },
+    },
+    C0913: {
+        ctrl: 'Exporter',
+        action: 'RemoveLink',
+        param: {
+            id: 'ni',
+            blockId: 'ni',
+        },
+    },
 };

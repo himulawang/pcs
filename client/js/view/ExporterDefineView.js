@@ -52,11 +52,19 @@ var ExporterDefineView = function ExporterDefineView() {
 
         // columns
         var columnHTML = ''; 
-        columnList.getKeys().forEach(function(n) {
+        var columnKeys = columnList.getKeys();
+        columnKeys.forEach(function(n) {
             var column = columnList.get(n);
             columnHTML += Renderer.make('ExporterDefine-RootTable-Column', { exporter: exporter, column: column });
         });
         $('#ExporterDefine-RootTable-Columns').append(columnHTML);
+        // bind column drop event
+        var self = this;
+        columnKeys.forEach(function(n) {
+            var el = $('#ExporterDefine-Table-root-' + n + '-Column')[0];
+            el.addEventListener('dragover', self.onLinkDragOver, false);
+            el.addEventListener('drop', self.onLinkDrop, false);
+        });
 
         var detail = JSON.parse(exporter.rootTableDetail);
         // pk
@@ -83,6 +91,32 @@ var ExporterDefineView = function ExporterDefineView() {
                 this.renderAddBlock(exporter, level, tableId, blockId);
             }
         }
+
+        this.renderLinks(exporter);
+    };
+    this.renderLinks = function renderLinks(exporter) {
+        var links = JSON.parse(exporter.links);
+        for (var blockId in links) {
+            var bind = links[blockId].bind;
+            if (bind.fromLevel === null) continue;
+
+            this.renderLink(exporter, bind.fromLevel, bind.fromBlockId, bind.fromColumnId, bind.toLevel, bind.toBlockId, bind.toColumnId, bind.color);
+        }
+    };
+    this.renderLink = function renderLink(exporter, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId, color) {
+        var data = {
+            exporter: exporter,
+            fromLevel: fromLevel,
+            fromBlockId: fromBlockId,
+            fromColumnId: fromColumnId,
+            toLevel: toLevel,
+            toBlockId: toBlockId,
+            toColumnId: toColumnId,
+            color: color,
+        };
+        var html = Renderer.make('ExporterDefine-Link', data);
+        $('#ExporterDefine-Table-' + fromBlockId + '-' + fromColumnId + '-Link').append(html);
+        $('#ExporterDefine-Table-' + toBlockId + '-' + toColumnId + '-Link').append(html);
     };
     this.renderAddBlock = function renderAddBlock(exporter, level, tableId, blockId) {
         if (!this.isViewOpened(exporter.id)) return;
@@ -106,7 +140,7 @@ var ExporterDefineView = function ExporterDefineView() {
         var columnKeys = columnList.getKeys();
         columnKeys.forEach(function(n) {
             var column = columnList.get(n);
-            columnHTML += Renderer.make('ExporterDefine-Table-Column', { exporter: exporter, blockId: blockId, column: column });
+            columnHTML += Renderer.make('ExporterDefine-Table-Column', { exporter: exporter, level: level, blockId: blockId, column: column });
         });
         $('.ExporterDefine-Columns-BlockId-' + blockId).append(columnHTML);
         // bind column drop event
@@ -120,7 +154,7 @@ var ExporterDefineView = function ExporterDefineView() {
         var links = JSON.parse(exporter.links);
         // pk
         if (links[blockId].pk !== null) {
-            $('#ExporterDefine-Table-' + blockId + '-' + links[blockId].pk).attr('checked', 'checked');
+            $('#ExporterDefine-Table-' + blockId + '-' + links[blockId].pk + '-PK').attr('checked', 'checked');
         }
         // choose
         links[blockId].choose.forEach(function(n) {
@@ -224,6 +258,18 @@ var ExporterDefineView = function ExporterDefineView() {
         if (el.val() == rename) return;
         el.val(rename);
     };
+    this.renderAddLink = function renderAddLink(exporter, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId, color, preBind) {
+        if (!this.isViewOpened(exporter.id)) return;
+        // remove preBind
+        if (preBind !== null) {
+            var obj = JSON.parse(preBind);
+            this.renderRemoveLink(obj.fromLevel, obj.fromBlockId, obj.fromColumnId, obj.toLevel, obj.toBlockId, obj.toColumnId);
+        }
+        this.renderLink(exporter, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId, color);
+    };
+    this.renderRemoveLink = function renderRemoveLink(fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId) {
+        $('.ExporterDefine-Link-' + fromLevel + '-' + fromBlockId + '-' + fromColumnId + '-' + toLevel + '-' + toBlockId + '-' + toColumnId).remove();
+    };
     this.isViewOpened = function isViewOpened(exporterId) {
         var el = $('#ExporterDefine-Exporter-' + exporterId + '-Id');
         return el.length !== 0;
@@ -293,11 +339,10 @@ var ExporterDefineView = function ExporterDefineView() {
         $(el).popover('hide');
     };
     this.onLinkDragStart = function onLinkDragStart(e) {
-        var blockId = this.dataset.blockId;
-        console.dir(this);
         e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('blockId', blockId);
-        console.log(e.dataTransfer);
+        e.dataTransfer.setData('exporterId', this.dataset.exporterId);
+        e.dataTransfer.setData('level', this.dataset.level);
+        e.dataTransfer.setData('blockId', this.dataset.blockId);
     };
     this.onLinkDragOver = function onLinkDragOver(e) {
         if (e.preventDefault) {
@@ -312,10 +357,32 @@ var ExporterDefineView = function ExporterDefineView() {
             e.stopPropagation();
         }
 
-        console.log(e);
-        console.log(e.dataTransfer.getData('blockId'));
-        console.log(this);
+        var id = e.dataTransfer.getData('exporterId');
+        var fromLevel = e.dataTransfer.getData('level');
+        var fromBlockId = e.dataTransfer.getData('blockId');
+        var toLevel = this.dataset.level;
+        var toBlockId = this.dataset.blockId;
+        var toColumnId = this.dataset.columnId;
+
+        if (fromLevel - toLevel > 1) return;
+        console.log({
+            id: id, fromLevel: fromLevel, fromBlockId: fromBlockId,
+            toLevel: toLevel, toBlockId: toBlockId, toColumnId: toColumnId,
+        });
+
+        ExporterController.AddLink(id, fromLevel, fromBlockId, toLevel, toBlockId, toColumnId);
 
         return false;
+    };
+    this.onOverLink = function onOverLink(el) {
+        var className = el.dataset.name;
+        $(className).addClass('border');
+    };
+    this.onOutLink = function onOutLink(el) {
+        var className = el.dataset.name;
+        $(className).removeClass('border');
+    };
+    this.onRemoveLink = function onRemoveLink(exporterId, blockId) {
+        ExporterController.RemoveLink(exporterId, blockId);
     };
 };

@@ -1,6 +1,11 @@
-.row-fluid(id='ExporterDefine-Table-#{blockId}-#{column.id}-Column')
+.row-fluid(
+        id='ExporterDefine-Table-#{blockId}-#{column.id}-Column'
+        data-level='#{level}'
+        data-block-id='#{blockId}'
+        data-column-id='#{column.id}'
+    )
     .span4 #{column.name}
-    .span2 G R B
+    .span2.row-fluid(id='ExporterDefine-Table-#{blockId}-#{column.id}-Link')
     .span1
         input(type='radio'
             id='ExporterDefine-Table-#{blockId}-#{column.id}-PK'

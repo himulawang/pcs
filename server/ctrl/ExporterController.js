@@ -152,10 +152,12 @@ exports.ExporterController = {
             pk: null,
             choose: columnList.getKeys(),
             bind: {
-                fromBlock: null,
-                fromColumn: null,
-                toBlock: null,
-                toColumn: null,
+                fromLevel: null,
+                fromBlockId: null,
+                fromColumnId: null,
+                toLevel: null,
+                toBlockId: null,
+                toColumnId: null,
                 color: null,
             },
             rename: {},
@@ -349,6 +351,94 @@ exports.ExporterController = {
             rename: rename,
             exporter: exporter.toAbbDiff(),
         };
+        connectionPool.broadcast(api, data);
+    },
+    AddLink: function AddLink(connection, api, params) {
+        var id = params.id;
+        var fromLevel = params.fromLevel;
+        var fromBlockId = params.fromBlockId;
+        var toLevel = params.toLevel;
+        var toBlockId = params.toBlockId;
+        var toColumnId = params.toColumnId;
+        var exporterList = dataPool.get('exporterList', 0);
+        var exporter = exporterList.get(id);
+
+        var links = JSON.parse(exporter.links);
+        var link = links[fromBlockId];
+        var fromColumnId = link.pk;
+
+        // if from block hasn't pk
+        if (fromColumnId === null) {
+            return;
+        }
+
+        // if block has binded need to client delete first
+        var preBind;
+        if (link.bind.fromLevel !== null) {
+            preBind = JSON.stringify(link.bind);
+        } else {
+            preBind = null;
+        }
+
+        link.bind.fromLevel = fromLevel;
+        link.bind.fromBlockId = fromBlockId;
+        link.bind.fromColumnId = fromColumnId;
+        link.bind.toLevel = toLevel;
+        link.bind.toBlockId = toBlockId;
+        link.bind.toColumnId = toColumnId;
+        link.bind.color = '#EFEF0D';
+        
+        links[fromBlockId] = link;
+        exporter.links = JSON.stringify(links);
+
+        exporterList.updateSync(exporter);
+
+        var data = {
+            id: id,
+            fromLevel: fromLevel,
+            fromBlockId: fromBlockId,
+            fromColumnId: fromColumnId,
+            toLevel: toLevel,
+            toBlockId: toBlockId,
+            toColumnId: toColumnId,
+            color: link.bind.color,
+            exporter: exporter.toAbbDiff(),
+            preBind: preBind,
+        };
+        connectionPool.broadcast(api, data);
+    },
+    RemoveLink: function RemoveLink(connection, api, params) {
+        var id = params.id;
+        var blockId = params.blockId;
+        var exporterList = dataPool.get('exporterList', 0);
+        var exporter = exporterList.get(id);
+
+        var links = JSON.parse(exporter.links);
+        var bind = links[blockId].bind;
+        var data = {
+            id: id,
+            fromLevel: bind.fromLevel,
+            fromBlockId: bind.fromBlockId,
+            fromColumnId: bind.fromColumnId,
+            toLevel: bind.toLevel,
+            toBlockId: bind.toBlockId,
+            toColumnId: bind.toColumnId,
+        };
+        links[blockId].bind = {
+            fromLevel: null,
+            fromBlockId: null,
+            fromColumnId: null,
+            toLevel: null,
+            toBlockId: null,
+            toColumnId: null,
+            color: null,
+        };
+
+        exporter.links = JSON.stringify(links);
+
+        exporterList.updateSync(exporter);
+
+        data.exporter = exporter.toAbbDiff();
         connectionPool.broadcast(api, data);
     },
 };

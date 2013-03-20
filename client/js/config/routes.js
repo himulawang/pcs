@@ -128,4 +128,12 @@ var routes = {
         ctrl: 'Exporter',
         action: 'RemoveLevel',
     },
+    C0912: {
+        ctrl: 'Exporter',
+        action: 'AddLink',
+    },
+    C0913: {
+        ctrl: 'Exporter',
+        action: 'RemoveLink',
+    },
 };

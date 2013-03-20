@@ -114,4 +114,20 @@ var ExporterController = {
 
         exporterDefineView.renderTableRenameChange(exporter, data.blockId, data.columnId, data.rename);
     },
+    AddLink: function AddLink(exporterId, fromLevel, fromBlockId, toLevel, toBlockId, toColumnId) {
+        iWebSocket.send('C0912', { id: exporterId, fromLevel: fromLevel, fromBlockId: fromBlockId, toLevel: toLevel, toBlockId: toBlockId, toColumnId: toColumnId });
+    },
+    onAddLink: function onAddLink(data) {
+        var exporter = this.updateExporter(data.id, data.exporter);
+
+        exporterDefineView.renderAddLink(exporter, data.fromLevel, data.fromBlockId, data.fromColumnId, data.toLevel, data.toBlockId, data.toColumnId, data.color, data.preBind);
+    },
+    RemoveLink: function RemoveLink(exporterId, blockId) {
+        iWebSocket.send('C0913', { id: exporterId, blockId: blockId });
+    },
+    onRemoveLink: function onRemoveLink(data) {
+        var exporter = this.updateExporter(data.id, data.exporter);
+
+        exporterDefineView.renderRemoveLink(data.fromLevel, data.fromBlockId, data.fromColumnId, data.toLevel, data.toBlockId, data.toColumnId);
+    },
 };

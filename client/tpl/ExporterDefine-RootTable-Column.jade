@@ -1,6 +1,11 @@
-div.row-fluid
+.row-fluid(
+        id='ExporterDefine-Table-root-#{column.id}-Column'
+        data-level='1'
+        data-block-id='root'
+        data-column-id='#{column.id}'
+    )
     .span4 #{column.name}
-    .span2 G R B
+    .span2.row-fluid(id='ExporterDefine-Table-root-#{column.id}-Link') 
     .span1
         input(type='radio'
             id='ExporterDefine-RootTable-#{column.id}-PK'
