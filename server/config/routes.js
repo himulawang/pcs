@@ -254,4 +254,23 @@ exports.routes = {
             blockId: 'ni',
         },
     },
+    C0914: {
+        ctrl: 'Exporter',
+        action: 'LinkColorChange',
+        param: {
+            id: 'ni',
+            blockId: 'ni',
+            color: 'ns',
+            className: 'ns',
+        },
+    },
+    C0915: {
+        ctrl: 'Exporter',
+        action: 'BlockRenameChange',
+        param: {
+            id: 'ni',
+            blockId: 'ni',
+            rename: 'es',
+        },
+    },
 };

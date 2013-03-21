@@ -22,6 +22,8 @@ var ColumnController = {
         tableDefineView.renderColumnClient(data.listId, column);
         tableDefineView.renderColumnServer(data.listId, column);
         tableDefineView.renderColumnDescription(data.listId, column);
+
+        exporterDefineView.renderColumnNameChange(column);
     },
     onRemove: function onRemove(data) {
         var columnList = dataPool.get('columnList', data.listId);

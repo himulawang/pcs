@@ -1,6 +1,14 @@
 div(id='ExporterDefine-Block-#{blockId}')
     .row-fluid
-        strong.span6 #{table.name}
+        strong.span4 #{table.name}
+        .span4.row-fluid
+            - if (level != 1)
+                input.span12(type='text'
+                    id='ExporterDefine-PreLevelName-#{blockId}'
+                    placeholder='Rename'
+                    onkeyup='exporterDefineView.onBlockNameChange(#{exporter.id}, #{blockId}, this);'
+                    value='#{preLevelName}'
+                )
         .span2 
             i.icon-remove-circle.pointer(onclick='exporterDefineView.onRemoveTable(#{exporter.id}, #{level}, #{table.id}, #{blockId});')
         .span2 

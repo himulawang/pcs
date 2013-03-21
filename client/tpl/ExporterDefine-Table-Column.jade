@@ -4,7 +4,9 @@
         data-block-id='#{blockId}'
         data-column-id='#{column.id}'
     )
-    .span4 #{column.name}
+    .span4(
+        class='ExporterDefine-Table-#{column.id}-ColumnName'
+    ) #{column.name}
     .span2.row-fluid(id='ExporterDefine-Table-#{blockId}-#{column.id}-Link')
     .span1
         input(type='radio'

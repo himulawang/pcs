@@ -104,6 +104,7 @@ var ExporterDefineView = function ExporterDefineView() {
         }
     };
     this.renderLink = function renderLink(exporter, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId, color) {
+        var linkClassName = 'ExporterDefine-Link-' + fromLevel + '-' + fromBlockId + '-' + fromColumnId + '-' + toLevel + '-' + toBlockId + '-' + toColumnId;
         var data = {
             exporter: exporter,
             fromLevel: fromLevel,
@@ -112,11 +113,21 @@ var ExporterDefineView = function ExporterDefineView() {
             toLevel: toLevel,
             toBlockId: toBlockId,
             toColumnId: toColumnId,
+            linkClassName: linkClassName,
             color: color,
         };
         var html = Renderer.make('ExporterDefine-Link', data);
-        $('#ExporterDefine-Table-' + fromBlockId + '-' + fromColumnId + '-Link').append(html);
-        $('#ExporterDefine-Table-' + toBlockId + '-' + toColumnId + '-Link').append(html);
+        var id = '#ExporterDefine-Table-' + fromBlockId + '-' + fromColumnId + '-Link';
+        id += ',' + '#ExporterDefine-Table-' + toBlockId + '-' + toColumnId + '-Link';
+        $(id).append(html);
+
+        var $linkClassName = '.' + linkClassName;
+        var self = this;
+        $($linkClassName)
+            .colorpicker({ format: 'rgba' })
+            .on('changeColor', function(e){
+                self.onLinkColorChange(exporter.id, fromBlockId, e.color.toHex(), $linkClassName);
+        });
     };
     this.renderAddBlock = function renderAddBlock(exporter, level, tableId, blockId) {
         if (!this.isViewOpened(exporter.id)) return;
@@ -132,7 +143,9 @@ var ExporterDefineView = function ExporterDefineView() {
         $('#ExporterDefine-Block-' + blockId).remove();
     };
     this.renderTable = function renderTable(exporter, table, columnList, level, blockId) {
-        var html = Renderer.make('ExporterDefine-Table', { exporter: exporter, table: table, blockId: blockId, level: level });
+        var links = JSON.parse(exporter.links);
+        var preLevelName = links[blockId].preLevelName === null ? '' : links[blockId].preLevelName;
+        var html = Renderer.make('ExporterDefine-Table', { exporter: exporter, table: table, blockId: blockId, level: level, preLevelName: preLevelName });
         $('.ExporterDefine-Level-' + level + '-Body').append(html);
 
         // columns
@@ -151,7 +164,6 @@ var ExporterDefineView = function ExporterDefineView() {
             el.addEventListener('drop', self.onLinkDrop, false);
         });
 
-        var links = JSON.parse(exporter.links);
         // pk
         if (links[blockId].pk !== null) {
             $('#ExporterDefine-Table-' + blockId + '-' + links[blockId].pk + '-PK').attr('checked', 'checked');
@@ -258,17 +270,34 @@ var ExporterDefineView = function ExporterDefineView() {
         if (el.val() == rename) return;
         el.val(rename);
     };
+    this.renderColumnNameChange = function renderColumnNameChange(column) {
+        var el = $('.ExporterDefine-Table-' + column.id + '-' + 'ColumnName');
+        if (el.text() == column.name) return;
+
+        el.text(column.name);
+    };
     this.renderAddLink = function renderAddLink(exporter, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId, color, preBind) {
         if (!this.isViewOpened(exporter.id)) return;
         // remove preBind
         if (preBind !== null) {
             var obj = JSON.parse(preBind);
-            this.renderRemoveLink(obj.fromLevel, obj.fromBlockId, obj.fromColumnId, obj.toLevel, obj.toBlockId, obj.toColumnId);
+            this.renderRemoveLink(exporter.id, obj.fromLevel, obj.fromBlockId, obj.fromColumnId, obj.toLevel, obj.toBlockId, obj.toColumnId);
         }
         this.renderLink(exporter, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId, color);
     };
-    this.renderRemoveLink = function renderRemoveLink(fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId) {
+    this.renderRemoveLink = function renderRemoveLink(exporterId, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId) {
+        if (!this.isViewOpened(exporterId)) return;
         $('.ExporterDefine-Link-' + fromLevel + '-' + fromBlockId + '-' + fromColumnId + '-' + toLevel + '-' + toBlockId + '-' + toColumnId).remove();
+    };
+    this.renderLinkColorChange = function renderLinkColorChange(className, color) {
+        $(className).css('background-color', color);
+    };
+    this.renderBlockRenameChange = function renderBlockRenameChange(exporter, blockId, rename) {
+        if (!this.isViewOpened(exporter.id)) return;
+        var el = $('#ExporterDefine-PreLevelName-' + blockId);
+
+        if (el.val() == rename) return;
+        el.val(rename);
     };
     this.isViewOpened = function isViewOpened(exporterId) {
         var el = $('#ExporterDefine-Exporter-' + exporterId + '-Id');
@@ -320,6 +349,13 @@ var ExporterDefineView = function ExporterDefineView() {
         ExporterController.RootTableChooseChange(exporterId, columnId, checked);
     };
     this.onRootTableChooseRename = function onRootTableChooseRename(exporterId, columnId, el) {
+        var exporter = dataPool.get('exporterList', 0).get(exporterId);
+        var detail = JSON.parse(exporter.rootTableDetail);
+
+        var preValue = detail.rename[columnId];
+        if ((preValue === undefined && el.value === '') ||
+            preValue == el.value
+        ) return;
         ExporterController.RootTableRenameChange(exporterId, columnId, el.value);
     };
     this.onTablePKChange = function onTablePKChange(exporterId, blockId, columnId) {
@@ -330,7 +366,24 @@ var ExporterDefineView = function ExporterDefineView() {
         ExporterController.TableChooseChange(exporterId, blockId, columnId, checked);
     };
     this.onTableChooseRename = function onTableChooseRename(exporterId, blockId, columnId, el) {
+        var exporter = dataPool.get('exporterList', 0).get(exporterId);
+        var links = JSON.parse(exporter.links);
+
+        var preValue = links[blockId].rename[columnId];
+        if ((preValue === undefined && el.value === '') ||
+            preValue == el.value
+        ) return;
         ExporterController.TableRenameChange(exporterId, blockId, columnId, el.value);
+    };
+    this.onBlockNameChange = function onBlockNameChange(exporterId, blockId, el) {
+        var exporter = dataPool.get('exporterList', 0).get(exporterId);
+        var links = JSON.parse(exporter.links);
+        
+        var preValue = links[blockId].preLevelName;
+        if ((preValue === null && el.value === '') ||
+            preValue == el.value
+        ) return;
+        ExporterController.BlockRenameChange(exporterId, blockId, el.value);
     };
     this.onOverDragButton = function onOverDragButton(el) {
         $(el).popover('show');
@@ -364,25 +417,17 @@ var ExporterDefineView = function ExporterDefineView() {
         var toBlockId = this.dataset.blockId;
         var toColumnId = this.dataset.columnId;
 
-        if (fromLevel - toLevel > 1) return;
-        console.log({
-            id: id, fromLevel: fromLevel, fromBlockId: fromBlockId,
-            toLevel: toLevel, toBlockId: toBlockId, toColumnId: toColumnId,
-        });
+        var delta = fromLevel - toLevel;
+        if (delta > 1 || delta < 0) return;
 
         ExporterController.AddLink(id, fromLevel, fromBlockId, toLevel, toBlockId, toColumnId);
-
         return false;
-    };
-    this.onOverLink = function onOverLink(el) {
-        var className = el.dataset.name;
-        $(className).addClass('border');
-    };
-    this.onOutLink = function onOutLink(el) {
-        var className = el.dataset.name;
-        $(className).removeClass('border');
     };
     this.onRemoveLink = function onRemoveLink(exporterId, blockId) {
         ExporterController.RemoveLink(exporterId, blockId);
+        return false;
+    };
+    this.onLinkColorChange = function onLinkColorChange(exporterId, blockId, color, className) {
+        ExporterController.LinkColorChange(exporterId, blockId, color, className);
     };
 };

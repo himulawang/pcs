@@ -6,7 +6,7 @@ exports.ExporterController = {
 
         var exporter = new I.Models.Exporter();
         exporter.setPK(id);
-        exporter.name = 'toChanged';
+        exporter.name = 'toChange';
         exporter.changed = 0;
         exporter.rootTableId = 0;
         var detail = {
@@ -105,10 +105,12 @@ exports.ExporterController = {
         // remove links & tables
         var tables = JSON.parse(exporter.tables);
         var links = JSON.parse(exporter.links);
+        var removedBlockIds = [];
         for (var blockIndex in levels[level]) {
             var blockId = levels[level][blockIndex];
             delete links[blockId];
             tables[blockId] = null;
+            removedBlockIds.push(blockId);
         }
 
         // remove level
@@ -123,6 +125,7 @@ exports.ExporterController = {
         var data = {
             id: params.id,
             level: level,
+            removedBlockIds: removedBlockIds,
             exporter: exporter.toAbbDiff(),
         };
         connectionPool.broadcast(api, data);
@@ -161,6 +164,7 @@ exports.ExporterController = {
                 color: null,
             },
             rename: {},
+            preLevelName: null,
         };
         exporter.links = JSON.stringify(links);
 
@@ -386,7 +390,7 @@ exports.ExporterController = {
         link.bind.toLevel = toLevel;
         link.bind.toBlockId = toBlockId;
         link.bind.toColumnId = toColumnId;
-        link.bind.color = '#EFEF0D';
+        link.bind.color = '#DDDDDD';
         
         links[fromBlockId] = link;
         exporter.links = JSON.stringify(links);
@@ -439,6 +443,52 @@ exports.ExporterController = {
         exporterList.updateSync(exporter);
 
         data.exporter = exporter.toAbbDiff();
+        connectionPool.broadcast(api, data);
+    },
+    LinkColorChange: function LinkColorChange(connection, api, params) {
+        var id = params.id;
+        var blockId = params.blockId;
+        var color = params.color;
+        var className = params.className;
+        var exporterList = dataPool.get('exporterList', 0);
+        var exporter = exporterList.get(id);
+
+        var links = JSON.parse(exporter.links);
+        links[blockId].bind.color = color;
+
+        exporter.links = JSON.stringify(links);
+
+        exporterList.updateSync(exporter);
+
+        var data = {
+            id: id,
+            exporter: exporter.toAbbDiff(),
+            blockId: blockId,
+            color: color,
+            className: className,
+        };
+        connectionPool.broadcast(api, data);
+    },
+    BlockRenameChange: function BlockRenameChange(connection, api, params) {
+        var id = params.id;
+        var blockId = params.blockId;
+        var rename = params.rename;
+        var exporterList = dataPool.get('exporterList', 0);
+        var exporter = exporterList.get(id);
+
+        var links = JSON.parse(exporter.links);
+        links[blockId].preLevelName = rename === '' ? null : rename;
+
+        exporter.links = JSON.stringify(links);
+
+        exporterList.updateSync(exporter);
+
+        var data = {
+            id: id,
+            exporter: exporter.toAbbDiff(),
+            blockId: blockId,
+            rename: rename,
+        };
         connectionPool.broadcast(api, data);
     },
 };

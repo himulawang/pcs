@@ -46,6 +46,16 @@ var ExporterController = {
         iWebSocket.send('C0911', { id: id, level: level });
     },
     onRemoveLevel: function onRemoveLevel(data) {
+        // remove links
+        var exporter = dataPool.get('exporterList', 0).get(data.id);
+        var links = JSON.parse(exporter.links);
+        data.removedBlockIds.forEach(function(blockId) {
+            var bind = links[blockId].bind;
+            if (bind.fromBlockId !== null) {
+                exporterDefineView.renderRemoveLink(data.id, bind.fromLevel, bind.fromBlockId, bind.fromColumnId, bind.toLevel, bind.toBlockId, bind.toColumnId);
+            }
+        });
+
         var exporter = this.updateExporter(data.id, data.exporter);
 
         exporterDefineView.renderRemoveLevel(exporter, data.level);
@@ -62,7 +72,17 @@ var ExporterController = {
         iWebSocket.send('C0903', { id: exporterId, level: level, blockId: blockId });
     },
     onRemoveBlock: function onRemoveBlock(data) {
-        var exporter = this.updateExporter(data.id, data.exporter);
+        // remove links
+        var exporter = dataPool.get('exporterList', 0).get(data.id);
+        var links = JSON.parse(exporter.links);
+        for (var blockId in links) {
+            var bind = links[blockId].bind;
+            if (bind.fromBlockId == data.blockId || bind.toBlockId == data.blockId) {
+                exporterDefineView.renderRemoveLink(data.id, bind.fromLevel, bind.fromBlockId, bind.fromColumnId, bind.toLevel, bind.toBlockId, bind.toColumnId);
+            }
+        }
+
+        exporter = this.updateExporter(data.id, data.exporter);
 
         exporterDefineView.renderRemoveBlock(exporter, data.level, data.blockId);
     },
@@ -128,6 +148,22 @@ var ExporterController = {
     onRemoveLink: function onRemoveLink(data) {
         var exporter = this.updateExporter(data.id, data.exporter);
 
-        exporterDefineView.renderRemoveLink(data.fromLevel, data.fromBlockId, data.fromColumnId, data.toLevel, data.toBlockId, data.toColumnId);
+        exporterDefineView.renderRemoveLink(data.id, data.fromLevel, data.fromBlockId, data.fromColumnId, data.toLevel, data.toBlockId, data.toColumnId);
+    },
+    LinkColorChange: function LinkColorChange(exporterId, blockId, color, className) {
+        iWebSocket.send('C0914', { id: exporterId, blockId: blockId, color: color, className: className });
+    },
+    onLinkColorChange: function onLinkColorChange(data) {
+        var exporter = this.updateExporter(data.id, data.exporter);
+
+        exporterDefineView.renderLinkColorChange(data.className, data.color);
+    },
+    BlockRenameChange: function BlockRenameChange(exporterId, blockId, rename) {
+        iWebSocket.send('C0915', { id: exporterId, blockId: blockId, rename: rename });
+    },
+    onBlockRenameChange: function onBlockRenameChange(data) {
+        var exporter = this.updateExporter(data.id, data.exporter);
+
+        exporterDefineView.renderBlockRenameChange(exporter, data.blockId, data.rename);
     },
 };

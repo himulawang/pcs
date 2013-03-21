@@ -17,6 +17,7 @@ hr
                 type="text"
                 value='#{exporter.name}'
                 onkeyup='exporterDefineView.onExporterNameChange(#{exporter.id}, this);'
+                onclick='console.log(ExporterValidator.check(#{exporter.id}));'
             )
         .input-prepend
             span.add-on.span4 Description

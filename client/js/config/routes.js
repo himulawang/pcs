@@ -136,4 +136,12 @@ var routes = {
         ctrl: 'Exporter',
         action: 'RemoveLink',
     },
+    C0914: {
+        ctrl: 'Exporter',
+        action: 'LinkColorChange',
+    },
+    C0915: {
+        ctrl: 'Exporter',
+        action: 'BlockRenameChange',
+    },
 };
