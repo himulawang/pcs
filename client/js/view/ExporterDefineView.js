@@ -158,10 +158,13 @@ var ExporterDefineView = function ExporterDefineView() {
         $('.ExporterDefine-Columns-BlockId-' + blockId).append(columnHTML);
         // bind column drop event
         var self = this;
-        columnKeys.forEach(function(n) {
-            var el = $('#ExporterDefine-Table-' + blockId + '-' + n + '-Column')[0];
+        columnKeys.forEach(function(columnId) {
+            var el = $('#ExporterDefine-Table-' + blockId + '-' + columnId + '-Column')[0];
             el.addEventListener('dragover', self.onLinkDragOver, false);
             el.addEventListener('drop', self.onLinkDrop, false);
+
+            // bind drag event
+            $('#ExporterDefine-Link-' + blockId + '-' + columnId)[0].addEventListener('dragstart', self.onLinkDragStart, false);
         });
 
         // pk
@@ -172,9 +175,10 @@ var ExporterDefineView = function ExporterDefineView() {
         links[blockId].choose.forEach(function(n) {
             $('#ExporterDefine-Table-' + blockId + '-' + n + '-Choose').attr('checked', 'checked');
         });
-
-        // bind drag event
-        $('#ExporterDefine-Link-' + blockId)[0].addEventListener('dragstart', this.onLinkDragStart, false);
+        // rename
+        for (var columnId in links[blockId].rename) {
+            $('#ExporterDefine-Table-' + blockId + '-' + columnId + '-Rename').val(links[blockId].rename[columnId]);
+        }
     };
     this.renderExporterUpdate = function renderExporterUpdate(exporter) {
         if (!this.isViewOpened(exporter.id)) return;
@@ -396,6 +400,7 @@ var ExporterDefineView = function ExporterDefineView() {
         e.dataTransfer.setData('exporterId', this.dataset.exporterId);
         e.dataTransfer.setData('level', this.dataset.level);
         e.dataTransfer.setData('blockId', this.dataset.blockId);
+        e.dataTransfer.setData('columnId', this.dataset.columnId);
     };
     this.onLinkDragOver = function onLinkDragOver(e) {
         if (e.preventDefault) {
@@ -413,6 +418,7 @@ var ExporterDefineView = function ExporterDefineView() {
         var id = e.dataTransfer.getData('exporterId');
         var fromLevel = e.dataTransfer.getData('level');
         var fromBlockId = e.dataTransfer.getData('blockId');
+        var fromColumnId = e.dataTransfer.getData('columnId');
         var toLevel = this.dataset.level;
         var toBlockId = this.dataset.blockId;
         var toColumnId = this.dataset.columnId;
@@ -420,7 +426,7 @@ var ExporterDefineView = function ExporterDefineView() {
         var delta = fromLevel - toLevel;
         if (delta > 1 || delta < 0) return;
 
-        ExporterController.AddLink(id, fromLevel, fromBlockId, toLevel, toBlockId, toColumnId);
+        ExporterController.AddLink(id, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId);
         return false;
     };
     this.onRemoveLink = function onRemoveLink(exporterId, blockId) {

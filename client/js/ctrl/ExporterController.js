@@ -134,8 +134,8 @@ var ExporterController = {
 
         exporterDefineView.renderTableRenameChange(exporter, data.blockId, data.columnId, data.rename);
     },
-    AddLink: function AddLink(exporterId, fromLevel, fromBlockId, toLevel, toBlockId, toColumnId) {
-        iWebSocket.send('C0912', { id: exporterId, fromLevel: fromLevel, fromBlockId: fromBlockId, toLevel: toLevel, toBlockId: toBlockId, toColumnId: toColumnId });
+    AddLink: function AddLink(exporterId, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId) {
+        iWebSocket.send('C0912', { id: exporterId, fromLevel: fromLevel, fromBlockId: fromBlockId, fromColumnId: fromColumnId, toLevel: toLevel, toBlockId: toBlockId, toColumnId: toColumnId });
     },
     onAddLink: function onAddLink(data) {
         var exporter = this.updateExporter(data.id, data.exporter);

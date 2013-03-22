@@ -99,6 +99,17 @@
             }
             return result;
         },
+        merge: function (a, b) {
+            var m = {};
+            for (var i in a) {
+                m[i] = a[i];
+            }
+            for (var j in b) {
+                if (m[j] !== undefined) throw new I.Exception(10211);
+                m[j] = b[j];
+            }
+            return m;
+        },
         /* Data Validation */
         isUInt: function isUInt(val) {
             var mid = parseInt(val);

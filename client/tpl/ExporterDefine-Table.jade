@@ -1,6 +1,8 @@
 div(id='ExporterDefine-Block-#{blockId}')
     .row-fluid
-        strong.span4 #{table.name}
+        strong.span5 #{table.name}
+        .span2 
+            i.icon-remove-circle.pointer(onclick='exporterDefineView.onRemoveTable(#{exporter.id}, #{level}, #{table.id}, #{blockId});')
         .span4.row-fluid
             - if (level != 1)
                 input.span12(type='text'
@@ -9,22 +11,6 @@ div(id='ExporterDefine-Block-#{blockId}')
                     onkeyup='exporterDefineView.onBlockNameChange(#{exporter.id}, #{blockId}, this);'
                     value='#{preLevelName}'
                 )
-        .span2 
-            i.icon-remove-circle.pointer(onclick='exporterDefineView.onRemoveTable(#{exporter.id}, #{level}, #{table.id}, #{blockId});')
-        .span2 
-            i.icon-resize-small.pointer(
-                id='ExporterDefine-Link-#{blockId}'
-                data-toggle='popover'
-                data-placement='right'
-                data-content='Drag this to column.'
-                data-original-title='Tips'
-                onmouseover='exporterDefineView.onOverDragButton(this);'
-                onmouseout='exporterDefineView.onOutDragButton(this);'
-                draggable='true'
-                data-exporter-id='#{exporter.id}'
-                data-level='#{level}'
-                data-block-id='#{blockId}'
-            )
     div(class='ExporterDefine-Columns-TableId-#{table.id} ExporterDefine-Columns-BlockId-#{blockId}')
         .row-fluid
             .span4 Column

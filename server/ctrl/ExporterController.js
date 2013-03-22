@@ -227,6 +227,7 @@ exports.ExporterController = {
         var data = {
             id: id,
             columnId: columnId,
+            exporter: exporter.toAbbDiff(),
         };
         connectionPool.broadcast(api, data);
     },
@@ -299,6 +300,7 @@ exports.ExporterController = {
             id: id,
             blockId: blockId,
             columnId: columnId,
+            exporter: exporter.toAbbDiff(),
         };
         connectionPool.broadcast(api, data);
     },
@@ -361,6 +363,7 @@ exports.ExporterController = {
         var id = params.id;
         var fromLevel = params.fromLevel;
         var fromBlockId = params.fromBlockId;
+        var fromColumnId = params.fromColumnId;
         var toLevel = params.toLevel;
         var toBlockId = params.toBlockId;
         var toColumnId = params.toColumnId;
@@ -369,12 +372,6 @@ exports.ExporterController = {
 
         var links = JSON.parse(exporter.links);
         var link = links[fromBlockId];
-        var fromColumnId = link.pk;
-
-        // if from block hasn't pk
-        if (fromColumnId === null) {
-            return;
-        }
 
         // if block has binded need to client delete first
         var preBind;

@@ -6,7 +6,22 @@
     )
     .span4(
         class='ExporterDefine-Table-#{column.id}-ColumnName'
-    ) #{column.name}
+    )
+        span #{column.name}
+        i.icon-resize-small.pointer(
+            id='ExporterDefine-Link-#{blockId}-#{column.id}'
+            data-toggle='popover'
+            data-placement='right'
+            data-content='Drag this to column.'
+            data-original-title='Tips'
+            onmouseover='exporterDefineView.onOverDragButton(this);'
+            onmouseout='exporterDefineView.onOutDragButton(this);'
+            draggable='true'
+            data-exporter-id='#{exporter.id}'
+            data-level='#{level}'
+            data-block-id='#{blockId}'
+            data-column-id='#{column.id}'
+        )
     .span2.row-fluid(id='ExporterDefine-Table-#{blockId}-#{column.id}-Link')
     .span1
         input(type='radio'

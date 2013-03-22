@@ -241,6 +241,7 @@ exports.routes = {
             id: 'ni',
             fromLevel: 'ni',
             fromBlockId: 'ni',
+            fromColumnId: 'ni',
             toLevel: 'ni',
             toBlockId: 'ns',
             toColumnId: 'ni',
