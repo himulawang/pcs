@@ -10,9 +10,20 @@ exports.ExporterController = {
         exporter.changed = 0;
         exporter.rootTableId = 0;
         var detail = {
+            id: 'root',
             pk: null,
             choose: [],
+            bind: {
+                fromLevel: null,
+                fromBlockId: null,
+                fromColumnId: null,
+                toLevel: null,
+                toBlockId: null,
+                toColumnId: null,
+                color: null,
+            },
             rename: {},
+            preLevelName: null,
         };
         exporter.rootTableDetail = JSON.stringify(detail);
         exporter.tables = '[]';
