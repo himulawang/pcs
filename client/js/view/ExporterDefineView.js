@@ -425,6 +425,7 @@ var ExporterDefineView = function ExporterDefineView() {
 
         var delta = fromLevel - toLevel;
         if (delta > 1 || delta < 0) return;
+        if (fromBlockId == toBlockId) return;
 
         ExporterController.AddLink(id, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId);
         return false;

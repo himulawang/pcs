@@ -15,9 +15,18 @@ exports.TableController = {
         // dynamicClass
         I.Lib.DynamicMaker.make(pk);
 
+        // dataList
+        var DataPKClass = I.Lib.DynamicMaker.getPKClass(pk);
+        var DataListClass = I.Lib.DynamicMaker.getListClass(pk);
+        var dataList = new DataListClass(pk);
+        var dataPK = new DataPKClass();
+        dataPool.set('dataList', pk, dataList);
+        dataPool.set('dataPK', pk, dataPK);
+
         var data = {
             table: table.toAbbArray(),
             columnList: columnList.toAbbArray(),
+            dataList: dataList.toAbbArray(),
         };
         connectionPool.broadcast(api, data);
     },

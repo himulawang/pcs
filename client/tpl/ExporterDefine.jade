@@ -17,7 +17,6 @@ hr
                 type="text"
                 value='#{exporter.name}'
                 onkeyup='exporterDefineView.onExporterNameChange(#{exporter.id}, this);'
-                onclick='console.log(new ExporterValidator().preview(#{exporter.id}));'
             )
         .input-prepend
             span.add-on.span4 Description
@@ -34,6 +33,7 @@ hr
                 type="text"
                 value='#{exporter.path}'
                 onkeyup='exporterDefineView.onExporterPathChange(#{exporter.id}, this);'
+                onclick='new ExporterValidator().preview(#{exporter.id});'
                 placeholder='/home/ila/example.json'
             )
         .input-prepend

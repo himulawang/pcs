@@ -1,18 +1,24 @@
 var TableController = {
     onCreate: function onCreate(data) {
+        // table
         var table = new I.Models.Table();
         table.fromAbbArray(data.table);
         dataPool.get('tableList', 0).set(table);
 
+        // columnList
         var pk = table.id;
         var columnList = new I.Models.ColumnList(pk);
         columnList.fromAbbArray(data.columnList);
         dataPool.set('columnList', pk, columnList);
 
+        dynamicMaker.make(pk);
+        // dataList
+        var DataListClass = dynamicMaker.getListClass(pk);
+        var dataList = new DataListClass(pk);
+        dataPool.set('dataList', pk, dataList);
+
         tableListView.renderCreate(table);
         exporterDefineView.renderTableCreate(table);
-
-        dynamicMaker.make(pk);
     },
     onUpdate: function onUpdate(data) {
         var table = dataPool.get('tableList', 0).get(data.id);

@@ -59,6 +59,28 @@ var orms = [
     pkAutoIncrement: true,
     list: 'ExporterList',
 },
+{
+    name: 'ExporterExistColumn',
+    abb: 'eec',
+    column: [
+        'name',
+        'level',
+        'tableId',
+        'tableName',
+        'columnId',
+        'columnName',
+        'columnRename',
+        'columnCName',
+        'blockId',
+    ],
+    toAddFilter: [],
+    toUpdateFilter: [],
+    toAbbFilter: [],
+    toArrayFilter: [],
+    pk: 'name',
+    pkAutoIncrement: false,
+    list: 'ExporterExistColumnList',
+},
 /*
 {
     name: 'Block',
