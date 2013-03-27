@@ -424,8 +424,11 @@ var ExporterDefineView = function ExporterDefineView() {
         var toColumnId = this.dataset.columnId;
 
         var delta = fromLevel - toLevel;
-        if (delta > 1 || delta < 0) return;
-        if (fromBlockId == toBlockId) return;
+        if (
+            (delta > 1 || delta < 0) ||
+            (fromBlockId == toBlockId) || 
+            (delta == 0 && toBlockId !== 'root' && fromBlockId < toBlockId)
+        ) return;
 
         ExporterController.AddLink(id, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId);
         return false;

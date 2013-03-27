@@ -211,6 +211,22 @@ exports.ExporterController = {
         // links
         var links = JSON.parse(exporter.links);
         delete links[blockId];
+        for (var i in links) {
+            var link = links[i];
+            if (link.bind.toBlockId == blockId) {
+                link.bind = {
+                    fromLevel: null,
+                    fromBlockId: null,
+                    fromColumnId: null,
+                    toLevel: null,
+                    toBlockId: null,
+                    toColumnId: null,
+                    color: null,
+                };
+                break;
+            }
+        }
+
         exporter.links = JSON.stringify(links);
 
         exporterList.updateSync(exporter);

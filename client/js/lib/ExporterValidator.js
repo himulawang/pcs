@@ -10,100 +10,99 @@ var ExporterValidator = function ExporterValidator() {
 };
 
 ExporterValidator.prototype.preview = function preview(exporterId) {
-    var self = this;
+    this.tableList = dataPool.get('tableList', 0);
     this.exporter = dataPool.get('exporterList', 0).get(exporterId);
+    this.rootTableDetail = JSON.parse(this.exporter.rootTableDetail);
     // check root table selected
     if (this.exporter.rootTableId == 0) throw new ExporterException('Root table not selected.');
 
-    // creat existColumns
-    this.tableList = dataPool.get('tableList', 0);
-    var rootTable = this.tableList.get(this.exporter.rootTableId);
-    this.rootTableDetail = JSON.parse(this.exporter.rootTableDetail);
-    // pk
-    if (this.rootTableDetail.pk === null) throw new ExporterException('Root table has not pk.');
-
-    // fake data for root table
-    this.rootTableDetail.bind = { fromBlockId: 'root' };
-    var newColumns = this.createExistColumns(this.existColumns, rootTable, this.rootTableDetail, 1 /* level */);
-    this.mergeColumns(this.existColumns, newColumns);
-
-    // create defines
+    // init defines
     this.createDefines();
 
-    // import root table data
-    var rootPKName = 'c' + this.rootTableDetail.pk;
-    var dataList = dataPool.get('dataList', this.exporter.rootTableId);
-    for (var i in dataList.list) {
-        var data = dataList.get(i);
-        var pk = data[rootPKName];
-        this.results[pk] = {};
-        for (var name in this.existColumns) {
-            var existColumn = this.existColumns[name];
-            this.results[pk][name] = data[existColumn.columnCName];
-        }
-    }
-
-    // expand
-    this.expandAll();
+    this.expandAll(this.results, this.existColumns, this.defines);
     console.log(this);
+    console.log(JSON.stringify(this.results));
 };
 
-ExporterValidator.prototype.checkAllExpanded = function checkAllExpanded() {
-    var allExpaned = true;
-    for (var blockId in this.defines) {
-        var define = this.defines[blockId];
-        allExpaned &= define.expanded;
-    }
-    return allExpaned;
-};
-ExporterValidator.prototype.expandAll = function expandAll() {
-    //while (!this.checkAllExpanded()) {
-        for (var blockId in this.defines) {
-            var define = this.defines[blockId];
-            this.expand(this.results, this.existColumns, define);
-        }
-    //}
-};
+ExporterValidator.prototype.expandAll = function expandAll(results, existColumns, defines, escapeExpandColumn) {
+    // root table
+    if (I.Util.getLength(this.results) === 0) {
+        // creat existColumns
+        var rootTable = this.tableList.get(this.exporter.rootTableId);
 
-ExporterValidator.prototype.expand = function expand(results, existColumns, define) {
-    if (define.expanded) return;
-    for (var resultName in existColumns) {
-        var existColumn = existColumns[resultName];
-        if (!(existColumn instanceof I.Models.ExporterExistColumn)) {
-            for (var pk in results) {
-                var row = results[pk];
-                this.expand(row[resultName], existColumn, define);
+        // check pk
+        if (this.rootTableDetail.pk === null) throw new ExporterException('Root table has not pk.');
+
+        // fake data for root table
+        this.rootTableDetail.bind = { fromBlockId: 'root' };
+        var newColumns = this.createExistColumns(existColumns, rootTable, this.rootTableDetail, 1);
+        this.mergeColumns(existColumns, newColumns);
+
+        // import root table data
+        var rootPKName = 'c' + this.rootTableDetail.pk;
+        var dataList = dataPool.get('dataList', this.exporter.rootTableId);
+        for (var i in dataList.list) {
+            var data = dataList.get(i);
+            var pk = data[rootPKName];
+            results[pk] = {};
+            for (var name in this.existColumns) {
+                var existColumn = this.existColumns[name];
+                results[pk][name] = data[existColumn.columnCName];
             }
         }
-        // same level
-        if (
+    }
+
+    // same level
+    for (var blockId in defines) {
+        var define = defines[blockId];
+        this.expandSameLevel(results, existColumns, define, escapeExpandColumn);
+    }
+
+    // next level
+    for (var blockId in defines) {
+        var define = defines[blockId];
+        this.expandNextLevel(results, existColumns, define);
+    }
+
+};
+
+ExporterValidator.prototype.expandSameLevel = function expandSameLevel(results, existColumns, define, escapeExpandColumn) {
+    for (var resultName in existColumns) {
+        var existColumn = existColumns[resultName];
+        if (!(
             existColumn.level == define.toLevel &&
             define.fromLevel == define.toLevel &&
             existColumn.blockId == define.toBlockId &&
             existColumn.columnId == define.toColumnId
-        ) {
+        )) continue;
+
+        if (!escapeExpandColumn) {
             var newColumns = this.createExistColumns(existColumns, this.tableList.get(define.fromTableId), this.links[define.fromBlockId], define.fromLevel);
             this.mergeColumns(existColumns, newColumns);
-            this.expandSameLevel(results, existColumns, existColumn, define);
-            define.expanded = true;
-        } else if ( // next level
+        }
+        this.expandSameLevelData(results, existColumns, existColumn, define);
+    }
+};
+ExporterValidator.prototype.expandNextLevel = function expandNextLevel(results, existColumns, define) {
+    for (var resultName in existColumns) {
+        var existColumn = existColumns[resultName];
+        if (!(
             define.fromLevel - existColumn.level === 1 &&
             define.fromLevel - define.toLevel === 1 &&
             existColumn.blockId == define.toBlockId &&
             existColumn.columnId == define.toColumnId
-        ) {
-            var blockName = define.fromBlockRename || define.fromTableName;
-            var nextLevelExistColumns = {};
-            nextLevelExistColumns[blockName] = {};
-            var newColumns = this.createExistColumns(nextLevelExistColumns, this.tableList.get(define.fromTableId), this.links[define.fromBlockId], define.fromLevel);
-            existColumns[blockName] = newColumns;
-            this.expandNextLevel(results, existColumn, define);
-            define.expanded = true;
-        }
+        )) continue;
+
+        // expand column
+        var blockName = define.fromBlockRename || define.fromTableName;
+        var nextLevelExistColumns = {};
+        nextLevelExistColumns[blockName] = {};
+        var newColumns = this.createExistColumns(nextLevelExistColumns, this.tableList.get(define.fromTableId), this.links[define.fromBlockId], define.fromLevel);
+        existColumns[blockName] = newColumns;
+        this.expandNextLevelData(results, existColumn, define, newColumns);
     }
 };
-
-ExporterValidator.prototype.expandSameLevel = function expandSameLevel(results, existColumns, existColumn, define) {
+ExporterValidator.prototype.expandSameLevelData = function expandSameLevelData(results, existColumns, existColumn, define) {
     var fromDataList = dataPool.get('dataList', define.fromTableId);
     for (var pk in results) {
         var value = results[pk][define.toColumnResultName];
@@ -127,9 +126,11 @@ ExporterValidator.prototype.findRowByColumn = function findRowByColumn(dataList,
     }
     return null;
 };
-ExporterValidator.prototype.expandNextLevel = function expandNextLevel(results, existColumn, define) {
+
+ExporterValidator.prototype.expandNextLevelData = function expandNextLevelData(results, existColumn, define, existColumns) {
     var fromDataList = dataPool.get('dataList', define.fromTableId);
     var pkName = define.fromBlockRename || define.fromTableName;
+    var line = 1;
     for (var pk in results) {
         var value = results[pk][define.toColumnResultName];
         var rows = this.findRowsByColumn(fromDataList, value, define.fromColumnCName);
@@ -146,6 +147,12 @@ ExporterValidator.prototype.expandNextLevel = function expandNextLevel(results, 
         }
 
         results[pk][pkName] = newRows;
+        if (line === 1) {
+            this.expandAll(newRows, existColumns, this.defines);
+        } else {
+            this.expandAll(newRows, existColumns, this.defines, true);
+        }
+        ++line;
     }
 };
 ExporterValidator.prototype.findRowsByColumn = function findRowsByColumn(dataList, value, findCName) {
@@ -158,6 +165,11 @@ ExporterValidator.prototype.findRowsByColumn = function findRowsByColumn(dataLis
     return rows;
 };
 
+ExporterValidator.prototype.mergeColumns = function mergeColumns(existColumns, newColumns) {
+    for (var name in newColumns) {
+        existColumns[name] = newColumns[name];
+    }
+};
 ExporterValidator.prototype.createExistColumns = function createExistColumns(existColumns, table, detail, level) {
     var newColumns = {};
     var columnList = dataPool.get('columnList', table.id);
@@ -183,13 +195,6 @@ ExporterValidator.prototype.createExistColumns = function createExistColumns(exi
     });
     return newColumns;
 };
-
-ExporterValidator.prototype.mergeColumns = function mergeColumns(existColumns, newColumns) {
-    for (var name in newColumns) {
-        existColumns[name] = newColumns[name];
-    }
-};
-
 ExporterValidator.prototype.createDefines = function createDefines() {
     var levels = JSON.parse(this.exporter.levels);
     var tables = JSON.parse(this.exporter.tables);
@@ -235,7 +240,7 @@ ExporterValidator.prototype.createDefines = function createDefines() {
             var toBlockLink = links[bind.toBlockId];
         }
         if (toBlockLink.pk === null) {
-            throw new ExporterException('BlockId ' + toBlockId + ' has no pk.');
+            throw new ExporterException('BlockId ' + bind.toBlockId + ' has no pk.');
         }
         var toColumnList = dataPool.get('columnList', toTableId);
         this.defines[blockId].toPKId = toBlockLink.pk;
@@ -257,9 +262,6 @@ ExporterValidator.prototype.createDefines = function createDefines() {
             this.defines[blockId].toColumnResultName = toBlockLink.rename[bind.toColumnId];
         }
 
-        // tag
-        this.defines[blockId].expanded = false;
-
         // from columns
         this.defines[blockId].fromColumns = {};
         var self = this;
@@ -275,7 +277,6 @@ ExporterValidator.prototype.createDefines = function createDefines() {
         });
     }
 };
-
 var ExporterException = function ExporterException(msg) {
     console.log(msg);
     //this.msg = msg;
