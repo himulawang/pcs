@@ -9,6 +9,9 @@ var ColumnController = {
 
         var orm = dynamicMaker.makeOrm(data.listId);
         dynamicMaker.makeModelClass(orm);
+
+        var table = dataPool.get('tableList', 0).get(data.listId);
+        exporterDefineView.renderColumnCreate(table, column);
     },
     onUpdate: function onUpdate(data) {
         var columnList = dataPool.get('columnList', data.listId);
@@ -19,8 +22,6 @@ var ColumnController = {
         tableDefineView.renderColumnIsPK(data.listId, column);
         tableDefineView.renderColumnAllowEmpty(data.listId, column);
         tableDefineView.renderColumnType(data.listId, column);
-        tableDefineView.renderColumnClient(data.listId, column);
-        tableDefineView.renderColumnServer(data.listId, column);
         tableDefineView.renderColumnDescription(data.listId, column);
 
         exporterDefineView.renderColumnNameChange(column);
@@ -33,5 +34,9 @@ var ColumnController = {
 
         var orm = dynamicMaker.makeOrm(data.listId);
         dynamicMaker.makeModelClass(orm);
+
+        ExporterListController.refreshData(data);
+
+        exporterDefineView.renderRemoveColumn(data.id);
     },
 };

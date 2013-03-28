@@ -24,8 +24,6 @@ var orms = [
         'isPK',
         'allowEmpty',
         'type',
-        'client',
-        'server',
         'description',
     ],
     toAddFilter: [],

@@ -7,9 +7,15 @@
 .pointer {
     cursor: pointer;
 }
-.ExporterDefine-Level {
+.ExporterDefine-Level-Body {
     height: 500px;
     overflow: auto;
+}
+.ExporterDefine-Level-Border {
+    border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
+    border-radius: 6px;
 }
 .ExporterDefine-Link-Block {
     border-radius: 6px;

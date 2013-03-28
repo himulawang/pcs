@@ -9,6 +9,23 @@ var ExporterValidator = function ExporterValidator() {
     this.tableList = null;
 };
 
+ExporterValidator.prototype.validate = function validate() {
+    var exporterId = $('#ExporterDefine')[0].dataset.id;
+    try {
+        this.preview(exporterId);
+    } catch (e) {
+        return this.error(e.msg);
+    }
+    this.success();
+};
+
+ExporterValidator.prototype.error = function error(msg) {
+    $('#ExporterDefine-Status').removeClass('alert-success').addClass('alert-error').text(msg);
+};
+ExporterValidator.prototype.success = function success() {
+    $('#ExporterDefine-Status').removeClass('alert-error').addClass('alert-success').text('Passed!');
+};
+
 ExporterValidator.prototype.preview = function preview(exporterId) {
     this.tableList = dataPool.get('tableList', 0);
     this.exporter = dataPool.get('exporterList', 0).get(exporterId);
@@ -21,7 +38,6 @@ ExporterValidator.prototype.preview = function preview(exporterId) {
 
     this.expandAll(this.results, this.existColumns, this.defines);
     console.log(this);
-    console.log(JSON.stringify(this.results));
 };
 
 ExporterValidator.prototype.expandAll = function expandAll(results, existColumns, defines, escapeExpandColumn) {
@@ -278,6 +294,5 @@ ExporterValidator.prototype.createDefines = function createDefines() {
     }
 };
 var ExporterException = function ExporterException(msg) {
-    console.log(msg);
-    //this.msg = msg;
+    this.msg = msg;
 };

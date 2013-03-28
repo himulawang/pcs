@@ -1,7 +1,7 @@
-h2.text-info Exporter Define
+h2#ExporterDefine.text-info(data-id='#{exporter.id}') Exporter Define
 hr
 .row-fluid
-    .span8
+    .span7
         .input-prepend
             span.add-on.span4 Id
             input.span6(
@@ -33,21 +33,25 @@ hr
                 type="text"
                 value='#{exporter.path}'
                 onkeyup='exporterDefineView.onExporterPathChange(#{exporter.id}, this);'
-                onclick='new ExporterValidator().preview(#{exporter.id});'
-                placeholder='/home/ila/example.json'
+                onclick='new ExporterValidator().validate();'
+                placeholder='/home/ParaNoidz_Studio/ila.json'
             )
         .input-prepend
             span.add-on.span4 Root Table
             select.span6(
                 id='ExporterDefine-Exporter-#{exporter.id}-RootTable'
                 class='ExporterDefine-Table-Select'
-                onchange='exporterDefineView.onRootTableChange(#{exporter.id}, this);'
+                onclick='exporterDefineView.onRootTableChange(#{exporter.id}, this);'
+            )
+    .span3
+        #ExporterDefine-Status.alert.alert-success
+        hr
+        div
+            input(value='Add Level'
+                type='button'
+                class='btn btn-large'
+                onclick='exporterDefineView.onAddLevel(#{exporter.id});'
             )
 hr
-#ExporterDefine-Levels-Top.row
-    input(value='Add Level'
-        type='button'
-        class='btn'
-        onclick='exporterDefineView.onAddLevel(#{exporter.id});'
-    )
-#ExporterDefine-Levels.row
+.row-fluid
+    #ExporterDefine-Levels.span12.row-fluid

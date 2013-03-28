@@ -41,6 +41,25 @@ var ExporterDefineView = function ExporterDefineView() {
         var displayRemoveLevel = level == maxLevel;
         return Renderer.make('ExporterDefine-Level', { exporter: exporter, level: level, displayRemoveLevel: displayRemoveLevel });
     };
+    this.makeRootTableColumn = function makeRootTableColumn(exporter, column) {
+        return Renderer.make('ExporterDefine-RootTable-Column', { exporter: exporter, column: column });
+    };
+    this.makeTableColumn = function makeTableColumn(exporter, level, blockId, column) {
+        return Renderer.make('ExporterDefine-Table-Column', { exporter: exporter, level: level, blockId: blockId, column: column });
+    };
+    this.bindRootTableColumnDropEvent = function bindRootTableColumnDropEvent(columnId) {
+        var el = $('#ExporterDefine-Table-root-' + columnId + '-Column')[0];
+        el.addEventListener('dragover', this.onLinkDragOver, false);
+        el.addEventListener('drop', this.onLinkDrop, false);
+    };
+    this.bindTableColumnDropEvent = function bindTableColumnDropEvent(blockId, columnId) {
+        var el = $('#ExporterDefine-Table-' + blockId + '-' + columnId + '-Column')[0];
+        el.addEventListener('dragover', this.onLinkDragOver, false);
+        el.addEventListener('drop', this.onLinkDrop, false);
+    };
+    this.bindTableLinkDragEvent = function bindTableLinkDragEvent(blockId, columnId) {
+        $('#ExporterDefine-Link-' + blockId + '-' + columnId)[0].addEventListener('dragstart', this.onLinkDragStart, false);
+    };
     this.renderRootTable = function renderRootTable(exporter) {
         var tableId = exporter.rootTableId;
         if (tableId == 0) return;
@@ -51,19 +70,17 @@ var ExporterDefineView = function ExporterDefineView() {
         $('.ExporterDefine-Level-1-Body').prepend(html);
 
         // columns
+        var self = this;
         var columnHTML = ''; 
         var columnKeys = columnList.getKeys();
-        columnKeys.forEach(function(n) {
-            var column = columnList.get(n);
-            columnHTML += Renderer.make('ExporterDefine-RootTable-Column', { exporter: exporter, column: column });
+        columnKeys.forEach(function(columnId) {
+            var column = columnList.get(columnId);
+            columnHTML += self.makeRootTableColumn(exporter, column);
         });
         $('#ExporterDefine-RootTable-Columns').append(columnHTML);
         // bind column drop event
-        var self = this;
-        columnKeys.forEach(function(n) {
-            var el = $('#ExporterDefine-Table-root-' + n + '-Column')[0];
-            el.addEventListener('dragover', self.onLinkDragOver, false);
-            el.addEventListener('drop', self.onLinkDrop, false);
+        columnKeys.forEach(function(columnId) {
+            self.bindRootTableColumnDropEvent(columnId);
         });
 
         var detail = JSON.parse(exporter.rootTableDetail);
@@ -105,14 +122,17 @@ var ExporterDefineView = function ExporterDefineView() {
     };
     this.renderLink = function renderLink(exporter, fromLevel, fromBlockId, fromColumnId, toLevel, toBlockId, toColumnId, color) {
         var linkClassName = 'ExporterDefine-Link-' + fromLevel + '-' + fromBlockId + '-' + fromColumnId + '-' + toLevel + '-' + toBlockId + '-' + toColumnId;
+        var tables = JSON.parse(exporter.tables);
         var data = {
             exporter: exporter,
             fromLevel: fromLevel,
             fromBlockId: fromBlockId,
             fromColumnId: fromColumnId,
+            fromTableId: tables[fromBlockId],
             toLevel: toLevel,
             toBlockId: toBlockId,
             toColumnId: toColumnId,
+            toTableId: tables[toBlockId],
             linkClassName: linkClassName,
             color: color,
         };
@@ -149,22 +169,22 @@ var ExporterDefineView = function ExporterDefineView() {
         $('.ExporterDefine-Level-' + level + '-Body').append(html);
 
         // columns
+        var self = this;
         var columnHTML = ''; 
         var columnKeys = columnList.getKeys();
-        columnKeys.forEach(function(n) {
-            var column = columnList.get(n);
-            columnHTML += Renderer.make('ExporterDefine-Table-Column', { exporter: exporter, level: level, blockId: blockId, column: column });
+        columnKeys.forEach(function(columnId) {
+            var column = columnList.get(columnId);
+            columnHTML += self.makeTableColumn(exporter, level, blockId, column);
         });
         $('.ExporterDefine-Columns-BlockId-' + blockId).append(columnHTML);
+
         // bind column drop event
-        var self = this;
         columnKeys.forEach(function(columnId) {
-            var el = $('#ExporterDefine-Table-' + blockId + '-' + columnId + '-Column')[0];
-            el.addEventListener('dragover', self.onLinkDragOver, false);
-            el.addEventListener('drop', self.onLinkDrop, false);
+            // bind drop event
+            self.bindTableColumnDropEvent(blockId, columnId);
 
             // bind drag event
-            $('#ExporterDefine-Link-' + blockId + '-' + columnId)[0].addEventListener('dragstart', self.onLinkDragStart, false);
+            self.bindTableLinkDragEvent(blockId, columnId);
         });
 
         // pk
@@ -303,6 +323,46 @@ var ExporterDefineView = function ExporterDefineView() {
         if (el.val() == rename) return;
         el.val(rename);
     };
+    this.renderColumnCreate = function renderColumnCreate(table, column) {
+        var el = $('#ExporterDefine');
+        if (el.length === 0) return;
+        var exporterId = el[0].dataset.id;
+        var exporter = dataPool.get('exporterList', 0).get(exporterId);
+
+        // root table
+        var rootTableEl = $('#ExporterDefine-RootTable-Columns');
+        if (rootTableEl.length === 1) {
+            // columns
+            var columnHTML = this.makeRootTableColumn(exporter, column);
+            rootTableEl.append(columnHTML);
+
+            // bind column drop event
+            this.bindRootTableColumnDropEvent(column.id);
+        }
+
+        // common table
+        var self = this;
+        $('.ExporterDefine-Columns-TableId-' + table.id).each(function(i, el) {
+            if (el.id === 'ExporterDefine-RootTable-Columns') return;
+            var level = el.dataset.level;
+            var blockId = el.dataset.blockId;
+            var tableId = el.dataset.tableId;
+
+            var columnHTML = self.makeTableColumn(exporter, level, blockId, column);
+            $('.ExporterDefine-Columns-BlockId-' + blockId).append(columnHTML);
+
+            self.bindTableColumnDropEvent(blockId, column.id);
+            self.bindTableLinkDragEvent(blockId, column.id);
+        });
+    };
+    this.renderRemoveColumn = function renderRemoveColumn(columnId) {
+        $('.ExporterDefine-Table-Column-' + columnId).remove();
+        $('.ExporterDefine-Link-Column-' + columnId).remove();
+    };
+    this.renderRemoveTable = function renderRemoveTable(tableId) {
+        $('.ExporterDefine-Link-Table-' + tableId);
+        $('.ExporterDefine-Table-' + tableId).remove();
+    };
     this.isViewOpened = function isViewOpened(exporterId) {
         var el = $('#ExporterDefine-Exporter-' + exporterId + '-Id');
         return el.length !== 0;
@@ -328,6 +388,7 @@ var ExporterDefineView = function ExporterDefineView() {
     };
     this.onRootTableChange = function onRootTableChange(id, el) {
         var exporter = dataPool.get('exporterList', 0).get(id);
+        if (exporter.rootTableId == el.value) return;
         exporter.rootTableId = el.value;
 
         exporter.updateRootTable();

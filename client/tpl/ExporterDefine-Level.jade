@@ -1,16 +1,18 @@
-.ExporterDefine-Level.span4.border(id='ExporterDefine-Level-#{level}')
+.ExporterDefine-Level.span4.ExporterDefine-Level-Border(id='ExporterDefine-Level-#{level}')
     .row-fluid
-        .span2 Level#{level}
+        .span2.offset1 Level #{level}
         .span2
             i.icon-remove-circle.pointer(
                 id='ExporterDefine-RemoveLevel-#{level}'
                 onclick='exporterDefineView.onRemoveLevel(#{exporter.id}, #{level});'
                 class=displayRemoveLevel&&level!=1 ? '' : 'hide'
             )
-        .span8.input-append
+        .span7.input-append
             select.span6(
                 class='ExporterDefine-Table-Select'
             )
             button.btn(onclick='exporterDefineView.onAddBlock(#{exporter.id}, #{level}, this);') Add
     hr
-    div(class='ExporterDefine-Level-#{level}-Body')
+    div(
+        class='ExporterDefine-Level-#{level}-Body ExporterDefine-Level-Body'
+    )

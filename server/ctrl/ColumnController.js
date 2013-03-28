@@ -7,7 +7,7 @@ exports.ColumnController = {
         var column = new I.Models.Column();
         column.setPK(pk);
         column.allowEmpty = 1;
-        column.name = 'toChange';
+        column.name = 'DefaultColumn';
         column.type = 'string';
         column.markAddSync();
         columnList.addSync(column);
@@ -76,9 +76,22 @@ exports.ColumnController = {
         var columnList = dataPool.get('columnList', listId);
         columnList.delSync(params.id);
 
+        // delete export define column
+        var exporterList = dataPool.get('exporterList', 0);
+
+        var exporterDiffList = {};
+        for (var exporterId in exporterList.list) {
+            var exporter = exporterList.get(exporterId);
+            I.Ctrl.ExporterController.removeExporterColumn(id, exporter);
+            exporterList.updateSync(exporter);
+
+            exporterDiffList[exporterId] = exporter.toAbbDiff();
+        }
+
         var data = {
             listId: listId,
             id: params.id,
+            exporterList: exporterDiffList,
         };
         connectionPool.broadcast(api, data);
 

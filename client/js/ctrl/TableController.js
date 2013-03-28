@@ -44,8 +44,14 @@ var TableController = {
         // dataList
         dataPool.unset('dataList', id);
 
+        // table
         tableListView.renderRemoveTable(id);
         tableDefineView.renderRemoveTable(id);
         tableDataView.renderRemoveTable(id);
+
+        // exporter
+        ExporterListController.refreshData(data);
+
+        exporterDefineView.renderRemoveTable(id);
     },
 };

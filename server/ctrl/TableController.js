@@ -5,6 +5,7 @@ exports.TableController = {
         var pk = dataPool.get('table', 'PK').incr();
 
         table.setPK(pk);
+        table.name = 'DefaultTable';
         table.markAddSync();
         dataPool.get('tableList', 0).addSync(table);
 
@@ -65,8 +66,19 @@ exports.TableController = {
             dataPool.del('dataPK', id);
         }
 
+        // exporter define
+        var exporterList = dataPool.get('exporterList', 0);
+        var exporterDiffList = {};
+        for (var exporterId in exporterList.list) {
+            var exporter = exporterList.get(exporterId);
+            I.Ctrl.ExporterController.removeExporterBlock(id, exporter);
+            exporterList.updateSync(exporter);
+            exporterDiffList[exporterId] = exporter.toAbbDiff();
+        }
+
         var data = {
             id: id,
+            exporterList: exporterDiffList,
         };
         connectionPool.broadcast(api, data);
     },

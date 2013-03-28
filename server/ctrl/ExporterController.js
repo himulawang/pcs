@@ -6,7 +6,7 @@ exports.ExporterController = {
 
         var exporter = new I.Models.Exporter();
         exporter.setPK(id);
-        exporter.name = 'toChange';
+        exporter.name = 'DefaultExporter';
         exporter.changed = 0;
         exporter.rootTableId = 0;
         var detail = {
@@ -266,12 +266,7 @@ exports.ExporterController = {
         var exporter = exporterList.get(id);
 
         var detail = JSON.parse(exporter.rootTableDetail);
-        var index = detail.choose.indexOf(columnId);
-        if (checked == 1 && index === -1) {
-            detail.choose.push(columnId);
-        } else if (checked == 0 && index !== -1) {
-            detail.choose.splice(index, 1);
-        }
+        this.tableChooseChange(columnId, detail, checked);
         exporter.rootTableDetail = JSON.stringify(detail);
 
         exporterList.updateSync(exporter);
@@ -514,5 +509,122 @@ exports.ExporterController = {
             rename: rename,
         };
         connectionPool.broadcast(api, data);
+    },
+    // private
+    removeExporterColumn: function removeExporterColumn(columnId, exporter) {
+        // root table
+        var detail = JSON.parse(exporter.rootTableDetail);
+        this.removeColumn(columnId, detail);
+        exporter.rootTableDetail = JSON.stringify(detail);
+
+        // common tables
+        var links = JSON.parse(exporter.links);
+        for (var blockId in links) {
+            var link = links[blockId];
+            this.removeColumn(columnId, link);
+        }
+        exporter.links = JSON.stringify(links);
+    },
+    removeColumn: function removeColumn(columnId, link) {
+        // pk
+        if (link.pk == columnId) link.pk = null;
+
+        // choose
+        this.tableChooseChange(columnId, link, 0);
+
+        // rename
+        delete link.rename[columnId];
+
+        // bind
+        if (link.bind.fromColumnId == columnId || link.bind.toColumnId == columnId) {
+            link.bind = {
+                fromLevel: null,
+                fromBlockId: null,
+                fromColumnId: null,
+                toLevel: null,
+                toBlockId: null,
+                toColumnId: null,
+                color: null,
+            };
+        }
+    },
+    removeExporterBlock: function removeExporterBlock(id, exporter) {
+        var tables = JSON.parse(exporter.tables);
+        var levels = JSON.parse(exporter.levels);
+        var links = JSON.parse(exporter.links);
+        // root table
+        if (exporter.rootTableId == id) {
+            exporter.rootTableId = 0;
+            var detail = {
+                id: 'root',
+                pk: null,
+                choose: [],
+                bind: {
+                    fromLevel: null,
+                    fromBlockId: null,
+                    fromColumnId: null,
+                    toLevel: null,
+                    toBlockId: null,
+                    toColumnId: null,
+                    color: null,
+                },
+                rename: {},
+                preLevelName: null,
+            };
+            exporter.rootTableDetail = JSON.stringify(detail);
+            this.removeBlock(tables, levels, links, 'root');
+        }
+
+        // common table
+        var self = this;
+        tables.forEach(function(tableId, blockId) {
+            if (tableId != id) return;
+            self.removeBlock(tables, levels, links, blockId);
+        });
+        exporter.tables = JSON.stringify(tables);
+        exporter.levels = JSON.stringify(levels);
+        exporter.links = JSON.stringify(links);
+    },
+    removeBlock: function removeBlock(tables, levels, links, blockId) {
+        // tables
+        tables[blockId] = null;
+        
+        // links
+        delete links[blockId];
+        for (var i in links) {
+            var link = links[i];
+            if (link.bind.toBlockId == blockId) {
+                links[i].bind = {
+                    fromLevel: null,
+                    fromBlockId: null,
+                    fromColumnId: null,
+                    toLevel: null,
+                    toBlockId: null,
+                    toColumnId: null,
+                    color: null,
+                };
+                break;
+            }
+        }
+
+        // delete from levels
+        for (var level in levels) {
+            var levelBlocks = levels[level];
+            for (var blockIdIndex in levelBlocks) {
+                if (levelBlocks[blockIdIndex] == blockId) {
+                    levels[level].splice(blockIdIndex, 1);
+                    return;
+                }
+            }
+        }
+    },
+    tableChooseChange: function tableChooseChange(columnId, link, checked) {
+        var index = link.choose.indexOf(columnId);
+        if (checked == 1 && index === -1) {
+            link.choose.push(columnId);
+        } else if (checked == 0 && index !== -1) {
+            link.choose.splice(index, 1);
+        }
+        return link;
     },
 };

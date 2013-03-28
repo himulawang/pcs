@@ -1,4 +1,7 @@
-div(id='ExporterDefine-Block-#{blockId}')
+div(
+    id='ExporterDefine-Block-#{blockId}'
+    class='ExporterDefine-Table-#{table.id}'
+)
     .row-fluid
         strong.span5 #{table.name}
         .span2 
@@ -11,7 +14,12 @@ div(id='ExporterDefine-Block-#{blockId}')
                     onkeyup='exporterDefineView.onBlockNameChange(#{exporter.id}, #{blockId}, this);'
                     value='#{preLevelName}'
                 )
-    div(class='ExporterDefine-Columns-TableId-#{table.id} ExporterDefine-Columns-BlockId-#{blockId}')
+    div(
+        class='ExporterDefine-Columns-TableId-#{table.id} ExporterDefine-Columns-BlockId-#{blockId}'
+        data-level='#{level}'
+        data-block-id='#{blockId}'
+        data-table-id='#{table.id}'
+    )
         .row-fluid
             .span4 Column
             .span2 Link

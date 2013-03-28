@@ -73,18 +73,6 @@ var TableDefineView = function TableDefineView() {
         var el = this.makeId('column', column.id, 'type');
         el.val(column.type);
     };
-    this.renderColumnClient = function renderColumnClient(listId, column) {
-        if (!this.isViewOpened(listId)) return;
-        var data = { listId: listId, column: column };
-        var el = this.makeId('column', column.id, 'client');
-        el.attr('checked', column.client ? 'checked' : null);
-    };
-    this.renderColumnServer = function renderColumnServer(listId, column) {
-        if (!this.isViewOpened(listId)) return;
-        var data = { listId: listId, column: column };
-        var el = this.makeId('column', column.id, 'server');
-        el.attr('checked', column.server ? 'checked' : null);
-    };
     this.renderColumnDescription = function renderColumnDescription(listId, column) {
         if (!this.isViewOpened(listId)) return;
         var data = { listId: listId, column: column };
@@ -128,16 +116,6 @@ var TableDefineView = function TableDefineView() {
     this.onColumnTypeChange = function onColumnTypeChange(listId, columnId, el) {
         var column = dataPool.get('columnList', listId).get(columnId);
         column.type = $(el).val();
-        column.update(listId);
-    };
-    this.onColumnClientChange = function onColumnClientChange(listId, columnId, el) {
-        var column = dataPool.get('columnList', listId).get(columnId);
-        column.client = I.Util.isChecked(el);
-        column.update(listId);
-    };
-    this.onColumnServerChange = function onColumnServerChange(listId, columnId, el) {
-        var column = dataPool.get('columnList', listId).get(columnId);
-        column.server = I.Util.isChecked(el);
         column.update(listId);
     };
     this.onColumnDescriptionChange = function onColumnDescriptionChange(listId, columnId, el) {

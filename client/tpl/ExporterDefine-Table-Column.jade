@@ -1,13 +1,13 @@
 .row-fluid(
         id='ExporterDefine-Table-#{blockId}-#{column.id}-Column'
+        class='ExporterDefine-Table-Column-#{column.id}'
         data-level='#{level}'
         data-block-id='#{blockId}'
-        data-column-id='#{column.id}'
-    )
-    .span4(
-        class='ExporterDefine-Table-#{column.id}-ColumnName'
-    )
-        span #{column.name}
+        data-column-id='#{column.id}')
+    .span4
+        span(
+            class='ExporterDefine-Table-#{column.id}-ColumnName'
+        ) #{column.name}
         i.icon-resize-small.pointer(
             id='ExporterDefine-Link-#{blockId}-#{column.id}'
             data-toggle='popover'

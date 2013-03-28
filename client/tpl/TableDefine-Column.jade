@@ -29,20 +29,6 @@
             option(value="number", selected=column.type == 'number') number
             option(value="string", selected=column.type == 'string') string
             option(value="json", selected=column.type == 'json') json
-    .span1
-        input.Client(
-            id='TableDefine-Column-#{column.id}-Client'
-            type="checkbox"
-            checked=column.client==1
-            onchange='tableDefineView.onColumnClientChange(#{listId}, #{column.id}, this);'
-        )
-    .span1
-        input.Server(
-            id='TableDefine-Column-#{column.id}-Server'
-            type="checkbox"
-            checked=column.server==1
-            onchange='tableDefineView.onColumnServerChange(#{listId}, #{column.id}, this);'
-        )
     .span2
         input.span12.Description(
             id='TableDefine-Column-#{column.id}-Description'
