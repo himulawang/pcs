@@ -80,6 +80,19 @@ var TableDataView = function TableDataView() {
         if (!this.isViewOpened(tableId)) return;
         $('#TableData-Index-' + rowId + ',' + '#TableData-Row-' + rowId).remove();
     };
+    this.renderColumnNameChange = function renderColumnNameChange(id, column) {
+        if (!this.isViewOpened(id)) return;
+        var el = $('#TableData-Header-Column-' + column.id + '-Name');
+        if (el.text() === column.name) return;
+        el.text(column.name);
+    };
+    this.renderColumnTypeChange = function renderColumnTypeChange(id, column) {
+        if (!this.isViewOpened(id)) return;
+        var el = $('#TableData-Header-Column-' + column.id + '-Type');
+        var type = '(' + column.type + ')';
+        if (el.text() === type) return;
+        el.text(type);
+    };
     this.isViewOpened = function isViewOpened(id) {
         return $('#TableData-' + id + '-Sheet').length !== 0;
     };

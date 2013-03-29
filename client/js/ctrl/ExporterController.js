@@ -18,6 +18,7 @@ var ExporterController = {
 
         exporterListView.renderExporterName(exporter);
         exporterDefineView.renderExporterUpdate(exporter);
+        exporterDataView.renderExporterUpdate(exporter);
     },
     remove: function remove(id) {
         dataPool.get("exporterList", 0).get(id).remove(id);

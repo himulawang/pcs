@@ -1,0 +1,69 @@
+h2#ExporterData.text-info(data-id='#{exporter.id}') Exporter Data
+hr
+.row-fluid
+    .span7
+        .input-prepend
+            span.add-on.span4 Id
+            input.span6(
+                id='ExporterData-Exporter-#{exporter.id}-Id'
+                type="text"
+                value='#{exporter.id}'
+                disabled
+            )
+        .input-prepend
+            span.add-on.span4 Name
+            input.span6(
+                id='ExporterData-Exporter-#{exporter.id}-Name'
+                type="text"
+                value='#{exporter.name}'
+                disabled
+            )
+        .input-prepend
+            span.add-on.span4 Description
+            input.span6(
+                id='ExporterData-Exporter-#{exporter.id}-Description'
+                type="text"
+                value='#{exporter.description}'
+                disabled
+            )
+        .input-prepend
+            span.add-on.span4 Path
+            input.span6(
+                id='ExporterData-Exporter-#{exporter.id}-Path'
+                type="text"
+                value='#{exporter.path}'
+                disabled
+            )
+    .span3
+        #Exporter-Status.alert.alert-success
+        hr
+        .row-fluid
+            .span6
+                input(value='Download'
+                    type='button'
+                    class='btn btn-large'
+                    onclick='exporterDataView.download(#{exporter.id});'
+                )
+            .span6
+                input(value='Export To Server'
+                    type='button'
+                    class='btn btn-large'
+                    onclick='exporterDataView.exportToServer(#{exporter.id});'
+                )
+hr
+.row-fluid
+    .tabbable
+        ul.nav.nav-tabs
+            li.dropdown.active
+                a(href='#ExporterData-View', data-toggle="tab") View
+            li
+                a(href='#ExporterData-JSON', data-toggle="tab") JSON
+            li
+                a(href='#ExporterData-Raw', data-toggle="tab") Raw
+        .tab-content
+            #ExporterData-View.tab-pane.active
+                #ExporterData-View-Body
+            #ExporterData-JSON.tab-pane
+                #ExporterData-JSON-Body TODO
+            #ExporterData-Raw.tab-pane.row-fluid
+                textarea#ExporterData-Raw-Body.span11

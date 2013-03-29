@@ -9,24 +9,37 @@ var ExporterValidator = function ExporterValidator() {
     this.tableList = null;
 };
 
-ExporterValidator.prototype.validate = function validate() {
-    var exporterId = $('#ExporterDefine')[0].dataset.id;
+ExporterValidator.prototype.validate = function validate(exporterId) {
     try {
-        this.preview(exporterId);
+        this.make(exporterId);
     } catch (e) {
         return this.error(e.msg);
     }
     this.success();
 };
 
+ExporterValidator.prototype.preview = function preview(exporterId) {
+    this.validate(exporterId);
+
+    try {
+        if (I.Util.getLength(this.results) === 0) throw new ExporterException('Root table has no data.');
+    } catch (e) {
+        this.error(e.msg);
+        return false;
+    }
+
+    var html = jsonFormatter.jsonObjToHTML(this.results) ;
+    $('#ExporterData-View-Body').empty().html(html).click(jsonFormatter.generalClick);
+    $('#ExporterData-Raw-Body').val(JSON.stringify(this.results));
+    return true;
+};
 ExporterValidator.prototype.error = function error(msg) {
-    $('#ExporterDefine-Status').removeClass('alert-success').addClass('alert-error').text(msg);
+    $('#Exporter-Status').removeClass('alert-success').addClass('alert-error').text(msg);
 };
 ExporterValidator.prototype.success = function success() {
-    $('#ExporterDefine-Status').removeClass('alert-error').addClass('alert-success').text('Passed!');
+    $('#Exporter-Status').removeClass('alert-error').addClass('alert-success').text('Passed!');
 };
-
-ExporterValidator.prototype.preview = function preview(exporterId) {
+ExporterValidator.prototype.make = function make(exporterId) {
     this.tableList = dataPool.get('tableList', 0);
     this.exporter = dataPool.get('exporterList', 0).get(exporterId);
     this.rootTableDetail = JSON.parse(this.exporter.rootTableDetail);
@@ -37,9 +50,7 @@ ExporterValidator.prototype.preview = function preview(exporterId) {
     this.createDefines();
 
     this.expandAll(this.results, this.existColumns, this.defines);
-    console.log(this);
 };
-
 ExporterValidator.prototype.expandAll = function expandAll(results, existColumns, defines, escapeExpandColumn) {
     // root table
     if (I.Util.getLength(this.results) === 0) {
@@ -79,7 +90,6 @@ ExporterValidator.prototype.expandAll = function expandAll(results, existColumns
         var define = defines[blockId];
         this.expandNextLevel(results, existColumns, define);
     }
-
 };
 
 ExporterValidator.prototype.expandSameLevel = function expandSameLevel(results, existColumns, define, escapeExpandColumn) {
@@ -142,7 +152,6 @@ ExporterValidator.prototype.findRowByColumn = function findRowByColumn(dataList,
     }
     return null;
 };
-
 ExporterValidator.prototype.expandNextLevelData = function expandNextLevelData(results, existColumn, define, existColumns) {
     var fromDataList = dataPool.get('dataList', define.fromTableId);
     var pkName = define.fromBlockRename || define.fromTableName;
@@ -180,7 +189,6 @@ ExporterValidator.prototype.findRowsByColumn = function findRowsByColumn(dataLis
     }
     return rows;
 };
-
 ExporterValidator.prototype.mergeColumns = function mergeColumns(existColumns, newColumns) {
     for (var name in newColumns) {
         existColumns[name] = newColumns[name];

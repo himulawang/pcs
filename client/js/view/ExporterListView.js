@@ -25,4 +25,8 @@ var ExporterListView = function ExporterListView() {
         var exporter = dataPool.get('exporterList', 0).get(id);
         exporterDefineView.renderAll(exporter);
     };
+    this.openExporterData = function openExporterData(id) {
+        var exporter = dataPool.get('exporterList', 0).get(id);
+        exporterDataView.renderAll(exporter);
+    };
 };

@@ -9,7 +9,9 @@ div(id='TableData-#{table.id}-Sheet')
             table.table.table-condensed
                 tr
                     for column in columnList.list 
-                        th #{column.name} (#{column.type})
+                        th
+                            span(id='TableData-Header-Column-#{column.id}-Name') #{column.name}
+                            span(id='TableData-Header-Column-#{column.id}-Type') (#{column.type})
     .row-fluid
         .span1
             table#TableData-Index.table.table-condensed.table-striped.table-hover

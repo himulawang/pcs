@@ -24,6 +24,9 @@ var ColumnController = {
         tableDefineView.renderColumnType(data.listId, column);
         tableDefineView.renderColumnDescription(data.listId, column);
 
+        tableDataView.renderColumnNameChange(data.listId, column);
+        tableDataView.renderColumnTypeChange(data.listId, column);
+
         exporterDefineView.renderColumnNameChange(column);
     },
     onRemove: function onRemove(data) {

@@ -33,7 +33,6 @@ hr
                 type="text"
                 value='#{exporter.path}'
                 onkeyup='exporterDefineView.onExporterPathChange(#{exporter.id}, this);'
-                onclick='new ExporterValidator().validate();'
                 placeholder='/home/ParaNoidz_Studio/ila.json'
             )
         .input-prepend
@@ -41,17 +40,25 @@ hr
             select.span6(
                 id='ExporterDefine-Exporter-#{exporter.id}-RootTable'
                 class='ExporterDefine-Table-Select'
-                onclick='exporterDefineView.onRootTableChange(#{exporter.id}, this);'
+                onclick='exporterDefineView.onRootTableClick(#{exporter.id}, this);'
+                onchange='exporterDefineView.onRootTableChange(#{exporter.id}, this);'
             )
     .span3
-        #ExporterDefine-Status.alert.alert-success
+        #Exporter-Status.alert.alert-success
         hr
-        div
-            input(value='Add Level'
-                type='button'
-                class='btn btn-large'
-                onclick='exporterDefineView.onAddLevel(#{exporter.id});'
-            )
+        .row-fluid
+            .span6
+                input(value='Add Level'
+                    type='button'
+                    class='btn btn-large'
+                    onclick='exporterDefineView.onAddLevel(#{exporter.id});'
+                )
+            .span6
+                input(value='Check'
+                    type='button'
+                    class='btn btn-large'
+                    onclick='new ExporterValidator().validate(#{exporter.id});'
+                )
 hr
 .row-fluid
     #ExporterDefine-Levels.span12.row-fluid

@@ -73,6 +73,23 @@ exports.ExporterController = {
         detail.choose = columnList.getKeys();
         exporter.rootTableDetail = JSON.stringify(detail);
 
+        var links = JSON.parse(exporter.links);
+        for (var fromBlockId in links) {
+            var link = links[fromBlockId];
+            if (link.bind.toBlockId === 'root') {
+                links[fromBlockId].bind = {
+                    fromLevel: null,
+                    fromBlockId: null,
+                    fromColumnId: null,
+                    toLevel: null,
+                    toBlockId: null,
+                    toColumnId: null,
+                    color: null,
+                };
+            }
+        }
+        exporter.links = JSON.stringify(links);
+
         exporterList.updateSync(exporter);
 
         var data = {
