@@ -18,6 +18,8 @@ $(function() {
     window.exporterListView = new ExporterListView();
     window.exporterDefineView = new ExporterDefineView();
     window.exporterDataView = new ExporterDataView();
+    window.backupView = new BackupView();
+    window.restoreView = new RestoreView();
     window.dialogView = new DialogView();
     window.dynamicMaker = new DynamicMaker();
     
@@ -28,7 +30,5 @@ $(function() {
         NetController.init();
     });
 });
-
-function ross() {console.log(111)};
 
 //https://github.com/callumlocke/json-formatter

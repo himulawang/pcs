@@ -2,18 +2,15 @@ h2.text-info Table Data: #{table.name}
 div(id='TableData-#{table.id}-Sheet')
     .row-fluid
         .span1
-            table.table.table-condensed
-                tr
-                    th Column
-        .span11
-            table.table.table-condensed
-                tr
-                    for column in columnList.list 
-                        th
-                            span(id='TableData-Header-Column-#{column.id}-Name') #{column.name}
-                            span(id='TableData-Header-Column-#{column.id}-Type') (#{column.type})
+            strong Column
+        .span11.row
+            for column in columnList.list 
+                .span3
+                    span(id='TableData-Header-Column-#{column.id}-Name') 
+                        strong #{column.name}
+                    span(id='TableData-Header-Column-#{column.id}-Type') (#{column.type})
     .row-fluid
         .span1
-            table#TableData-Index.table.table-condensed.table-striped.table-hover
-        .span11
-            table#TableData-Data.table.table-condensed.table-striped.table-hover
+            #TableData-Index.row-fluid
+        .span11.row
+            #TableData-Data.row-fluid

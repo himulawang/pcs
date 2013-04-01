@@ -29,6 +29,8 @@ var ExporterController = {
         exporterList.unset(id);
 
         exporterListView.renderRemoveExporter(id);
+        exporterDefineView.renderRemove(id);
+        exporterDataView.renderExporterRemove(id);
     },
     onUpdateRootTable: function onUpdateRootTable(data) {
         var exporter = this.updateExporter(data.id, data.exporter);
@@ -166,5 +168,27 @@ var ExporterController = {
         var exporter = this.updateExporter(data.id, data.exporter);
 
         exporterDefineView.renderBlockRenameChange(exporter, data.blockId, data.rename);
+    },
+    ExportToServer: function ExportToServer(id) {
+        iWebSocket.send('C0916', { id: id });
+    },
+    onExportToServer: function onExportToServer(data) {
+        if (data.message) {
+            exporterDataView.statusError(data.message);
+        } else {
+            exporterDataView.statusSuccess('Export to server successful.');
+        }
+    },
+    AllToServer: function AllToServer() {
+        iWebSocket.send('C0917', {});
+    },
+    onAllToServer: function onAllToServer(data) {
+        var exporterList = dataPool.get('exporterList', 0);
+        for (var id in data.results) {
+            var exporter = exporterList.get(id);
+            data.results[id].name = exporter.name;
+        }
+
+        dialogView.renderAllToServerResults(data.results);
     },
 };

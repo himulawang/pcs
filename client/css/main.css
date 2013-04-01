@@ -24,6 +24,16 @@
     border: 1px solid #DDD;
     border-radius: 6px;
 }
+.Data-Td {
+    width: 200px;
+}
+
+#TableData-Data [class='row']:nth-child(odd) {
+    background-color: #EEEEEE;
+}
+#TableData-Index [class='row-fluid']:nth-child(odd) {
+    background-color: #EEEEEE;
+}
 
 /*
 .left {

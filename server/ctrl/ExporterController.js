@@ -527,6 +527,95 @@ exports.ExporterController = {
         };
         connectionPool.broadcast(api, data);
     },
+    ExportToServer: function ExportToServer(connection, api, params) {
+        var id = params.id;
+        var exporterList = dataPool.get('exporterList', 0);
+        var exporter = exporterList.get(id);
+
+        var data = {
+            id: id,
+        };
+        // check path
+        if (exporter.path === '') {
+            data.message = 'Exporter Define has no path.';
+            connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+            return;
+        }
+
+        var fs = require('fs');
+        var path = require('path');
+
+        if(!fs.existsSync(path.dirname(exporter.path))) {
+            data.message = 'Exporter Define path not exist on server.';
+            connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+            return;
+        }
+
+        var exporterMaker = new I.Lib.ExporterMaker();
+        try {
+            exporterMaker.make(id);
+        } catch (e) {
+            return;
+        }
+
+        if (I.Util.getLength(exporterMaker.results) === 0) return;
+
+        // write to disk
+        fs.writeFile(exporter.path, JSON.stringify(exporterMaker.results), function(err) {
+            if (err) {
+                data.message = 'Write to disk failed.';
+                connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+                return;
+            }
+            connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+        });
+    },
+    AllToServer: function AllToServer(connection, api, params) {
+        var fs = require('fs');
+        var path = require('path');
+
+        var result = {};
+        var exporterList = dataPool.get('exporterList', 0);
+        for (var id in exporterList.list) {
+            var exporter = exporterList.get(id);
+            result[id] = {
+                id: id,
+                result: '',
+            };
+            if (exporter.path === '') {
+                result[id].result = ' failed. Define has no path.';
+                continue;
+            }
+            if(!fs.existsSync(path.dirname(exporter.path))) {
+                result[id].result = ' failed. Define path not exist on server.';
+                continue;
+            }
+            var exporterMaker = new I.Lib.ExporterMaker();
+            try {
+                exporterMaker.make(id);
+            } catch (e) {
+                result[id].result = ' failed. ' + e.message;
+                continue;
+            }
+
+            if (I.Util.getLength(exporterMaker.results) === 0) {
+                result[id].result = ' failed. Root table has no data.';
+                continue;
+            }
+
+            // write to disk
+            var r = fs.writeFileSync(exporter.path, JSON.stringify(exporterMaker.results));
+            if (r) {
+                result[id].result = ' failed. Write to disk failed.';
+            } else {
+                result[id].result = ' export successful.';
+            }
+        }
+        var data = {
+            results: result,
+        };
+        connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+    },
     // private
     removeExporterColumn: function removeExporterColumn(columnId, exporter) {
         // root table

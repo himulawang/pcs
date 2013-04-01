@@ -1,4 +1,4 @@
-var ExporterValidator = function ExporterValidator() {
+var ExporterMaker = function ExporterMaker() {
     this.existColumns = {};
     this.defines = {};
     this.results = {};
@@ -9,56 +9,26 @@ var ExporterValidator = function ExporterValidator() {
     this.tableList = null;
 };
 
-ExporterValidator.prototype.validate = function validate(exporterId) {
-    try {
-        this.make(exporterId);
-    } catch (e) {
-        return this.error(e.msg);
-    }
-    this.success();
-};
-
-ExporterValidator.prototype.preview = function preview(exporterId) {
-    this.validate(exporterId);
-
-    try {
-        if (I.Util.getLength(this.results) === 0) throw new ExporterException('Root table has no data.');
-    } catch (e) {
-        this.error(e.msg);
-        return false;
-    }
-
-    var html = jsonFormatter.jsonObjToHTML(this.results) ;
-    $('#ExporterData-View-Body').empty().html(html).click(jsonFormatter.generalClick);
-    $('#ExporterData-Raw-Body').val(JSON.stringify(this.results));
-    return true;
-};
-ExporterValidator.prototype.error = function error(msg) {
-    $('#Exporter-Status').removeClass('alert-success').addClass('alert-error').text(msg);
-};
-ExporterValidator.prototype.success = function success() {
-    $('#Exporter-Status').removeClass('alert-error').addClass('alert-success').text('Passed!');
-};
-ExporterValidator.prototype.make = function make(exporterId) {
+ExporterMaker.prototype.make = function make(exporterId) {
     this.tableList = dataPool.get('tableList', 0);
     this.exporter = dataPool.get('exporterList', 0).get(exporterId);
     this.rootTableDetail = JSON.parse(this.exporter.rootTableDetail);
     // check root table selected
-    if (this.exporter.rootTableId == 0) throw new ExporterException('Root table not selected.');
+    if (this.exporter.rootTableId == 0) throw new I.Exception(50201);
 
     // init defines
     this.createDefines();
 
     this.expandAll(this.results, this.existColumns, this.defines);
 };
-ExporterValidator.prototype.expandAll = function expandAll(results, existColumns, defines, escapeExpandColumn) {
+ExporterMaker.prototype.expandAll = function expandAll(results, existColumns, defines, escapeExpandColumn) {
     // root table
     if (I.Util.getLength(this.results) === 0) {
         // creat existColumns
         var rootTable = this.tableList.get(this.exporter.rootTableId);
 
         // check pk
-        if (this.rootTableDetail.pk === null) throw new ExporterException('Root table has not pk.');
+        if (this.rootTableDetail.pk === null) throw new I.Exception(50202);
 
         // fake data for root table
         this.rootTableDetail.bind = { fromBlockId: 'root' };
@@ -92,7 +62,7 @@ ExporterValidator.prototype.expandAll = function expandAll(results, existColumns
     }
 };
 
-ExporterValidator.prototype.expandSameLevel = function expandSameLevel(results, existColumns, define, escapeExpandColumn) {
+ExporterMaker.prototype.expandSameLevel = function expandSameLevel(results, existColumns, define, escapeExpandColumn) {
     for (var resultName in existColumns) {
         var existColumn = existColumns[resultName];
         if (!(
@@ -109,7 +79,7 @@ ExporterValidator.prototype.expandSameLevel = function expandSameLevel(results, 
         this.expandSameLevelData(results, existColumns, existColumn, define);
     }
 };
-ExporterValidator.prototype.expandNextLevel = function expandNextLevel(results, existColumns, define) {
+ExporterMaker.prototype.expandNextLevel = function expandNextLevel(results, existColumns, define) {
     for (var resultName in existColumns) {
         var existColumn = existColumns[resultName];
         if (!(
@@ -128,7 +98,7 @@ ExporterValidator.prototype.expandNextLevel = function expandNextLevel(results, 
         this.expandNextLevelData(results, existColumn, define, newColumns);
     }
 };
-ExporterValidator.prototype.expandSameLevelData = function expandSameLevelData(results, existColumns, existColumn, define) {
+ExporterMaker.prototype.expandSameLevelData = function expandSameLevelData(results, existColumns, existColumn, define) {
     var fromDataList = dataPool.get('dataList', define.fromTableId);
     for (var pk in results) {
         var value = results[pk][define.toColumnResultName];
@@ -144,7 +114,7 @@ ExporterValidator.prototype.expandSameLevelData = function expandSameLevelData(r
         }
     }
 };
-ExporterValidator.prototype.findRowByColumn = function findRowByColumn(dataList, value, findCName) {
+ExporterMaker.prototype.findRowByColumn = function findRowByColumn(dataList, value, findCName) {
     // only find one first value
     for (var i in dataList.list) {
         var data = dataList.get(i);
@@ -152,7 +122,7 @@ ExporterValidator.prototype.findRowByColumn = function findRowByColumn(dataList,
     }
     return null;
 };
-ExporterValidator.prototype.expandNextLevelData = function expandNextLevelData(results, existColumn, define, existColumns) {
+ExporterMaker.prototype.expandNextLevelData = function expandNextLevelData(results, existColumn, define, existColumns) {
     var fromDataList = dataPool.get('dataList', define.fromTableId);
     var pkName = define.fromBlockRename || define.fromTableName;
     var line = 1;
@@ -180,7 +150,7 @@ ExporterValidator.prototype.expandNextLevelData = function expandNextLevelData(r
         ++line;
     }
 };
-ExporterValidator.prototype.findRowsByColumn = function findRowsByColumn(dataList, value, findCName) {
+ExporterMaker.prototype.findRowsByColumn = function findRowsByColumn(dataList, value, findCName) {
     // find all
     var rows = [];
     for (var i in dataList.list) {
@@ -189,12 +159,12 @@ ExporterValidator.prototype.findRowsByColumn = function findRowsByColumn(dataLis
     }
     return rows;
 };
-ExporterValidator.prototype.mergeColumns = function mergeColumns(existColumns, newColumns) {
+ExporterMaker.prototype.mergeColumns = function mergeColumns(existColumns, newColumns) {
     for (var name in newColumns) {
         existColumns[name] = newColumns[name];
     }
 };
-ExporterValidator.prototype.createExistColumns = function createExistColumns(existColumns, table, detail, level) {
+ExporterMaker.prototype.createExistColumns = function createExistColumns(existColumns, table, detail, level) {
     var newColumns = {};
     var columnList = dataPool.get('columnList', table.id);
     detail.choose.forEach(function(columnId) {
@@ -203,7 +173,11 @@ ExporterValidator.prototype.createExistColumns = function createExistColumns(exi
         if (name === undefined) name = column.name;
 
         // check name conflict
-        if (existColumns[name] || newColumns[name]) throw new ExporterException('Table ' + table.name + ' column ' + name + ' conflict');
+        if (existColumns[name] || newColumns[name]) {
+            var ex = new I.Exception(50203);
+            ex.message = 'Table ' + table.name + ' column ' + name + ' conflict';
+            throw ex;
+        }
 
         var exporterExistColumn = new I.Models.ExporterExistColumn();
         exporterExistColumn.name = name;
@@ -219,7 +193,7 @@ ExporterValidator.prototype.createExistColumns = function createExistColumns(exi
     });
     return newColumns;
 };
-ExporterValidator.prototype.createDefines = function createDefines() {
+ExporterMaker.prototype.createDefines = function createDefines() {
     var levels = JSON.parse(this.exporter.levels);
     var tables = JSON.parse(this.exporter.tables);
     var links = JSON.parse(this.exporter.links);
@@ -233,7 +207,9 @@ ExporterValidator.prototype.createDefines = function createDefines() {
 
         // from
         if (link.pk === null) {
-            throw new ExporterException('BlockId ' + blockId + ' has no pk.');
+            var ex = new I.Exception(50204);
+            ex.message = 'BlockId ' + blockId + ' has no pk.';
+            throw ex;
         }
         var fromColumnList = dataPool.get('columnList', tables[bind.fromBlockId]);
         this.defines[blockId].fromPKId = link.pk;
@@ -264,7 +240,9 @@ ExporterValidator.prototype.createDefines = function createDefines() {
             var toBlockLink = links[bind.toBlockId];
         }
         if (toBlockLink.pk === null) {
-            throw new ExporterException('BlockId ' + bind.toBlockId + ' has no pk.');
+            var ex = new I.Exception(50204);
+            ex.message = 'BlockId ' + bind.toBlockId + ' has no pk.';
+            throw ex;
         }
         var toColumnList = dataPool.get('columnList', toTableId);
         this.defines[blockId].toPKId = toBlockLink.pk;
@@ -301,6 +279,5 @@ ExporterValidator.prototype.createDefines = function createDefines() {
         });
     }
 };
-var ExporterException = function ExporterException(msg) {
-    this.msg = msg;
-};
+
+exports.ExporterMaker = ExporterMaker;

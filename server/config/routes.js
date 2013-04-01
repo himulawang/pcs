@@ -274,4 +274,23 @@ exports.routes = {
             rename: 'es',
         },
     },
+    C0916: {
+        ctrl: 'Exporter',
+        action: 'ExportToServer',
+        param: {
+            id: 'ni',
+        },
+    },
+    C0917: {
+        ctrl: 'Exporter',
+        action: 'AllToServer',
+        param: {
+        },
+    },
+    C1001: {
+        ctrl: 'Backup',
+        action: 'BackupAll',
+        param: {
+        },
+    },
 };

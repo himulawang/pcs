@@ -12,7 +12,7 @@
             #SidebarTab.tab-content
                 #TableTab.tab-pane.active
                     .row-fluid
-                        .span3.offset2
+                        .span3.offset1
                             input.btn(type="button", value="New", onclick='indexView.newTableDefine();')
                         .span3
                             input.btn(type="button", value="Import") 
@@ -20,13 +20,23 @@
                     #TableList
                 #ExportTab.tab-pane
                     .row-fluid
-                        .span3.offset2
+                        .span2.offset1
                             input.btn(type="button", value="New", onclick='indexView.newExporterDefine();')
+                    p
+                    .row-fluid
+                        .span4.offset1
+                            input.btn(type="button", value="Download All", onclick='exporterDataView.downloadAll();')
+                        .span4
+                            input.btn(type="button", value="All To Server", onclick='exporterDataView.allToServer();')
                     p
                     #ExporterList
                 #SystemTab.tab-pane
-                    #SystemTabBody
-                        p cc
+                    .row-fluid
+                        .span4.offset1
+                            input.btn(type="button", value="Backup", onclick='backupView.backupAll();')
+                        .span4
+                            input.btn(type="button", value="Restore", onclick='restoreView.renderAll();')
+                    p
     #Content.span9
 .row-fluid
     .span3.row-fluid

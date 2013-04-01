@@ -42,13 +42,13 @@ hr
                 input(value='Download'
                     type='button'
                     class='btn btn-large'
-                    onclick='exporterDataView.download(#{exporter.id});'
+                    onclick='exporterDataView.onDownload(#{exporter.id});'
                 )
             .span6
                 input(value='Export To Server'
                     type='button'
                     class='btn btn-large'
-                    onclick='exporterDataView.exportToServer(#{exporter.id});'
+                    onclick='exporterDataView.onExportToServer(#{exporter.id});'
                 )
 hr
 .row-fluid

@@ -1,0 +1,14 @@
+.modal-header
+    h3.text-info Results
+.modal-body
+    .alert.alert-info.fade.in
+        .row-fluid
+            .span4 ExporterName
+            .span8 Result
+        for result in results
+            .row-fluid
+                .span4= result.name
+                .span8= result.result
+.modal-footer
+    button.btn(href='#', data-dismiss='modal', aria-hidden='true') OK
+

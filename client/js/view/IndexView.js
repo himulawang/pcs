@@ -14,15 +14,4 @@ var IndexView = function IndexView() {
     this.clearContent = function clearContent() {
         $('#Content').empty();
     };
-    /*
-    openCreateTableStructurePanel: function openCreateTableStructurePanel() {
-        TableController.openCreateTableStructurePanel();
-    },
-    getTableList: function getTableList() {
-        TableController.getTableList();
-    },
-    clearContent: function clearContent() {
-        $('#Content').empty();
-    },
-    */
 };

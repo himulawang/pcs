@@ -144,4 +144,16 @@ var routes = {
         ctrl: 'Exporter',
         action: 'BlockRenameChange',
     },
+    C0916: {
+        ctrl: 'Exporter',
+        action: 'ExportToServer',
+    },
+    C0917: {
+        ctrl: 'Exporter',
+        action: 'AllToServer',
+    },
+    C1001: {
+        ctrl: 'Backup',
+        action: 'BackupAll',
+    },
 };

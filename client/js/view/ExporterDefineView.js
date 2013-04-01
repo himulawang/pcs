@@ -28,7 +28,7 @@ var ExporterDefineView = function ExporterDefineView() {
         // render tables
         this.renderTables(exporter);
 
-        new ExporterValidator().validate(exporter.id);
+        this.onCheck(exporter.id);
     };
     this.makeTableOption = function makeTableOption(exporterId) {
         var tableList = dataPool.get('tableList', 0);
@@ -62,6 +62,11 @@ var ExporterDefineView = function ExporterDefineView() {
     };
     this.bindTableLinkDragEvent = function bindTableLinkDragEvent(blockId, columnId) {
         $('#ExporterDefine-Link-' + blockId + '-' + columnId)[0].addEventListener('dragstart', this.onLinkDragStart, false);
+    };
+    this.renderRemove = function renderRemove(id) {
+        if (!this.isViewOpened(id)) return;
+
+        indexView.clearContent();
     };
     this.renderRootTable = function renderRootTable(exporter) {
         var tableId = exporter.rootTableId;
@@ -374,6 +379,12 @@ var ExporterDefineView = function ExporterDefineView() {
         $('.ExporterDefine-Link-FromTable-' + tableId).remove();
         $('.ExporterDefine-Table-' + tableId).remove();
     };
+    this.statusError = function statusError(msg) {
+        $('#Exporter-Status').removeClass('alert-success').addClass('alert-error').text(msg);
+    };
+    this.statusSuccess = function statusSuccess(msg) {
+        $('#Exporter-Status').removeClass('alert-error').addClass('alert-success').text(msg);
+    };
     this.isViewOpened = function isViewOpened(exporterId) {
         var el = $('#ExporterDefine-Exporter-' + exporterId + '-Id');
         return el.length !== 0;
@@ -518,5 +529,14 @@ var ExporterDefineView = function ExporterDefineView() {
     };
     this.onLinkColorChange = function onLinkColorChange(exporterId, blockId, color, className) {
         ExporterController.LinkColorChange(exporterId, blockId, color, className);
+    };
+    this.onCheck = function onCheck(exporterId) {
+        var exporterMaker = new I.Lib.ExporterMaker();
+        try {
+            exporterMaker.make(exporterId);
+        } catch (e) {
+            return this.statusError(e.message);
+        }
+        this.statusSuccess('Passed!');
     };
 };

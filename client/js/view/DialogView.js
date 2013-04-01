@@ -40,4 +40,9 @@ var DialogView = function DialogView() {
         var html = Renderer.make('DialogDeleteExporterDefineLevelConfirm', data);
         this.getEl().html(html).modal('show');
     };
+    this.renderAllToServerResults = function renderAllToServerResults(results) {
+        var data = { results: results };
+        var html = Renderer.make('DialogAllToServerResults', data);
+        this.getEl().html(html).modal('show');
+    };
 };
