@@ -1,15 +1,15 @@
 .row-fluid
-    .span3
+    #Left-Block.span3
         #Logo
         .tabbable
-            ul.nav.nav-tabs
+            ul#TabHeader.nav.nav-tabs
                 li.dropdown.active
                     a(href='#TableTab', data-toggle="tab") Table
                 li
                     a(href='#ExportTab', data-toggle="tab") Export
                 li
                     a(href='#SystemTab', data-toggle="tab") System
-            #SidebarTab.tab-content
+            #Tree.tab-content
                 #TableTab.tab-pane.active
                     .row-fluid
                         .span3.offset1
@@ -20,14 +20,14 @@
                     #TableList
                 #ExportTab.tab-pane
                     .row-fluid
-                        .span2.offset1
-                            input.btn(type="button", value="New", onclick='indexView.newExporterDefine();')
-                    p
-                    .row-fluid
                         .span4.offset1
                             input.btn(type="button", value="Download All", onclick='exporterDataView.downloadAll();')
                         .span4
                             input.btn(type="button", value="All To Server", onclick='exporterDataView.allToServer();')
+                    p
+                    .row-fluid
+                        .span2.offset1
+                            input.btn(type="button", value="New", onclick='indexView.newExporterDefine();')
                     p
                     #ExporterList
                 #SystemTab.tab-pane
@@ -38,9 +38,9 @@
                             input.btn(type="button", value="Restore", onclick='restoreView.renderAll();')
                     p
     #Content.span9
-.row-fluid
+#Footer.row-fluid
     .span3.row-fluid
-        #Status.span6
-        #OnlineUser.span6
+        #Status.span3
+        #OnlineUser.span9
     .span9 ParaNoidz Stuido All Right Reservered.
 #Dialog.modal.fade.hide

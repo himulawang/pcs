@@ -1,4 +1,7 @@
-.row-fluid(id='TableData-Index-#{row.c0}')
+.row-fluid.TableData-LineNo(id='TableData-Index-#{row.c0}')
     .span6= row.c0
     .span1
-        i.icon-remove-circle.pointer(onclick='tableDataView.removeData(#{tableId}, #{row.c0});')
+        i.icon-remove-circle.pointer(
+            data-table-id='#{tableId}'
+            data-row-id='#{row.c0}'
+        )

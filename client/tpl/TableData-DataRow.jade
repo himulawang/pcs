@@ -1,7 +1,9 @@
-.row(id='TableData-Row-#{row.c0}')
+.TableData-Row(id='TableData-Row-#{row.c0}')
     for cell, i in row.args
         - if (i !== 0)
-            .span3(
+            .TableData-Cell.pointer.inline(
                 id='TableData-#{row.c0}-#{i}-Cell'
-                onclick='tableDataView.enterInputModel(#{tableId}, #{row.c0}, #{i}, this);'
+                data-table-id='#{tableId}'
+                data-row-id='#{row.c0}'
+                data-column-id='#{i}'
             ) #{row.args[i]}

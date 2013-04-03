@@ -15,10 +15,16 @@ var TableDataView = function TableDataView() {
             dataList: dataList,
         };
         var html = Renderer.make('TableData', data);
-        this.el.html(html);
+        this.el.empty().html(html);
 
         this.renderIndexColumn(table.id, dataList);
         this.renderDataColumn(table.id, dataList);
+
+        $('#TableData-Data').on('click', '.TableData-Cell', this.enterInputModel)
+            .on('scroll', this.onDataScroll);
+        $('#TableData-Index').on('click', '.icon-remove-circle', this.removeData);
+
+        Resizer.tableData();
     };
     this.makeDataRowHTML = function makeDataRowHTML(tableId, row) {
         return Renderer.make('TableData-DataRow', { tableId: tableId, row: row });
@@ -97,19 +103,22 @@ var TableDataView = function TableDataView() {
         return $('#TableData-' + id + '-Sheet').length !== 0;
     };
     // event
-    this.enterInputModel = function enterInputModel(tableId, rowId, columnId, el) {
-        el = $(el);
-        if (el.children('input').length !== 0) return;
-        var value = el.text();
-        var data = {
-            value: value,
-            tableId: tableId,
-            rowId: rowId,
-            columnId: columnId,
-        };
-        var html = Renderer.make('TableData-Input', data);
-        el.html(html);
-        el.children('input').focus();
+    this.enterInputModel = function enterInputModel(e) {
+        if ($(e.target).hasClass('TableData-Cell')) {
+            var el = $(e.target);
+            if (el.children('input').length !== 0) return;
+            var value = el.text();
+            var dataset = e.target.dataset;
+            var data = {
+                value: value,
+                tableId: dataset.tableId,
+                rowId: dataset.rowId,
+                columnId: dataset.columnId,
+            };
+            var html = Renderer.make('TableData-Input', data);
+            el.html(html);
+            el.children('input').focus();
+        }
     };
     this.leaveInputModel = function leaveInputModel(rowId, columnId, el) {
         el = $(el);
@@ -129,7 +138,14 @@ var TableDataView = function TableDataView() {
     this.createData = function createData(tableId) {
         DataController.Create(tableId);
     };
-    this.removeData = function removeData(tableId, rowId) {
-        dialogView.renderDeleteDataRowConfirm(tableId, rowId);
+    this.removeData = function removeData(e) {
+        if ($(e.target).hasClass('icon-remove-circle')) {
+            var dataset = e.target.dataset;
+            dialogView.renderDeleteDataRowConfirm(dataset.tableId, dataset.rowId);
+        }
+    };
+    this.onDataScroll = function onDataScroll() {
+        $('#TableData-Index')[0].scrollTop = this.scrollTop;
+        $('#TableData-Column-Header')[0].scrollLeft = this.scrollLeft;
     };
 };

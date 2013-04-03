@@ -1,8 +1,19 @@
+.left {
+    float: left;
+}
+.clear {
+    clear: both;
+}
+
+.inline {
+    display: inline-block;
+}
+
 #Logo { 
     height: 87px; 
 }
-#SidebarTab {
-    height: 300px;
+#Tree {
+    overflow: auto;
 }
 .pointer {
     cursor: pointer;
@@ -24,36 +35,59 @@
     border: 1px solid #DDD;
     border-radius: 6px;
 }
-.Data-Td {
-    width: 200px;
+
+#TableData-Index {
+    overflow: hidden;
+    height: 100%;
+}
+#TableData-Body {
+    white-space: nowrap;
+}
+#TableData-Data {
+    overflow: scroll;
+    height: 100%;
 }
 
-#TableData-Data [class='row']:nth-child(odd) {
-    background-color: #EEEEEE;
+.TableData-Row {
+    white-space: nowrap;
+}
+
+.TableData-Index-Column {
+    width: 60px;
+}
+.TableData-Column-Header {
+    width: 250px;
+}
+#TableData-Column-Header {
+    overflow: hidden;
+    white-space: nowrap;
+}
+.TableData-Cell {
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 240px;
+    vertical-align: middle;
+    line-height: 33px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.TableData-LineNo {
+    vertical-align: middle;
+    line-height: 33px;
+}
+
+#TableData-Data div, #TableData-Index div {
+    height: 33px;
+    border-radius: 5px;
 }
 #TableData-Index [class='row-fluid']:nth-child(odd) {
     background-color: #EEEEEE;
 }
-
-/*
-.left {
-    float: left;
-}
-.right {
-    float: right;
-}
-.clear {
-    clear: both;
-}
-.hide {
-    display: none;
-}
-.title {
-    font-weight: bold;
-}
-.center {
-    margin-left: auto;
-    margin-right: auto;
+#TableData-Data [class='TableData-Row']:nth-child(odd) {
+    background-color: #EEEEEE;
 }
 
-*/
+#Footer {
+    vertical-align: middle;
+    line-height: 33px;
+}

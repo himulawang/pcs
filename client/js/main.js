@@ -29,6 +29,8 @@ $(function() {
     NetController.Connect(function() {
         NetController.init();
     });
+
+    Resizer.index();
 });
 
 //https://github.com/callumlocke/json-formatter

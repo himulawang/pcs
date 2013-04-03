@@ -2,6 +2,7 @@ var IndexView = function IndexView() {
     this.render = function render() {
         var html = Renderer.make('Index');
         $('body').html(html);
+        window.onresize = Resizer.index;
     };
     this.newTableDefine = function newTableDefine() {
         var table = new I.Models.Table();
