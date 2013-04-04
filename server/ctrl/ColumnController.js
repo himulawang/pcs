@@ -70,6 +70,8 @@ exports.ColumnController = {
         connectionPool.broadcast(api, data);
     },
     Remove: function Remove(connection, api, params) {
+        dataPool.sync();
+
         var listId = params.listId;
         var id = params.id;
 

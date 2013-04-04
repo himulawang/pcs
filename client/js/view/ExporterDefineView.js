@@ -1,5 +1,4 @@
 var ExporterDefineView = function ExporterDefineView() {
-    this.name = '#ExporterDefine';
     this.renderAll = function renderAll(exporter) {
         // exporter define
         var data = { exporter: exporter };
@@ -29,6 +28,8 @@ var ExporterDefineView = function ExporterDefineView() {
         this.renderTables(exporter);
 
         this.onCheck(exporter.id);
+
+        Resizer.exporterDefine();
     };
     this.makeTableOption = function makeTableOption(exporterId) {
         var tableList = dataPool.get('tableList', 0);
@@ -339,7 +340,7 @@ var ExporterDefineView = function ExporterDefineView() {
         el.val(rename);
     };
     this.renderColumnCreate = function renderColumnCreate(table, column) {
-        var el = $('#ExporterDefine');
+        var el = $('#ExporterDefine-Header');
         if (el.length === 0) return;
         var exporterId = el[0].dataset.id;
         var exporter = dataPool.get('exporterList', 0).get(exporterId);

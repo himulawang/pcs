@@ -17,6 +17,8 @@
         this.toAddSyncList = []; // store index
         this.toDelSyncList = []; // store object
         this.toUpdateSyncList = []; // store index
+
+        this.tagDelSync = false;
     };
 
     List.prototype.add = function add(child) {
@@ -198,8 +200,7 @@
         if (child instanceof this.getChildModel() === false) throw new I.Exception(10138);
         var index = child.getPK();
 
-        var child = this.get(index);
-        if (child === null) throw new I.Exception(10139);
+        if (this.get(index) === null) throw new I.Exception(10139);
 
         var pos = this.toAddSyncList.indexOf(index);
         if (pos === -1) { // child in redis
@@ -207,6 +208,38 @@
         }
         // child in toAddSyncList, update in memory directly
         this.set(child);
+    };
+    List.prototype.markDelSync = function markDelSync() {
+        this.tagDelSync = true;
+    };
+
+    List.prototype.backup = function backup() {
+        return {
+            type: 'List',
+            className: this.className,
+            pk: this.getPK(),
+            data: this.toArray(),
+        };
+    };
+
+    List.prototype.restore = function restore(bak) {
+        var child;
+        var childModelClass = this.getChildModel();
+        for (var i in bak.data) {
+            child = new childModelClass();
+            child.fromArray(bak.data[i]);
+            this.add(child);
+        }
+    };
+
+    List.prototype.restoreSync = function restoreSync(bak) {
+        var child;
+        var childModelClass = this.getChildModel();
+        for (var i in bak.data) {
+            child = new childModelClass();
+            child.fromArray(bak.data[i]);
+            this.addSync(child);
+        }
     };
 
     I.Util.require('List', 'Models', List);

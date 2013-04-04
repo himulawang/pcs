@@ -21,6 +21,8 @@ var NetController = {
         iWebSocket.send('C0003');
     },
     onInit: function onInit(data) {
+        dataPool.reset();
+
         // table
         var tableList = new I.Models.TableList(0);
         tableList.fromAbbArray(data.tableList, true);
@@ -46,5 +48,7 @@ var NetController = {
         exporterList.fromAbbArray(data.exporterList, true);
         dataPool.set('exporterList', 0, exporterList);
         exporterListView.renderAll();
+
+        indexView.clearContent();
     },
 };

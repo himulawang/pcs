@@ -152,8 +152,14 @@ var routes = {
         ctrl: 'Exporter',
         action: 'AllToServer',
     },
+    // backup
     C1001: {
         ctrl: 'Backup',
         action: 'BackupAll',
+    },
+    // restore
+    C1101: {
+        ctrl: 'Restore',
+        action: 'Restore',
     },
 };

@@ -45,4 +45,8 @@ var DialogView = function DialogView() {
         var html = Renderer.make('DialogAllToServerResults', data);
         this.getEl().html(html).modal('show');
     };
+    this.renderRestore = function renderRestore() {
+        var html = Renderer.make('DialogRestore');
+        this.getEl().html(html).modal('show');
+    };
 };

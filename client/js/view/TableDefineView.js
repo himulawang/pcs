@@ -18,6 +18,8 @@ var TableDefineView = function TableDefineView() {
         for (var id in columnList.list) {
             this.renderAddColumn(table.id, columnList.get(id));
         }
+
+        Resizer.tableDefine();
     };
     this.renderRemoveTable = function renderRemoveTable(id) {
         if (!this.isViewOpened(id)) return;
@@ -41,7 +43,7 @@ var TableDefineView = function TableDefineView() {
         if (!this.isViewOpened(listId)) return;
         var data = { listId: listId, column: column };
         var html = Renderer.make('TableDefine-Column', data);
-        $('#ColumnList').append(html);
+        $('#TableDefine-ColumnList').append(html);
     };
     this.renderRemoveColumn = function renderRemoveColumn(listId, id) {
         if (!this.isViewOpened(listId)) return;

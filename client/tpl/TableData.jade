@@ -2,14 +2,18 @@ h2#TableData-Header.text-info Table Data: #{table.name}
 div(id='TableData-#{table.id}-Sheet')
     #TableData-Title
         .TableData-Index-Column.inline
-            strong No.
+            #TableData-Index-LastRow
+                input.btn.btn-mini(
+                    type='button'
+                    value='New Row'
+                    onclick='tableDataView.createData(#{table.id});'
+                )
         #TableData-Column-Header.inline
             for column in columnList.list 
                 .TableData-Column-Header.inline
-                    span(id='TableData-Header-Column-#{column.id}-Name') 
-                        strong #{column.name}
+                    strong(id='TableData-Header-Column-#{column.id}-Name') #{column.name}
                     span(id='TableData-Header-Column-#{column.id}-Type') (#{column.type})
     p
     #TableData-Body
-        #TableData-Index.TableData-Index-Column.inline
-        #TableData-Data.inline
+        #TableData-Index.left
+        #TableData-Data.left

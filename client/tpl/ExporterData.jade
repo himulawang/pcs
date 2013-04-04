@@ -1,7 +1,7 @@
-h2#ExporterData.text-info(data-id='#{exporter.id}') Exporter Data
+h2#ExporterData-Header.text-info(data-id='#{exporter.id}') Exporter Data
 hr
 .row-fluid
-    .span7
+    #ExporterData-BaseDefine.span6
         .input-prepend
             span.add-on.span4 Id
             input.span6(
@@ -34,7 +34,7 @@ hr
                 value='#{exporter.path}'
                 disabled
             )
-    .span3
+    .span4
         #Exporter-Status.alert.alert-success
         hr
         .row-fluid
@@ -53,17 +53,13 @@ hr
 hr
 .row-fluid
     .tabbable
-        ul.nav.nav-tabs
+        ul#ExporterData-TabHeader.nav.nav-tabs
             li.dropdown.active
                 a(href='#ExporterData-View', data-toggle="tab") View
             li
-                a(href='#ExporterData-JSON', data-toggle="tab") JSON
-            li
                 a(href='#ExporterData-Raw', data-toggle="tab") Raw
-        .tab-content
+        #ExporterData-TabBody.tab-content
             #ExporterData-View.tab-pane.active
                 #ExporterData-View-Body
-            #ExporterData-JSON.tab-pane
-                #ExporterData-JSON-Body TODO
             #ExporterData-Raw.tab-pane.row-fluid
                 textarea#ExporterData-Raw-Body.span11

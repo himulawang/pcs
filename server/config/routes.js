@@ -287,10 +287,19 @@ exports.routes = {
         param: {
         },
     },
+    // backup
     C1001: {
         ctrl: 'Backup',
         action: 'BackupAll',
         param: {
+        },
+    },
+    // restore
+    C1101: {
+        ctrl: 'Restore',
+        action: 'Restore',
+        param: {
+            obj: 'nh',
         },
     },
 };

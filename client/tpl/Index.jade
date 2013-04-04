@@ -19,15 +19,21 @@
                     p
                     #TableList
                 #ExportTab.tab-pane
-                    .row-fluid
-                        .span4.offset1
-                            input.btn(type="button", value="Download All", onclick='exporterDataView.downloadAll();')
-                        .span4
-                            input.btn(type="button", value="All To Server", onclick='exporterDataView.allToServer();')
-                    p
-                    .row-fluid
-                        .span2.offset1
-                            input.btn(type="button", value="New", onclick='indexView.newExporterDefine();')
+                    .btn-group.offset1
+                        button.btn(
+                            onclick='indexView.newExporterDefine();'
+                        ) New
+                        button.btn.dropdown-toggle(data-toggle='dropdown')
+                            span.caret
+                        ul.dropdown-menu
+                            li
+                                a(href='#'
+                                    onclick='exporterDataView.downloadAll();'
+                                ) Download All
+                            li
+                                a(href='#'
+                                    onclick='exporterDataView.allToServer();'
+                                ) Exporter All To Server
                     p
                     #ExporterList
                 #SystemTab.tab-pane

@@ -1,7 +1,7 @@
-h2#ExporterDefine.text-info(data-id='#{exporter.id}') Exporter Define
+h2#ExporterDefine-Header.text-info(data-id='#{exporter.id}') Exporter Define
 hr
 .row-fluid
-    .span7
+    #ExporterDefine-BaseDefine.span6
         .input-prepend
             span.add-on.span4 Id
             input.span6(
@@ -43,7 +43,7 @@ hr
                 onclick='exporterDefineView.onRootTableClick(#{exporter.id}, this);'
                 onchange='exporterDefineView.onRootTableChange(#{exporter.id}, this);'
             )
-    .span3
+    .span4
         #Exporter-Status.alert.alert-success
         hr
         .row-fluid
@@ -61,4 +61,4 @@ hr
                 )
 hr
 .row-fluid
-    #ExporterDefine-Levels.span12.row-fluid
+    #ExporterDefine-Levels.span12

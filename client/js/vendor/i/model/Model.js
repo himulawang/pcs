@@ -29,6 +29,8 @@
     };
     Model.prototype.resetUpdateList = function resetUpdateList() { 
         this.updateList = new Array(this.column.length); 
+        this.tagAddSync = false;
+        this.tagDelSync = false;
     };
 
     Model.prototype.toAdd = function toAdd(filterOn) { 
@@ -85,7 +87,6 @@
         });
         return toArrayDiff;
     };
-
     Model.prototype.fromAbbArray = function fromAbbArray(data, resetUpdateList) { 
         var full;
         for (var abb in data) {
@@ -99,6 +100,29 @@
             this[full] = data[full];
         }
         if (resetUpdateList) this.resetUpdateList();
+    };
+    Model.prototype.markAddSync = function markAddSync() {
+        this.tagAddSync = true;
+    };
+    Model.prototype.markDelSync = function markDelSync() {
+        this.tagDelSync = true;
+    };
+
+    Model.prototype.backup = function backup() {
+        return {
+            type: 'Model',
+            className: this.className,
+            data: this.toArray(),
+        };
+    };
+
+    Model.prototype.restore = function restore(bak) {
+        this.fromArray(bak.data);
+    };
+
+    Model.prototype.restoreSync = function restore(bak) {
+        this.fromArray(bak.data);
+        this.markAddSync();
     };
 
     I.Util.require('Model', 'Models', Model);

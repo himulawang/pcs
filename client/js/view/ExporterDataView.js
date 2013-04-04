@@ -1,5 +1,4 @@
 var ExporterDataView = function ExporterDataView() {
-    this.name = '#ExporterData';
     this.renderAll = function renderAll(exporter) {
         // exporter data
         var data = { exporter: exporter };
@@ -7,6 +6,8 @@ var ExporterDataView = function ExporterDataView() {
         $('#Content').empty().html(html);
 
         this.onPreview(exporter.id);
+
+        Resizer.exporterData();
     };
     this.renderExporterUpdate = function renderExporterUpdate(exporter) {
         if (!this.isViewOpened(exporter.id)) return;

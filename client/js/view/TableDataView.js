@@ -20,7 +20,8 @@ var TableDataView = function TableDataView() {
         this.renderIndexColumn(table.id, dataList);
         this.renderDataColumn(table.id, dataList);
 
-        $('#TableData-Data').on('click', '.TableData-Cell', this.enterInputModel)
+        $('#TableData-Data')
+            .on('click', '.TableData-Cell', this.enterInputModel)
             .on('scroll', this.onDataScroll);
         $('#TableData-Index').on('click', '.icon-remove-circle', this.removeData);
 
@@ -39,7 +40,6 @@ var TableDataView = function TableDataView() {
             row = dataList.get(i);
             html += this.makeIndexRowHTML(tableId, row);
         }
-        html += Renderer.make('TableData-LastRow', { tableId: tableId });
         $('#TableData-Index').html(html);
     };
     this.renderDataColumn = function renderDataColumn(tableId, dataList) {
@@ -62,7 +62,7 @@ var TableDataView = function TableDataView() {
     this.renderDataCreate = function renderDataCreate(tableId, row) {
         if (!this.isViewOpened(tableId)) return;
         var indexHTML = this.makeIndexRowHTML(tableId, row);
-        $('#TableData-Index-LastRow').before(indexHTML);
+        $('#TableData-Index').append(indexHTML);
 
         var dataHTML = this.makeDataRowHTML(tableId, row);
         $('#TableData-Data').append(dataHTML);

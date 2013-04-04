@@ -3,7 +3,8 @@
 
     PK.prototype.init = function init(pk) {
         this.updated = false;
-        this.pk = pk || 0;
+        this.tagDelSync = false;
+        this.pk = parseInt(pk) || 0;
     };
 
     PK.prototype.set = function set(pk) {
@@ -24,6 +25,26 @@
 
     PK.prototype.reset = function reset() {
         this.set(0);
+    };
+
+    PK.prototype.markDelSync = function markDelSync() {
+        this.tagDelSync = true;
+    };
+
+    PK.prototype.backup = function backup() {
+        return {
+            type: 'PK',
+            className: this.className,
+            pk: this.get(),
+        };
+    };
+
+    PK.prototype.restore = function restore(bak) {
+        this.set(bak.pk);
+    };
+
+    PK.prototype.restoreSync = function restoreSync(bak) {
+        this.set(bak.pk);
     };
 
     I.Util.require('PK', 'Models', PK);

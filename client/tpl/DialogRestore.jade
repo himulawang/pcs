@@ -1,0 +1,9 @@
+.modal-header
+    h3.text-info Confirm Dialog
+.modal-body
+    .alert.alert-block.alert-error.fade.in
+        p Are you sure to restore this file to PCS? It will remove all the data first.
+.modal-footer
+    button.btn(href='#', data-dismiss='modal', aria-hidden='true', onclick='RestoreController.restore();') OK
+    button.btn(href='#', data-dismiss='modal', aria-hidden='true') Cancel
+

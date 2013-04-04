@@ -1,7 +1,7 @@
-h2.text-info Table Define
+h2#TableDefine-Header.text-info Table Define
 hr
 .row-fluid
-    .span8
+    #TableDefine-BaseDefine.span8
         .input-prepend
             span.add-on.span4 Id
             input.span6(
@@ -26,19 +26,17 @@ hr
                 value='#{table.description}'
                 onkeyup='tableDefineView.onTableDescriptionChange(#{table.id}, this);'
             )
-hr                
-.row-fluid
-    h5.span2 Column
-    h5.span1 IsPK
-    h5.span1 AllowEmpty
-    h5.span2 Type
-    h5.span2 Description
-    h5.span1 Del
-#ColumnList
-.row-fluid
-    .span6
+hr
+#TableDefine-ColumnTitle.row-fluid
+    h5.span2
         input.btn(
             type='button'
             value='Add Column'
             onclick='tableDefineView.addColumn(#{table.id});'
         )
+    h5.span1 IsPK
+    h5.span1 AllowEmpty
+    h5.span2 Type
+    h5.span2 Description
+    h5.span1 Del
+#TableDefine-ColumnList

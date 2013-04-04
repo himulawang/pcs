@@ -7,6 +7,7 @@
 
 .inline {
     display: inline-block;
+    vertical-align: top;
 }
 
 #Logo { 
@@ -19,7 +20,10 @@
     cursor: pointer;
 }
 .ExporterDefine-Level-Body {
-    height: 500px;
+    height: 100%;
+    width: 430px;
+    margin-left: 10px;
+    margin-right: 10px;
     overflow: auto;
 }
 .ExporterDefine-Level-Border {
@@ -36,15 +40,18 @@
     border-radius: 6px;
 }
 
-#TableData-Index {
-    overflow: hidden;
-    height: 100%;
-}
 #TableData-Body {
     white-space: nowrap;
+    width: 100%;
+}
+#TableData-Index {
+    overflow: hidden;
+    width: 10%;
+    height: 100%;
 }
 #TableData-Data {
-    overflow: scroll;
+    overflow: auto;
+    width: 90%;
     height: 100%;
 }
 
@@ -53,14 +60,16 @@
 }
 
 .TableData-Index-Column {
-    width: 60px;
+    width: 10%;
 }
 .TableData-Column-Header {
-    width: 250px;
+    padding-left: 5px;
+    width: 245px;
 }
 #TableData-Column-Header {
     overflow: hidden;
     white-space: nowrap;
+    width: 90%;
 }
 .TableData-Cell {
     padding-left: 5px;
@@ -71,6 +80,9 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+.TableData-Cell:hover {
+    background-color: #BBDEF1;
+}
 .TableData-LineNo {
     vertical-align: middle;
     line-height: 33px;
@@ -80,11 +92,19 @@
     height: 33px;
     border-radius: 5px;
 }
-#TableData-Index [class='row-fluid']:nth-child(odd) {
+#TableData-Index [class='row-fluid TableData-LineNo']:nth-child(odd) {
     background-color: #EEEEEE;
 }
-#TableData-Data [class='TableData-Row']:nth-child(odd) {
-    background-color: #EEEEEE;
+
+#TableDefine-ColumnList {
+    overflow: auto;
+}
+#ExporterData-TabBody {
+    overflow: auto;
+}
+#ExporterDefine-Levels {
+    overflow: auto;
+    white-space: nowrap;
 }
 
 #Footer {
