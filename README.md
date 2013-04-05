@@ -7,8 +7,8 @@ ParaNoidz Configuration System
 
 ### 特点
 
-- 纯Javascript，基于浏览器和node.js
-- 以非关系型数据库Redis存储关系数据
+- 纯Javascript，基于Chrome和node.js
+- 以Redis存储关系数据
 - 基于ParaNoidz I Framework
 - 在线联机编辑器，能实时看到其他编辑者的操作，灵感来源于Google Docs
 
@@ -35,9 +35,9 @@ global.STA_ABS_PATH = '/home/ila/project/pcs/client'; // Client Path
 ./server/config/env.js:
 
 ```javascript
-    HTTP_PORT: 8081,
-    REDIS_HOST: '127.0.0.1',
-    REDIS_PORT: 6379,
+HTTP_PORT: 8081,
+REDIS_HOST: '127.0.0.1',
+REDIS_PORT: 6379,
 ```
 
 ### 安装
@@ -56,19 +56,37 @@ http://localhost:8081/
 
 ### 使用说明
 
-1. 建表
+一、建表
 
-2. 插入数据
+![][1]
 
-3. 定义输出模板
+二、插入数据
 
-4. 链接表关系
+![][2]
 
-5. 预览输出结果
+![][3]
 
-6. 下载和导出到服务器
+![][4]
 
-7. 备份和恢复
+![][5]
+
+![][6]
+
+![][7]
+
+三、定义输出模板，链接表关系
+
+列名边的Link图标可进行拖拽并绑定到其他列
+
+![][8]
+
+四、预览输出结果
+
+![][9]
+
+五、下载和导出到服务器
+
+六、备份和恢复
 
 ### TODO
 
@@ -90,3 +108,13 @@ http://localhost:8081/
 - jquery: http://jquery.com/
 - json-formatter: https://github.com/callumlocke/json-formatter
 - jade: https://github.com/visionmedia/jade
+
+  [1]: https://raw.github.com/himulawang/pcs/master/doc/img/01_tableDefine.jpg
+  [2]: https://raw.github.com/himulawang/pcs/master/doc/img/02_tableData.jpg
+  [3]: https://raw.github.com/himulawang/pcs/master/doc/img/03_tableData.jpg
+  [4]: https://raw.github.com/himulawang/pcs/master/doc/img/04_tableData.jpg
+  [5]: https://raw.github.com/himulawang/pcs/master/doc/img/05_tableData.jpg
+  [6]: https://raw.github.com/himulawang/pcs/master/doc/img/06_tableData.jpg
+  [7]: https://raw.github.com/himulawang/pcs/master/doc/img/07_tableData.jpg
+  [8]: https://raw.github.com/himulawang/pcs/master/doc/img/08_exporterDefine.jpg
+  [9]: https://raw.github.com/himulawang/pcs/master/doc/img/09_exporterData.jpg
