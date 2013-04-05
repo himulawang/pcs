@@ -32,5 +32,3 @@ $(function() {
 
     Resizer.index();
 });
-
-//https://github.com/callumlocke/json-formatter

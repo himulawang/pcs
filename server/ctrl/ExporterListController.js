@@ -6,4 +6,3 @@ exports.ExporterListController = {
         connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
     },
 };
-

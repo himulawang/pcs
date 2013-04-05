@@ -98,7 +98,8 @@ global.getTableData = function getTableData(id) {
 
 setTimeout(function() {
     console.log(dataPool.pool);
-    server.listen(8081);
+    var port = require(APP_ABS_PATH + '/config/env.js').env.HTTP_PORT;
+    server.listen(port);
 }, 1000);
 
 setInterval(function() {
