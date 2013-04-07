@@ -11,7 +11,12 @@
 }
 
 #Logo { 
-    height: 87px; 
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    height: 23px; 
+    width: 122px;
+    background-image: url('../img/logo.png');
 }
 #Tree {
     overflow: auto;
