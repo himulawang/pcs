@@ -1,3 +1,5 @@
+![][10]
+
 ParaNoidz Configuration System 
 ===
 
@@ -118,3 +120,4 @@ http://localhost:8081/
   [7]: https://raw.github.com/himulawang/pcs/master/doc/img/07_tableData.jpg
   [8]: https://raw.github.com/himulawang/pcs/master/doc/img/08_exporterDefine.jpg
   [9]: https://raw.github.com/himulawang/pcs/master/doc/img/09_exporterData.jpg
+  [10]: https://raw.github.com/himulawang/pcs/master/client/img/logo.png
