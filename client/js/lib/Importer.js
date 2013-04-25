@@ -48,6 +48,7 @@ var Importer = {
         }
         // check column name match
         for (var x = 0; x < columns.length; ++x) {
+            fileColumns[x] = fileColumns[x].trim();
             if (fileColumns[x] !== columns[x].name) {
                 this.showMsg(I.ExceptionCodes[50109]);
                 throw new I.Exception(50109);
@@ -58,6 +59,9 @@ var Importer = {
         var datas = [];
         for (var y = 1; y < lines.length; ++y) {
             datas[y - 1] = lines[y].split("\t");
+            datas[y - 1].forEach(function(n, i) {
+                datas[y - 1][i] = datas[y - 1][i].trim();
+            });
         }
 
         var util = I.Util;
