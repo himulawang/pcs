@@ -108,7 +108,7 @@ http://localhost:8081/
     - hiredis: https://github.com/redis/hiredis
     - node_redis: https://github.com/mranney/node_redis
     - WebSocket-Node: https://github.com/Worlize/WebSocket-Node
-    - ParaNoidz I Framework: Will open source soon...
+    - ParaNoidz I Framework: https://github.com/himulawang/i
 - bootstrap: https://github.com/twitter/bootstrap
 - bootstrap-colorpicker: http://www.eyecon.ro/bootstrap-colorpicker
 - jquery: http://jquery.com/

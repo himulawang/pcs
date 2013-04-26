@@ -12,7 +12,7 @@ Backup.prototype.backup = function backup() {
     var fs = require('fs');
     var datetime = I.Util.getTime();
     var filepath = this.path + '/' + datetime + '.pcs';
-    fs.writeFile(filepath, JSON.stringify(data), function() {
+    fs.writeFile(filepath, JSON.stringify(data.bak), function() {
         console.log('*Backup* Done', filepath);
     });
     this.lastBackupTime = nowStamp;
