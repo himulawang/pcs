@@ -1,5 +1,10 @@
 exports.BackupController = {
     BackupAll: function BackupAll(connection, api, params) {
+        var data = this.GetBackupData();
+        connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+    },
+    // private
+    GetBackupData: function GetBackupData() {
         var bak = {};
         for (var name in dataPool.pool) {
             var data = dataPool.pool[name];
@@ -14,6 +19,6 @@ exports.BackupController = {
                 data: bak,
             },
         };
-        connectionPool.single(connection, api, I.Const.PCSConst.REQUEST_RESULT_CODE_SUCCESS, data);
+        return data;
     },
 };

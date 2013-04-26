@@ -3,6 +3,7 @@
         this.existColumns = {};
         this.defines = {};
         this.results = {};
+        this.preview = {};
         this.exporter = null;
         this.rootTableDetail = null;
         this.links = {};
@@ -21,6 +22,18 @@
         this.createDefines();
 
         this.expandAll(this.results, this.existColumns, this.defines);
+        this.makePreview(this.results, this.preview);
+    };
+    ExporterMaker.prototype.makePreview = function makePreview(results, preview) {
+        var count = 0;
+        for (var i in results) {
+            if (count > 20) {
+                preview['...'] = '...';
+                break;
+            };
+            preview[i] = results[i];
+            ++count;
+        }
     };
     ExporterMaker.prototype.expandAll = function expandAll(results, existColumns, defines, escapeExpandColumn) {
         // root table

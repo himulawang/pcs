@@ -96,13 +96,15 @@ global.getTableData = function getTableData(id) {
     });
 };
 
+var env = require(APP_ABS_PATH + '/config/env.js').env;
+var backup = new I.Lib.Backup(env.BACKUP_PATH, env.BACKUP_INTERVAL);
 setTimeout(function() {
     console.log(dataPool.pool);
-    var port = require(APP_ABS_PATH + '/config/env.js').env.HTTP_PORT;
-    server.listen(port);
+    server.listen(env.HTTP_PORT);
 }, 1000);
 
 setInterval(function() {
     dataPool.sync();
     console.log('Syncing');
+    backup.backup();
 }, 10000);

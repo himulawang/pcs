@@ -76,7 +76,8 @@ var ExporterDataView = function ExporterDataView() {
             return false;
         }
 
-        var html = jsonFormatter.jsonObjToHTML(exporterMaker.results) ;
+        console.log(exporterMaker);
+        var html = jsonFormatter.jsonObjToHTML(exporterMaker.preview);
         $('#ExporterData-View-Body').empty().html(html).click(jsonFormatter.generalClick);
         $('#ExporterData-Raw-Body').val(JSON.stringify(exporterMaker.results));
         return exporterMaker;

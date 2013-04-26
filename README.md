@@ -40,6 +40,8 @@ global.STA_ABS_PATH = '/home/ila/project/pcs/client'; // Client Path
 HTTP_PORT: 8081,
 REDIS_HOST: '127.0.0.1',
 REDIS_PORT: 6379,
+BACKUP_PATH: '/home/ila/backup/pcs/',
+BACKUP_INTERVAL: 86400,
 ```
 
 ### 安装
@@ -89,6 +91,8 @@ http://localhost:8081/
 五、下载和导出到服务器
 
 六、备份和恢复
+
+七、自动备份
 
 ### TODO
 
