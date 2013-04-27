@@ -5,16 +5,6 @@ var DataController = {
     onCreate: function onCreate(data) {
         var tableId = data.tableId;
         var dataList = dataPool.get('dataList', tableId);
-        /*
-        var preDataList = dataPool.get('dataList', tableId);
-
-        if (preDataList) {
-            var dataList = preDataList;
-        } else {
-            var DataListClass = dynamicMaker.getListClass(tableId);
-            var dataList = new DataListClass(tableId);
-        }
-        */
         var DataModelClass = dynamicMaker.getModelClass(tableId);
         var newData = new DataModelClass();
         newData.fromAbbArray(data.data, true);

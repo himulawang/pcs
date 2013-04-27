@@ -1,12 +1,12 @@
 .row-fluid(id='TableList-Table-#{table.id}')
     .btn-group.offset1
-        button.btn(
+        button.btn.TableList-Table-Button(
             id='TableList-Table-#{table.id}-Name'
             onclick='tableListView.openTableData(#{table.id});'
         ) #{table.name}
         button.btn.dropdown-toggle(data-toggle='dropdown')
             span.caret
-        ul.dropdown-menu
+        ul.dropdown-menu.TableList-Table-Button
             li
                 a(href='#'
                     onclick='tableListView.openTableDefine(#{table.id});'

@@ -1,12 +1,12 @@
 .row-fluid(id='ExporterList-Exporter-#{exporter.id}')
     .btn-group.offset1
-        button.btn(
+        button.btn.ExporterList-Exporter-Button(
             id='ExporterList-Exporter-#{exporter.id}-Name'
             onclick='exporterListView.openExporterData(#{exporter.id});'
         ) #{exporter.name}
         button.btn.dropdown-toggle(data-toggle='dropdown')
             span.caret
-        ul.dropdown-menu
+        ul.dropdown-menu.ExporterList-Exporter-Button
             li
                 a(href='#'
                     onclick='exporterListView.openExporterDefine(#{exporter.id});'

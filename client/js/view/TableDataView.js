@@ -23,7 +23,9 @@ var TableDataView = function TableDataView() {
         $('#TableData-Data')
             .on('click', '.TableData-Cell', this.enterInputModel)
             .on('scroll', this.onDataScroll);
-        $('#TableData-Index').on('click', '.icon-remove-circle', this.removeData);
+        $('#TableData-Index')
+            .on('click', '.icon-remove-circle', this.removeData)
+            .on('mousewheel', this.onIndexScroll);
 
         Resizer.tableData();
     };
@@ -66,6 +68,10 @@ var TableDataView = function TableDataView() {
 
         var dataHTML = this.makeDataRowHTML(tableId, row);
         $('#TableData-Data').append(dataHTML);
+
+        $('#TableData-Index, #TableData-Data').each(function(i, n) {
+            n.scrollTop = n.scrollHeight;
+        });
     };
     this.renderDataUpdate = function renderDataUpdate(tableId, dataId, columnId, data) {
         if (!this.isViewOpened(tableId)) return;
@@ -147,5 +153,9 @@ var TableDataView = function TableDataView() {
     this.onDataScroll = function onDataScroll() {
         $('#TableData-Index')[0].scrollTop = this.scrollTop;
         $('#TableData-Column-Header')[0].scrollLeft = this.scrollLeft;
+    };
+    this.onIndexScroll = function onIndexScroll(e) {
+        var el = $('#TableData-Data')[0];
+        el.scrollTop = el.scrollTop - e.originalEvent.wheelDelta;
     };
 };

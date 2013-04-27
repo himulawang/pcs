@@ -11,8 +11,11 @@ div(id='TableData-#{table.id}-Sheet')
         #TableData-Column-Header.inline
             for column in columnList.list 
                 .TableData-Column-Header.inline
-                    strong(id='TableData-Header-Column-#{column.id}-Name') #{column.name}
-                    span(id='TableData-Header-Column-#{column.id}-Type') (#{column.type})
+                    strong(
+                        id='TableData-Header-Column-#{column.id}-Name'
+                        data-toggle='tooltip'
+                        title='#{column.type}'
+                    ) #{column.name}
     p
     #TableData-Body
         #TableData-Index.left

@@ -1,7 +1,7 @@
-.row-fluid.TableData-LineNo(id='TableData-Index-#{row.c0}')
-    .span6= row.c0
-    .span1
+.TableData-LineNo(id='TableData-Index-#{row.c0}')
+    .inline
         i.icon-remove-circle.pointer(
             data-table-id='#{tableId}'
             data-row-id='#{row.c0}'
         )
+    .inline= row.c0
