@@ -60,7 +60,8 @@ var Importer = {
         for (var y = 1; y < lines.length; ++y) {
             datas[y - 1] = lines[y].split("\t");
             datas[y - 1].forEach(function(n, i) {
-                datas[y - 1][i] = datas[y - 1][i].trim();
+                var tmpData = datas[y - 1][i].trim();
+                datas[y - 1][i] = I.Util.isInt(tmpData) ? parseInt(tmpData) : tmpData;
             });
         }
 

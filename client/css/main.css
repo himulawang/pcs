@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Dodger";
+    src: url("../font/dodgv2.ttf");
+}
+
 ::-webkit-scrollbar {
     width: 9px;
     height: 10px;
@@ -30,13 +35,11 @@
     min-width: 200px;
 }
 
-#Logo { 
-    margin-top: 15px;
-    margin-left: 15px;
-    margin-bottom: 15px;
-    height: 23px; 
-    width: 122px;
-    background-image: url('../img/logo.png');
+#Logo {
+    font-family: Dodger;
+    font-size: 250%;
+    padding: 15px 15px 15px 15px;
+    color: #999999;
 }
 #Tree {
     overflow: auto;
